@@ -9,9 +9,7 @@ public class Model extends Observable {
 
     Parse parse;
 
-    public Model(){
-        parse  =new Parse();
-        
+    public Model() {
 
     }
 

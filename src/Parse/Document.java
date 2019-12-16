@@ -40,19 +40,25 @@ public class Document {
 
     @Override
     public String toString() {
-        String toReturn= "Document:" + "\n"+
-                "Id: " + Id + "\n"+
-                "The words in this document:";
-        Object []allWord =  listOfWord.getTerms().toArray();
-        for(int i=0 ; i< listOfWord.size() ; i++){
-            toReturn = toReturn +"\n"+ "Word: "+ allWord[i].toString() + ", count: " + listOfWord.getTFofTerm((String) allWord[i])+", Position:";
-            ArrayList<Integer> allPositions =listOfWord.getAllPosition((String) allWord[i]);
-            for (int j =0; j<allPositions.size() ; j++){
-                toReturn+= " "+allPositions.get(j);
-            }
-        }
-        return toReturn;
+        String str = "" + Id + ";" + maxTf + ";" + numOfTerms + ";" + numOfWords + ";";
+        return str;
     }
+
+    //@Override
+    //public String toString() {
+    //    String toReturn= "Document:" + "\n"+
+    //            "Id: " + Id + "\n"+
+    //            "The words in this document:";
+    //    Object []allWord =  listOfWord.getTerms().toArray();
+    //    for(int i=0 ; i< listOfWord.size() ; i++){
+    //        toReturn = toReturn +"\n"+ "Word: "+ allWord[i].toString() + ", count: " + listOfWord.getTFofTerm((String) allWord[i])+", Position:";
+    //        ArrayList<Integer> allPositions =listOfWord.getAllPosition((String) allWord[i]);
+    //        for (int j =0; j<allPositions.size() ; j++){
+    //            toReturn+= " "+allPositions.get(j);
+    //        }
+    //    }
+    //    return toReturn;
+    //}
 
     public int sizeOfDocument(){
         return numOfWords;

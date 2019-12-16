@@ -115,9 +115,7 @@ public class Parse  {
 
 
     private void update() throws IOException {
-        //sortTerms();
         indexer.updateAll(termsAndDocs, allDocs, postingPath);
-        //writeAllDocuments();
         cleanDocs();
         allDocuments.addAll(allDocs);
         allDocs.clear();
@@ -131,16 +129,15 @@ public class Parse  {
         }
     }
     public LinkedList<Document> uploadAllDocs() throws IOException {
-        //LinkedList<Document> docs = new LinkedList();
-        //File file = new File(postingPath + "\\documentsDetails.txt");
-        //BufferedReader br = new BufferedReader(new FileReader(file));
-        //String line;
-        //String[] words;
-        //while ((line = br.readLine()) != null) {
-        //    words = line.split(", ");
-        //    dict.put(words[0], words[1]);
-        //}
-        //return dict;
+        LinkedList<Document> docs = new LinkedList();
+        File file = new File(postingPath + "\\documentsDetails.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line;
+        String[] words;
+        while ((line = br.readLine()) != null) {
+            words = line.split(", ");
+        }
+        return docs;
     }
 
     public Map<String, String> uploadDictionary() throws IOException {
@@ -164,10 +161,8 @@ public class Parse  {
         File documentsDetails = new File(postingPath + "\\documentsDetails.txt");
         FileWriter writer = new FileWriter(documentsDetails, true);
         for (Document doc: allDocuments) {
-            writer.write(doc.getId());
-            for (Map.Entry<String, Integer> term: doc.listOfWord.termAndTF.entrySet()) {
-                writer.write(", " + term.getKey());
-            }
+            String docDetails = doc.toString();
+            writer.write(docDetails);
             writer.write("\n");
         }
         writer.close();
