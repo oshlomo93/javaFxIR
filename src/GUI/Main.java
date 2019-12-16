@@ -26,8 +26,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Model model = new Model();
         ViewModel viewModel = new ViewModel(model);
-
-
         primaryStage.setTitle("IR");
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("MyView.fxml").openStream());
@@ -35,18 +33,15 @@ public class Main extends Application {
         View myViewController = fxmlLoader.getController();
         myViewController.setViewModel(viewModel);
         viewModel.addObserver(myViewController);
-
         primaryStage.setScene(scene);
         SetStageCloseEvent(primaryStage, myViewController);
         primaryStage.show();
-
-
         model.addObserver(viewModel);
     }
 
     private void SetStageCloseEvent(Stage primaryStage, View myViewController) {
         primaryStage.setOnCloseRequest(windowEvent -> {
-            myViewController.exitCorrectly();
+            myViewController.exitCorrectly(primaryStage);
             windowEvent.consume();
         });
     }

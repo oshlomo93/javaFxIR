@@ -98,7 +98,7 @@ public class View implements Observer, Initializable {
         }
     }
 
-
-    public void exitCorrectly() {
+    public void exitCorrectly(Stage stage) {
+        stage.close();
     }
 }
