@@ -20,6 +20,13 @@ public class Document {
         }
     }
 
+    public Document(String word, String word1, String word2, String word3) {
+        this.Id = word;
+        this.maxTf = Integer.valueOf(word1);
+        this.numOfTerms = Integer.valueOf(word2);
+        this.numOfWords = Integer.valueOf(word3);
+    }
+
     public String getId() {
         return Id;
     }

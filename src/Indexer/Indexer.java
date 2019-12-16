@@ -21,8 +21,12 @@ public class Indexer {
         fileCounter = 0;
     }
 
-    public void set(Map<String, String> sortedDict) {
+    public void setDictionary(Map<String, String> sortedDict) {
         this.sortedDict = sortedDict;
+    }
+
+    public void setPointers(HashMap<String, List<String[]>> pointers) {
+        this.pointers = pointers;
     }
 
     public void updateAll(List<String[]> allTerms, LinkedList<Document> allDocs, String path) throws IOException {
@@ -188,10 +192,11 @@ public class Indexer {
         if (Pointers.createNewFile()) {
             FileWriter writer = new FileWriter(Pointers);
             for (Map.Entry<String, List<String[]>> termName: pointers.entrySet()) {
-                writer.write(termName.getKey());
+                String name = termName.getKey() + "; ";
+                writer.write(name);
                 for (String[] str: termName.getValue()) {
                     for (String s: str)
-                        writer.write(", " + s);
+                        writer.write(s + "; ");
                 }
                 writer.write("\n");
             }

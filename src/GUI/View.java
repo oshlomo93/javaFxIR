@@ -37,7 +37,6 @@ public class View implements Observer, Initializable {
     @Override
     public void update(Observable o, Object arg) {
         if(arg.equals("EndIr")){
-            showDictionaryOnScrean(); // todo
         }
     }
 
@@ -82,19 +81,16 @@ public class View implements Observer, Initializable {
     public void resetIr(ActionEvent actionEvent) {
     }
 
-    public void showDictionaryOnScrean(ActionEvent actionEvent) {
+    public void showDictionaryOnScreen(ActionEvent actionEvent) {
+
     }
 
     public void uploadDict(ActionEvent actionEvent) {
     }
 
-    public void stopAndDeletTheIr(ActionEvent actionEvent) {
+    public void stopAndDeleteTheIr(ActionEvent actionEvent) {
     }
 
-
-    private void showDictionaryOnScrean(){ //todo
-
-    }
 
     public void setViewModel(ViewModel viewModel) {
         if(viewModel != null){

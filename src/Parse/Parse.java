@@ -57,11 +57,16 @@ public class Parse  {
         }
     }
 
-    public Parse() throws IOException {
-        //todo
-        indexer = new Indexer();
-        Map<String, String> sortedDict = uploadDictionary();
-        indexer.set(sortedDict);
+    public Parse(String postingPath) throws IOException {
+        if (postingPath != null) {
+            this.postingPath = postingPath;
+            indexer = new Indexer();
+            Map<String, String> sortedDict = uploadDictionary();
+            indexer.setDictionary(sortedDict);
+            HashMap<String, List<String[]>> pointers = uploadPointers();
+            indexer.setPointers(pointers);
+            allDocuments = uploadDocsDetails();
+        }
     }
 
     private String[] getPath(String path) {
@@ -128,14 +133,37 @@ public class Parse  {
             doc.clean();
         }
     }
-    public LinkedList<Document> uploadAllDocs() throws IOException {
+
+    public HashMap<String, List<String[]>> uploadPointers() throws IOException {
+        HashMap<String, List<String[]>> pointers = new HashMap<>();
+        File file = new File(postingPath + "\\Pointers.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line;
+        String[] words;
+        while ((line = br.readLine()) != null) {
+            words = line.split("; ");
+            LinkedList<String[]> values = new LinkedList<>();
+            for (int i=1; i < words.length; i += 2) {
+                String[] pointer = new String[2];
+                pointer[0] = words[i];
+                pointer[1] = words[i+1];
+                values.add(pointer);
+            }
+            pointers.put(words[0], values);
+        }
+        return pointers;
+    }
+
+    public LinkedList<Document> uploadDocsDetails() throws IOException {
         LinkedList<Document> docs = new LinkedList();
         File file = new File(postingPath + "\\documentsDetails.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         String[] words;
         while ((line = br.readLine()) != null) {
-            words = line.split(", ");
+            words = line.split(";");
+            Document doc = new Document(words[0], words[1], words[2], words[3]);
+            docs.add(doc);
         }
         return docs;
     }
