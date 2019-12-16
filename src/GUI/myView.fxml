@@ -17,8 +17,8 @@
     <AnchorPane fx:id="winStage" maxHeight="-1.0" maxWidth="-1.0" prefHeight="423.0" prefWidth="569.0" VBox.vgrow="ALWAYS">
          <children>
             <Button fx:id="startButton" layoutX="25.0" layoutY="350.0" mnemonicParsing="false" onAction="#startIr" prefHeight="37.0" prefWidth="82.0" text="start " />
-            <Button fx:id="resetButton" layoutX="146.0" layoutY="350.0" mnemonicParsing="false" onAction="#resetIr" prefHeight="37.0" prefWidth="82.0" text="Reset" />
-            <Button fx:id="showDict" layoutX="253.0" layoutY="350.0" mnemonicParsing="false" onAction="#showDictionaryOnScreen" prefHeight="37.0" prefWidth="117.0" text="Show Dictionary" />
+            <Button fx:id="resetButton" disable="true" layoutX="146.0" layoutY="350.0" mnemonicParsing="false" onAction="#resetIr" prefHeight="37.0" prefWidth="82.0" text="Reset" />
+            <Button fx:id="showDict" disable="true" layoutX="253.0" layoutY="350.0" mnemonicParsing="false" onAction="#showDictionaryOnScreen" prefHeight="37.0" prefWidth="117.0" text="Show Dictionary" />
             <Button fx:id="openLastDict" layoutX="387.0" layoutY="350.0" mnemonicParsing="false" onAction="#uploadDict" prefHeight="37.0" prefWidth="117.0" text="Upload Dictionary" />
             <BorderPane prefHeight="313.0" prefWidth="525.0">
                <bottom>
@@ -45,7 +45,7 @@
                                     <Font name="Arial Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <CheckBox fx:id="stemmer" mnemonicParsing="false" onAction="#isStemmer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <CheckBox fx:id="stemmer" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField fx:id="dirOfPostingFiles" prefHeight="25.0" prefWidth="352.0" GridPane.rowIndex="1" />
                               <Button fx:id="postingFilesPath" mnemonicParsing="false" onAction="#loadPastingPath" prefHeight="25.0" prefWidth="57.0" text="browse" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>

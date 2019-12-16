@@ -32,4 +32,11 @@ public class ViewModel extends Observable implements Observer {
     public void start(String  corpusAndStopWordsStringPath, String  postingFilesStringPath, boolean isStemmer) throws IOException {
         myModel.start(corpusAndStopWordsStringPath, postingFilesStringPath, isStemmer);
     }
+    public void resetIr() {
+        myModel.resetIr();
+    }
+
+    public void uplodeDict(String postingFilesStringPath) throws IOException {
+        myModel.uplodeDict(postingFilesStringPath);
+    }
 }

@@ -19,12 +19,10 @@ public class View implements Observer, Initializable {
     public Button corpusAndStopWordsPath;
     public Button postingFilesPath;
     public CheckBox stemmer;
-    public MenuItem help;
     public Button openLastDict;
     public Button showDict;
     public Button resetButton;
     public Button startButton;
-    public MenuItem stopAndDelet;
     public TextField dirOforCorTextField;
     public TextField dirOfPostingFiles;
     public AnchorPane winStage;
@@ -36,8 +34,6 @@ public class View implements Observer, Initializable {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(arg.equals("EndIr")){
-        }
     }
 
     @Override
@@ -66,29 +62,34 @@ public class View implements Observer, Initializable {
         }
     }
 
-    public void isStemmer(ActionEvent actionEvent) {
-    }
-
-    public void showHelp(ActionEvent actionEvent) {
-    }
-
     public void startIr(ActionEvent actionEvent) throws IOException {
         if(postingFilesStringPath!= null && corpusAndStopWordsStringPath!= null ){
             viewModel.start(corpusAndStopWordsStringPath, postingFilesStringPath, stemmer.isSelected());
+            resetButton.setDisable(false);
+            showDict.setDisable(false);
         }
     }
 
     public void resetIr(ActionEvent actionEvent) {
+        viewModel.resetIr();
+        dirOforCorTextField.setText("");
+        dirOfPostingFiles.setText("");
+        corpusAndStopWordsStringPath= "";
+        postingFilesStringPath= "";
+        showDict.setDisable(true);
+        resetButton.setDisable(true);
     }
 
     public void showDictionaryOnScreen(ActionEvent actionEvent) {
 
     }
 
-    public void uploadDict(ActionEvent actionEvent) {
-    }
-
-    public void stopAndDeleteTheIr(ActionEvent actionEvent) {
+    public void uploadDict(ActionEvent actionEvent) throws IOException {
+        if (postingFilesStringPath != null && postingFilesStringPath.length() > 0){
+            viewModel.uplodeDict(postingFilesStringPath);
+            resetButton.setDisable(false);
+            showDict.setDisable(false);
+        }
     }
 
 

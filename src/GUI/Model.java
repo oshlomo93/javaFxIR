@@ -20,4 +20,12 @@ public class Model extends Observable {
         notifyObservers("EndIr");
     }
 
+    public void resetIr() {
+        parse.exit();
+        parse =null;
+    }
+
+    public void uplodeDict(String postingFilesStringPath) throws IOException {
+        parse = new Parse(postingFilesStringPath);
+    }
 }

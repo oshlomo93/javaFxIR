@@ -84,6 +84,7 @@ public class Parse  {
     }
 
     public void exit() {
+        System.gc();
         File file = new File(postingPath);
         for (File f: file.listFiles()) {
             f.delete();
