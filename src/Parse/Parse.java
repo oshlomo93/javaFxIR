@@ -325,6 +325,9 @@ public class Parse  {
                                 sentence = cleanWord;
                             }
                         }
+                        if (word.equals(allWords[allWords.length-1])){
+                            allSentences.add(sentence);
+                        }
                     }
                 }
             }
