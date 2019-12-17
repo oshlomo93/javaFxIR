@@ -69,6 +69,7 @@ public class Parse  {
             HashMap<String, List<String[]>> pointers = uploadPointers();
             indexer.setPointers(pointers);
             allDocuments = uploadDocsDetails();
+            System.out.println("DoneUpload");
         }
     }
 
@@ -119,7 +120,7 @@ public class Parse  {
         System.out.println("Done");
         writeAllDocuments();
         indexer.writeDictToDisk(postingPath);
-        indexer.printDict();
+        //indexer.printDict();
     }
 
 
