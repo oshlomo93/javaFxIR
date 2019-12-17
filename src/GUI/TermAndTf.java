@@ -23,7 +23,7 @@ public class TermAndTf {
         return termName;
     }
 
-    public void setTermName(String termName) {
+    public final void setTermName(String termName) {
         this.termName.set(termName);
     }
 
@@ -35,7 +35,7 @@ public class TermAndTf {
         return tf;
     }
 
-    public void setTf(String tf) {
+    public final void setTf(String tf) {
         this.tf.set(tf);
     }
 }

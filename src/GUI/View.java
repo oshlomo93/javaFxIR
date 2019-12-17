@@ -7,7 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -35,7 +37,6 @@ public class View implements Observer, Initializable {
     String corpusAndStopWordsStringPath;
     String postingFilesStringPath;
     private Stage dictionay;
-    private dictionaryShowControler dictionaryShowControler;
 
     ViewModel viewModel;
 
@@ -88,17 +89,38 @@ public class View implements Observer, Initializable {
         resetButton.setDisable(true);
     }
 
-    //todo
+
     public void showDictionaryOnScreen(ActionEvent actionEvent) throws IOException {
         dictionay = new Stage();
         dictionay.setTitle("The Dictionary:");
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("dictionaryShow.fxml").openStream());
-        Scene scene = new Scene(root, 650, 500);
-        dictionay.setScene(scene);
-        dictionaryShowControler = fxmlLoader.getController();
+        TableView tableView = new TableView();
+
+        TableColumn<String, TermAndTf> column1 = new TableColumn<>("Term");
+        column1.setCellValueFactory(new PropertyValueFactory<>("termName"));
+
+
+        TableColumn<String, TermAndTf> column2 = new TableColumn<>("Frequency");
+        column2.setCellValueFactory(new PropertyValueFactory<>("tf"));
+
+
+        tableView.getColumns().add(column1);
+        tableView.getColumns().add(column2);
         Map<String, String> getSortedDict= viewModel.getSortedDict();
-        dictionaryShowControler.showDict(getSortedDict);
+        Object [] allTerms = getSortedDict.keySet().toArray();
+        Object [] allTf = getSortedDict.values().toArray();
+        for(int i = 0  ; i<getSortedDict.size() ; i++) {
+            String nameT = (String) allTerms[i];
+            String tf = (String) allTf[i];
+            TermAndTf termAndTf = new TermAndTf(nameT, tf);
+            tableView.getItems().add(termAndTf);
+        }
+
+        VBox vbox = new VBox(tableView);
+
+        Scene scene = new Scene(vbox);
+
+        dictionay.setScene(scene);
+
         dictionay.show();
     }
 
