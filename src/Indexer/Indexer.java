@@ -21,6 +21,10 @@ public class Indexer {
         fileCounter = 0;
     }
 
+    public Map<String, String> getSortedDict() {
+        return sortedDict;
+    }
+
     public void setDictionary(Map<String, String> sortedDict) {
         this.sortedDict = sortedDict;
     }

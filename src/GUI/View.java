@@ -1,14 +1,20 @@
 package GUI;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
@@ -28,6 +34,8 @@ public class View implements Observer, Initializable {
     public AnchorPane winStage;
     String corpusAndStopWordsStringPath;
     String postingFilesStringPath;
+    private Stage dictionay;
+    private dictionaryShowControler dictionaryShowControler;
 
     ViewModel viewModel;
 
@@ -80,9 +88,20 @@ public class View implements Observer, Initializable {
         resetButton.setDisable(true);
     }
 
-    public void showDictionaryOnScreen(ActionEvent actionEvent) {
-
+    //todo
+    public void showDictionaryOnScreen(ActionEvent actionEvent) throws IOException {
+        dictionay = new Stage();
+        dictionay.setTitle("The Dictionary:");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent root = fxmlLoader.load(getClass().getResource("dictionaryShow.fxml").openStream());
+        Scene scene = new Scene(root, 650, 500);
+        dictionay.setScene(scene);
+        dictionaryShowControler = fxmlLoader.getController();
+        Map<String, String> getSortedDict= viewModel.getSortedDict();
+        dictionaryShowControler.showDict(getSortedDict);
+        dictionay.show();
     }
+
 
     public void uploadDict(ActionEvent actionEvent) throws IOException {
         if (postingFilesStringPath != null && postingFilesStringPath.length() > 0){

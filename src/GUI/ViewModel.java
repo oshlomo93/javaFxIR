@@ -6,6 +6,7 @@ import javafx.stage.PopupWindow;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -34,6 +35,11 @@ public class ViewModel extends Observable implements Observer {
     }
     public void resetIr() {
         myModel.resetIr();
+    }
+
+
+    public Map<String, String> getSortedDict() {
+        return myModel.getSortedDict();
     }
 
     public void uplodeDict(String postingFilesStringPath) throws IOException {

@@ -135,6 +135,11 @@ public class Parse  {
         }
     }
 
+
+    public Map<String, String> getSortedDict() {
+        return indexer.getSortedDict();
+    }
+
     public HashMap<String, List<String[]>> uploadPointers() throws IOException {
         HashMap<String, List<String[]>> pointers = new HashMap<>();
         File file = new File(postingPath + "\\Pointers.txt");

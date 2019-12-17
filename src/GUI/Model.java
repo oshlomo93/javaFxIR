@@ -3,6 +3,7 @@ package GUI;
 import Parse.Parse;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Observable;
 
 public class Model extends Observable {
@@ -23,6 +24,11 @@ public class Model extends Observable {
     public void resetIr() {
         parse.exit();
         parse =null;
+    }
+
+
+    public Map<String, String> getSortedDict() {
+        return parse.getSortedDict();
     }
 
     public void uplodeDict(String postingFilesStringPath) throws IOException {
