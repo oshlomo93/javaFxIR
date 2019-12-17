@@ -2,7 +2,7 @@ import Parse.Parse;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         long start = System.currentTimeMillis();
         boolean isStemmer = false;
         Parse parser = new Parse( "C:\\Users\\omer\\Desktop\\newCorpus" ,"C:\\Users\\omer\\Desktop\\newCorpus\\PostingFiles", isStemmer);

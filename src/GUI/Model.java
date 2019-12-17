@@ -15,7 +15,7 @@ public class Model extends Observable {
     }
 
 
-    public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemer) throws IOException {
+    public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemer) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         parse = new Parse(corpusAndStopWordsStringPath, postingFilesStringPath, isStemer);
         parse.parseAllDocs();
         notifyObservers("EndIr");

@@ -1,5 +1,6 @@
 package Parse;
 import Indexer.Indexer;
+import Stemmer.Stemmer;
 
 import java.io.*;
 import java.util.*;
@@ -26,9 +27,10 @@ public class Parse  {
     private Hashtable<String, Term> entitiesTerms;
     private String postingPath;
     private boolean isStemmer;
+    private Stemmer stemmer;
 
 
-    public Parse(String corpusPath , String postingPath, boolean isStemmer ){
+    public Parse(String corpusPath , String postingPath, boolean isStemmer ) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         if(corpusPath != null && postingPath !=null ) {
             String[] pathOfIr = getPath(corpusPath);
             if (pathOfIr != null && pathOfIr.length == 2) {
@@ -53,6 +55,7 @@ public class Parse  {
                 indexer = new Indexer();
                 entitiesTerms = new Hashtable<String, Term>();
                 this.isStemmer = isStemmer;
+                stemmer = new Stemmer();
             }
         }
     }
@@ -116,7 +119,7 @@ public class Parse  {
         System.out.println("Done");
         writeAllDocuments();
         indexer.writeDictToDisk(postingPath);
-        //indexer.printDict();
+        indexer.printDict();
     }
 
 
@@ -184,6 +187,7 @@ public class Parse  {
             words = line.split(", ");
             dict.put(words[0], words[1]);
         }
+        System.out.println("The dictionary uploaded successfully");
         return dict;
     }
 
@@ -361,7 +365,13 @@ public class Parse  {
                     break;
                 case "Entity":
                     //todo - we need to stem
-                    term = entity.makeTerm(word);
+                    if (isStemmer) {
+                        String stemmedWord = stem(word);
+                        term = entity.makeTerm(stemmedWord);
+                    }
+                    else {
+                        term = entity.makeTerm(word);
+                    }
                     break;
                 case "Expression":
                     term = expression.makeTerm(word);
@@ -374,11 +384,24 @@ public class Parse  {
                     break;
                 case "UpLowLetter":
                     //todo - we need to stem
-                    term = upLowLetter.makeTerm(word);
+                    if (isStemmer) {
+                        String stemmedWord = stem(word);
+                        term = upLowLetter.makeTerm(stemmedWord);
+                    }
+                    else {
+                        term = upLowLetter.makeTerm(word);
+                    }
                     break;
             }
         }
         return term;
+    }
+
+    private String stem(String word) {
+        stemmer.add(word.toCharArray(), word.length());
+        stemmer.stem();
+        String stemmedWord = stemmer.toString();
+        return  stemmedWord;
     }
 
     private String findWhoIAmOne(String word){

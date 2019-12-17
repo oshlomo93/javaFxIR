@@ -70,7 +70,7 @@ public class View implements Observer, Initializable {
         }
     }
 
-    public void startIr(ActionEvent actionEvent) throws IOException {
+    public void startIr(ActionEvent actionEvent) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         if(postingFilesStringPath!= null && corpusAndStopWordsStringPath!= null ){
             viewModel.start(corpusAndStopWordsStringPath, postingFilesStringPath, stemmer.isSelected());
             resetButton.setDisable(false);

@@ -30,7 +30,7 @@ public class ViewModel extends Observable implements Observer {
         }
     }
 
-    public void start(String  corpusAndStopWordsStringPath, String  postingFilesStringPath, boolean isStemmer) throws IOException {
+    public void start(String  corpusAndStopWordsStringPath, String  postingFilesStringPath, boolean isStemmer) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
         myModel.start(corpusAndStopWordsStringPath, postingFilesStringPath, isStemmer);
     }
     public void resetIr() {
