@@ -162,7 +162,8 @@ public class Indexer {
 
     private void writePostingToDisk(String path) throws IOException {
         fileCounter++;
-        String newPath = path + "\\postingFile" + fileCounter + ".txt";
+        String shortPath = "\\" + fileCounter + ".txt";
+        String newPath = path + shortPath;
         File file = new File(newPath);
         if (file.createNewFile()) {
             int line = 1;
@@ -173,7 +174,7 @@ public class Indexer {
                     writer.write(termList);
                 }
                 writer.write("\n");
-                updatePointers(termName, newPath, String.valueOf(line));
+                updatePointers(termName, shortPath, String.valueOf(line));
                 line++;
             }
 

@@ -69,7 +69,7 @@ public class Parse  {
             HashMap<String, List<String[]>> pointers = uploadPointers();
             indexer.setPointers(pointers);
             allDocuments = uploadDocsDetails();
-            System.out.println("DoneUpload");
+            System.out.println("The upload finished successfully");
         }
     }
 
@@ -161,6 +161,7 @@ public class Parse  {
             }
             pointers.put(words[0], values);
         }
+        System.out.println("The pointers uploaded successfully");
         return pointers;
     }
 
@@ -175,6 +176,8 @@ public class Parse  {
             Document doc = new Document(words[0], words[1], words[2], words[3]);
             docs.add(doc);
         }
+        System.out.println("The documents details uploaded successfully");
+
         return docs;
     }
 
@@ -190,6 +193,10 @@ public class Parse  {
         }
         System.out.println("The dictionary uploaded successfully");
         return dict;
+    }
+
+    private void showDictionary() throws IOException {
+        //todo
     }
 
     private void writeAllDocuments() throws IOException {
@@ -318,11 +325,10 @@ public class Parse  {
                                 sentence = cleanWord;
                             }
                         }
-                        if(word.equals(allWords[allWords.length-1])){
+                        if (word.equals(allWords[allWords.length-1])){
                             allSentences.add(sentence);
                         }
                     }
-
                 }
             }
         }
@@ -383,6 +389,7 @@ public class Parse  {
                     term = price.makeTerm(word);
                     break;
                 case "UpLowLetter":
+                    //todo - we need to stem
                     if (isStemmer) {
                         String stemmedWord = stem(word);
                         term = upLowLetter.makeTerm(stemmedWord);
