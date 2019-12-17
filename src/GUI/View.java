@@ -58,6 +58,9 @@ public class View implements Observer, Initializable {
             corpusAndStopWordsStringPath = file.getAbsolutePath();
             dirOforCorTextField.setText(corpusAndStopWordsStringPath);
         }
+        else {
+            showAlert();
+        }
     }
 
     public void loadPastingPath(ActionEvent actionEvent) {
@@ -69,6 +72,9 @@ public class View implements Observer, Initializable {
             postingFilesStringPath = file.getAbsolutePath();
             dirOfPostingFiles.setText(postingFilesStringPath);
         }
+        else {
+            showAlert();
+        }
     }
 
     public void startIr(ActionEvent actionEvent) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
@@ -76,6 +82,9 @@ public class View implements Observer, Initializable {
             viewModel.start(corpusAndStopWordsStringPath, postingFilesStringPath, stemmer.isSelected());
             resetButton.setDisable(false);
             showDict.setDisable(false);
+        }
+        else {
+            showAlert();
         }
     }
 
@@ -125,11 +134,23 @@ public class View implements Observer, Initializable {
     }
 
 
+    private void showAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setTitle("Error Alert");
+        alert.setContentText("Exception!");
+        alert.show();
+    }
+
     public void uploadDict(ActionEvent actionEvent) throws IOException {
         if (postingFilesStringPath != null && postingFilesStringPath.length() > 0){
             viewModel.uplodeDict(postingFilesStringPath);
             resetButton.setDisable(false);
             showDict.setDisable(false);
+        }
+
+        else {
+            showAlert();
         }
     }
 

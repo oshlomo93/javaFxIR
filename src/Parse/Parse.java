@@ -120,6 +120,7 @@ public class Parse  {
         System.out.println("Done");
         writeAllDocuments();
         indexer.writeDictToDisk(postingPath);
+        System.out.println(indexer.getSortedDict().size());
         //indexer.printDict();
     }
 
@@ -193,10 +194,6 @@ public class Parse  {
         }
         System.out.println("The dictionary uploaded successfully");
         return dict;
-    }
-
-    private void showDictionary() throws IOException {
-        //todo
     }
 
     private void writeAllDocuments() throws IOException {
@@ -389,7 +386,6 @@ public class Parse  {
                     term = price.makeTerm(word);
                     break;
                 case "UpLowLetter":
-                    //todo - we need to stem
                     if (isStemmer) {
                         String stemmedWord = stem(word);
                         term = upLowLetter.makeTerm(stemmedWord);

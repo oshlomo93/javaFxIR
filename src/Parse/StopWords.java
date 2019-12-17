@@ -10,7 +10,6 @@ public class StopWords {
     ArrayList <String> allStopWords;
 
     public StopWords(String path){
-        long start= System.currentTimeMillis(); // need to delete ToDo
         if(path.length()> 0 &&  path != null){
             File newFile = new File(path);
             try{
@@ -27,8 +26,6 @@ public class StopWords {
                 e.printStackTrace();
             }
         }
-        long end = System.currentTimeMillis(); // need to delete ToDo
-        System.out.println((end-start) +" Done Stop Words");
     }
 
     public boolean AmIStopWord(String word){

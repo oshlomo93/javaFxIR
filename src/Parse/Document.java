@@ -41,7 +41,7 @@ public class Document {
     }
 
     public  void clean() {
-
+        numOfTerms = listOfWord.size();
         listOfWord.clear();
     }
 
