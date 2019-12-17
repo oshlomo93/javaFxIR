@@ -192,10 +192,6 @@ public class Parse  {
         return dict;
     }
 
-    private void showDictionary() throws IOException {
-        //todo
-    }
-
     private void writeAllDocuments() throws IOException {
         File documentsDetails = new File(postingPath + "\\documentsDetails.txt");
         FileWriter writer = new FileWriter(documentsDetails, true);
@@ -322,7 +318,11 @@ public class Parse  {
                                 sentence = cleanWord;
                             }
                         }
+                        if(word.equals(allWords[allWords.length-1])){
+                            allSentences.add(sentence);
+                        }
                     }
+
                 }
             }
         }
@@ -365,7 +365,6 @@ public class Parse  {
                     term = countries.makeTerm(word);
                     break;
                 case "Entity":
-                    //todo - we need to stem
                     if (isStemmer) {
                         String stemmedWord = stem(word);
                         term = entity.makeTerm(stemmedWord);
@@ -384,7 +383,6 @@ public class Parse  {
                     term = price.makeTerm(word);
                     break;
                 case "UpLowLetter":
-                    //todo - we need to stem
                     if (isStemmer) {
                         String stemmedWord = stem(word);
                         term = upLowLetter.makeTerm(stemmedWord);
