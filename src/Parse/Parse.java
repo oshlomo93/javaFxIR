@@ -69,7 +69,7 @@ public class Parse  {
             HashMap<String, List<String[]>> pointers = uploadPointers();
             indexer.setPointers(pointers);
             allDocuments = uploadDocsDetails();
-            System.out.println("DoneUpload");
+            System.out.println("The upload finished successfully");
         }
     }
 
@@ -161,6 +161,7 @@ public class Parse  {
             }
             pointers.put(words[0], values);
         }
+        System.out.println("The pointers uploaded successfully");
         return pointers;
     }
 
@@ -175,6 +176,8 @@ public class Parse  {
             Document doc = new Document(words[0], words[1], words[2], words[3]);
             docs.add(doc);
         }
+        System.out.println("The documents details uploaded successfully");
+
         return docs;
     }
 
@@ -365,7 +368,6 @@ public class Parse  {
                     term = countries.makeTerm(word);
                     break;
                 case "Entity":
-                    //todo - we need to stem
                     if (isStemmer) {
                         String stemmedWord = stem(word);
                         term = entity.makeTerm(stemmedWord);
