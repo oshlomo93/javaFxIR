@@ -1,7 +1,15 @@
 package Parse;
 
+/**
+ * This class creates terms that represent price
+ */
 public class Price implements IRules {
 
+    /**
+     * Testing the word whether it represents price
+     * @param word
+     * @return boolean-Is the term a price type
+     */
     @Override
     public boolean amIThis(String word) {
         if(word != null && word.length()>1) {
@@ -14,6 +22,12 @@ public class Price implements IRules {
         return false;
     }
 
+    /**
+     * 2-word test whether it represents price
+     * @param wordone -Check if this is the word number
+     * @param wordtwo -Check if the word is a dollar
+     * @return boolean-Is the term a price type
+     */
     @Override
     public boolean amIThis(String wordone, String wordtwo) {
         if(wordone != null && wordtwo != null && wordone.length()>0 && wordtwo.length()>0){
@@ -33,6 +47,13 @@ public class Price implements IRules {
         return false;
     }
 
+    /**
+     * 3-word test whether it represents price
+     * @param word1
+     * @param word2
+     * @param word3
+     * @return boolean-Is the term a price type
+     */
     public boolean amIThis(String word1 , String word2 , String word3){
         if(word1!=null && word2!=null && word3!=null && word1.length()>0 && word2.length()>0 && word3.length()>0){
             if(isANum(word1) && ( word2.equals("m") ||word2.equals("bn") ) && word3.equals("Dollars")){
@@ -46,6 +67,14 @@ public class Price implements IRules {
     }
 
 
+    /**
+     * 4-word test whether it represents price
+     * @param word1
+     * @param word2
+     * @param word3
+     * @param word4
+     * @return boolean-Is the term a price type
+     */
     public boolean amIThis(String word1 , String word2 , String word3 , String word4){
         if(word1!=null && word2!=null && word3!=null && word1.length()>0&& word4!=null &&
                 word4.length()>0 && word2.length()>0 && word3.length()>0) {
@@ -57,6 +86,11 @@ public class Price implements IRules {
         return false;
     }
 
+    /**
+     * Checks whether the string is a fragment type number
+     * @param word
+     * @return
+     */
     private boolean isFun(String word){
         if(word != null && word.length()>0) {
             String [] nums = word.split("/");
@@ -67,6 +101,11 @@ public class Price implements IRules {
         return false;
     }
 
+    /**
+     * Creates a price type term
+     * @param word - the term
+     * @return - Object Term
+     */
     @Override
     public Term makeTerm(String word) {
         Term term = null;
@@ -198,6 +237,11 @@ public class Price implements IRules {
         return term;
     }
 
+    /**
+     * Gets a string and returns the number it represents
+     * @param word
+     * @return number
+     */
     private  double makeNum (String word) {
         double numThis = 0;
         String[] words = word.split(",");
@@ -212,6 +256,11 @@ public class Price implements IRules {
         return numThis;
     }
 
+    /**
+     * Is the word a number
+     * @param word
+     * @return boolean- Is the word a number
+     */
     private boolean isANum(String word){
         boolean therIsPoint = false;
         if(word != null && word.length()>0) {
@@ -235,6 +284,11 @@ public class Price implements IRules {
         return false;
     }
 
+    /**
+     * Checks whether the number is greater than one million
+     * @param word
+     * @return boolean- is number greater than one million
+     */
     private boolean numUpToM(String word){
         if(word != null && word.length()>0){
             if(isANum(word)){

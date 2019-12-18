@@ -9,8 +9,8 @@ public class Parse  {
 
     private Indexer indexer;
     private HashMap<String,Term> allTerms;
-    private LinkedList<Document> allDocuments;
     private LinkedList<Document> allDocs;
+    int counter = 0;
     private StopWords stopWords ;
     private NumNoUnits numNoUnits;
     private Date date;
@@ -27,6 +27,8 @@ public class Parse  {
     private String postingPath;
     private boolean isStemmer;
     private Stemmer stemmer;
+    ArrayList<Character> charToDeleteisNewLine;
+    ArrayList<Character> isEndOfLinecharToDelete;
 
 
     public Parse(String corpusPath , String postingPath, boolean isStemmer ) throws IOException {
@@ -43,7 +45,6 @@ public class Parse  {
                 }
                 allTerms = new HashMap<String, Term>();
                 allDocs = new LinkedList();
-                allDocuments = new LinkedList();
                 numNoUnits = new NumNoUnits();
                 date = new Date();
                 entity = new Entity();
@@ -57,6 +58,18 @@ public class Parse  {
                 indexer = new Indexer();
                 this.isStemmer = isStemmer;
                 stemmer = new Stemmer();
+                charToDeleteisNewLine = new ArrayList<>();
+                char [] deleteChar= {',','.','"',':',';','!','?', '@','#', '&', '(' ,'-' , '{','|', '*' , '+'};
+                for (char c : deleteChar) {
+                    charToDeleteisNewLine.add(c);
+                }
+                deleteChar = null;
+                isEndOfLinecharToDelete = new ArrayList<>();
+                char [] deletChar= {',','.','"',':',';','!','?', '@','#', '&', ')', '}' ,'-' , '|'};
+                for (char c : deletChar) {
+                    isEndOfLinecharToDelete.add(c);
+                }
+                deletChar = null;
             }
         }
     }
@@ -69,7 +82,7 @@ public class Parse  {
             indexer.setDictionary(sortedDict);
             HashMap<String, List<String[]>> pointers = uploadPointers();
             indexer.setPointers(pointers);
-            allDocuments = uploadDocsDetails(isStemmer);
+            allDocs = uploadDocsDetails(isStemmer);
             isStemmer = selected;
             System.out.println("The upload finished successfully");
         }
@@ -120,28 +133,19 @@ public class Parse  {
         long end = System.currentTimeMillis();
         System.out.println("done in " + (end-start)/1000 + " seconds");
         System.out.println("Done");
-        writeAllDocuments();
         indexer.writeDictToDisk(postingPath);
         System.out.println(indexer.getSortedDict().size());
-        //indexer.printDict();
     }
 
 
     private void update() throws IOException {
         indexer.updateAll(termsAndDocs, allDocs, postingPath, isStemmer);
-        cleanDocs();
-        allDocuments.addAll(allDocs);
-        allDocs.clear();
         termsAndDocs.clear();
         allTerms.clear();
+        writeAllDocuments();
+        counter = counter+ allDocs.size();
+        allDocs.clear();
     }
-
-    private void cleanDocs() {
-        for (Document doc : allDocs) {
-            doc.clean();
-        }
-    }
-
 
     public Map<String, String> getSortedDict() {
         return indexer.getSortedDict();
@@ -202,7 +206,7 @@ public class Parse  {
     private void writeAllDocuments() throws IOException {
         File documentsDetails = new File(postingPath + "\\documentsDetails.txt");
         FileWriter writer = new FileWriter(documentsDetails, true);
-        for (Document doc: allDocuments) {
+        for (Document doc: allDocs) {
             String docDetails = doc.toString();
             writer.write(docDetails);
             writer.write("\n");
@@ -523,25 +527,16 @@ public class Parse  {
     }
 
     private boolean isEndOfLine(String word){
-        ArrayList<Character> charToDelete = new ArrayList<>();
-        char [] deletChar= {',','.','"',':',';','!','?', '@','#', '&', ')', '}' ,'-' , '|'};
-        for (char c : deletChar) {
-            charToDelete.add(c);
-        }
         if(word.length()>0){
-            return charToDelete.contains(word.charAt(word.length() - 1));
+            return isEndOfLinecharToDelete.contains(word.charAt(word.length() - 1));
         }
         return false;
     }
 
     private boolean isNewLine(String word){
-        ArrayList<Character> charToDelete = new ArrayList<>();
-        char [] deleteChar= {',','.','"',':',';','!','?', '@','#', '&', '(' ,'-' , '{','|'};
-        for (char c : deleteChar) {
-            charToDelete.add(c);
-        }
+
         if(word.length()>0){
-            return charToDelete.contains(word.charAt(0));
+            return charToDeleteisNewLine.contains(word.charAt(0));
         }
         return false;
     }
@@ -588,39 +583,6 @@ public class Parse  {
         return toReturn;
     }
 
-    //public int getMaxWordInDic(){
-    //    int val = 0;
-    //    for(Term t : allTerms.values()){
-    //        if(t.numOfUniqueDoc()>val){
-    //            val = t.numOfUniqueDoc();
-    //        }
-    //    }
-    //    return val;
-    //}
-
-    //public void sortTerms() {
-    //     Collections.sort(termsAndDocs, (o1, o2) -> {
-    //        if (o1[0].equals(o2[0]))
-    //            return 0;
-    //        else if (o1[0].charAt(0) != o2[0].charAt(0))
-    //            return (o1[0].charAt(0) > o2[0].charAt(0) ? 1 : -1);
-    //        else {
-    //            int len1 = o1[0].length();
-    //            int len2 = o2[0].length();
-    //            int len = Math.min(len1, len2);
-    //            for(int i=0; i<len; i++) {
-    //                if (o1[0].charAt(i) != o2[0].charAt(i)) {
-    //                        return (o1[0].charAt(i) > o2[0].charAt(i) ? 1 : -1);
-    //                }
-    //            }
-    //            if (len == len1)
-    //                return 1;
-    //            else
-    //                return -1;
-    //        }
-    //    });
-    //}
-
     //Replace the double hyphen with a comma
     private String[] replaceDoubleHyphenToComma(String text){
         if(text!= null  && text.length()>0) {
@@ -631,6 +593,6 @@ public class Parse  {
     }
 
     public int getNumofDoc() {
-        return allDocuments.size();
+        return counter;
     }
 }

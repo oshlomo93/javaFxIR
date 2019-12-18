@@ -20,6 +20,9 @@ public class Term {
         }
     }
 
+    /**
+     * @return String that representing the term
+     */
     public String getTerm() {
         return term;
     }
@@ -32,6 +35,10 @@ public class Term {
         return count;
     }
 
+    /**
+     * @param document You get the document number that the term appeared
+     * @return Has income been made successfully
+     */
     public boolean add(String document){
         if(document != null && document.length()>0){
             if(!listOfDocument.containsKey(document)){
@@ -46,68 +53,14 @@ public class Term {
         return false;
     }
 
+    /**
+     * @return toString of the Term
+     */
     @Override
     public String toString() {
         String toReturn= "Term: " + term + " appears " + getCount() + " times in " + listOfDocument.size() + " documents";
         return toReturn;
     }
 
-    public int numOfthisTermInDic(){
-        int count = 0;
-        for (Integer val: listOfDocument.values()
-        ) {
-            count = count+ val;
-        }
-        return count;
-    }
 
-    public int getValOfDocument(String document){
-        if(document.length() >0 && document !=null){
-            if(listOfDocument.containsKey(document)){
-                int val = listOfDocument.get(document);
-                return val;
-            }
-        }
-        return -1;
-    }
-
-    public int maxVal(){
-        int max =0;
-        for (Integer val : listOfDocument.values()) {
-            if(max < val){
-                max= val;
-            }
-        }
-        return max;
-    }
-
-    int numOfUniqueDoc(){
-        return listOfDocument.size();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj != null && obj instanceof Term){
-            Term termComper = (Term) obj;
-            if(termComper.getTerm().equals(this.term)){
-                if(termComper.isSameDocs(this.listOfDocument)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isSameDocs(HashMap<String, Integer> sameDocs){
-        if(sameDocs != null) {
-            if (sameDocs.equals(this.listOfDocument)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String getType() {
-        return type;
-    }
 }

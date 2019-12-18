@@ -3,6 +3,10 @@ package Parse;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * This class gets a path to the address of the file containing all the stopping words,
+ * in this way it identifies all the words that we should not create as terms for our retrieval engine
+ */
 public class StopWords {
 
     ArrayList <String> allStopWords;
@@ -21,6 +25,11 @@ public class StopWords {
         }
     }
 
+    /**
+     * This method receives a word and it omits whether this word is a stop word type
+     * @param word
+     * @return boolean
+     */
     public boolean AmIStopWord(String word){
         if(allStopWords.contains(word)){
             return true;
@@ -32,19 +41,5 @@ public class StopWords {
         return false;
     }
 
-    public void delete(ArrayList<String> listOfWords ){
-        if(listOfWords != null){
-            int i= 0;
-            while (!listOfWords.isEmpty() && i < listOfWords.size()){
-                String word = listOfWords.get(i);
-                if(AmIStopWord(word)){
-                    listOfWords.remove(i);
-                }
-                else{
-                    i++;
-                }
-            }
-        }
-    }
 
 }

@@ -2,8 +2,11 @@ package Parse;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Set;
 
+/**
+ * This class holds all the data in the software,
+ * what words appear in it and the location of each word
+ */
 public class DictionaryOfDocument{
 
     Hashtable<String , Integer> termAndTF;
@@ -15,31 +18,24 @@ public class DictionaryOfDocument{
         termAndAllPos =new Hashtable<>();
     }
 
-    public int size() {
-        return termAndTF.size();
-    }
 
-    public boolean isEmpty() {
-        return termAndTF.isEmpty();
-    }
+    /**
+     * All Positions of the term in the document
+     * @param term
+     * @return ArrayList<Integer>
+     */
 
-    //All Positions of the term in the document
     public ArrayList<Integer> getAllPosition(String term) {
         return termAndAllPos.get(term);
     }
 
-    //Does the term exist in this position?
-    public boolean isTermExistInPosition(String term , int position) {
-        if(termAndAllPos.containsKey(term)){
-            ArrayList<Integer> allPortionOfTerm = getAllPosition(term);
-            if(allPortionOfTerm.contains(position)){
-                return true;
-            }
-        }
-        return false;
-    }
 
-    //Add term to Dictionary
+
+    /** Add term to Dictionary
+     * @param term
+     * @param position
+     */
+
     public void addTerm(String term , int position){
         if(termAndTF.containsKey(term)){
             ArrayList<Integer> allOldPosition = termAndAllPos.get(term);
@@ -56,21 +52,19 @@ public class DictionaryOfDocument{
 
     }
 
+    /**
+     * @param term
+     * @return int
+     */
     public int getTFofTerm(String term){
         return termAndTF.get(term);
     }
 
 
-    public void clear(){
-        termAndTF.clear();
-        termAndAllPos.clear();
-    }
-
-    public Set<String> getTerms(){
-        return termAndAllPos.keySet();
-    }
-
-
+    /**
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof DictionaryOfDocument){
@@ -82,14 +76,26 @@ public class DictionaryOfDocument{
         return false;
     }
 
+    /**  get term and Frequency of all terms in the document
+     * @return Hashtable
+     */
     public Hashtable<String, Integer> getTermAndTF() {
         return termAndTF;
     }
 
+    /**
+     * Accept all terms and all their locations in the document
+     * @return Hashtable
+     */
     public Hashtable<String, ArrayList<Integer>> getTermAndAllPos() {
         return termAndAllPos;
     }
 
+    /**
+     * Checks whether the term is present
+     * @param term
+     * @return boolean
+     */
     public boolean containsTerm(String term){
         if(termAndTF.containsKey(term)){
             return true;
@@ -97,7 +103,11 @@ public class DictionaryOfDocument{
         return false;
     }
 
-    // get string that looks like that: "tf;position(1),position(2),position(3)....position(n);"
+    /**
+     * get string that looks like that: "tf;position(1),position(2),position(3)....position(n);"
+     * @param termName
+     * @return String
+     */
     public String getDetails(String termName) {
         String ans ="";
         if(termAndTF.containsKey(termName)){

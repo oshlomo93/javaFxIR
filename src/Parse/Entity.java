@@ -3,6 +3,9 @@ package Parse;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class creates terms that are entities
+ */
 public class Entity implements IRules {
 
     Set<String> listOfEntity;
@@ -11,11 +14,22 @@ public class Entity implements IRules {
         listOfEntity = new HashSet<>();
     }
 
+    /**
+     * word test whether it represents entity
+     * @param word
+     * @return boolean
+     */
     @Override
     public boolean amIThis(String word) {
         return false;
     }
 
+    /**
+     * 2-word test whether it represents entity
+     * @param wordone
+     * @param wordtwo
+     * @return boolean
+     */
     @Override
     public boolean amIThis(String wordone, String wordtwo) {
         if(amIThis(wordone) && amIThis(wordtwo)){
@@ -24,6 +38,13 @@ public class Entity implements IRules {
         return false;
     }
 
+    /**
+     * 3-word test whether it represents entity
+     * @param word1
+     * @param word2
+     * @param word3
+     * @return boolean
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3) {
         if(amIThis(word1) && amIThis(word2) && amIThis(word3)){
@@ -32,6 +53,14 @@ public class Entity implements IRules {
         return false;
     }
 
+    /**
+     * 4-word test whether it represents entity
+     * @param word1
+     * @param word2
+     * @param word3
+     * @param word4
+     * @return boolean
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3, String word4) {
         if(amIThis(word1) && amIThis(word2) && amIThis(word3) && amIThis(word4)){
@@ -41,7 +70,11 @@ public class Entity implements IRules {
     }
 
 
-
+    /**
+     * Creates a entity type term
+     * @param word
+     * @return Object Term
+     */
     @Override
     public Term makeTerm(String word) {
         Term term = null;
@@ -80,8 +113,5 @@ public class Entity implements IRules {
         return term;
     }
 
-    public Set<String> getListOfEntity() {
-        return listOfEntity;
-    }
 }
 

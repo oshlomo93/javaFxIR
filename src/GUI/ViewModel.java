@@ -1,15 +1,13 @@
 package GUI;
 
-import javafx.event.ActionEvent;
-import javafx.stage.FileChooser;
-import javafx.stage.PopupWindow;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * This class controls all engine activity
+ */
 public class ViewModel extends Observable implements Observer {
 
     Model myModel;
@@ -36,14 +34,28 @@ public class ViewModel extends Observable implements Observer {
     }
 
 
+    /**
+     *
+     * @return
+     */
     public Map<String, String> getSortedDict() {
         return myModel.getSortedDict();
     }
 
+    /**
+     * Upload all the information we saved to disk to ram
+     * @param postingFilesStringPath
+     * @param selected
+     * @throws IOException
+     */
     public void uplodeDict(String postingFilesStringPath, boolean selected) throws IOException {
         myModel.uplodeDict(postingFilesStringPath, selected);
     }
 
+    /**
+     * Returns the number of undocumented documents
+     * @return int
+     */
     public int getNumOfDoc() {
         return myModel.getNumofDoc();
     }

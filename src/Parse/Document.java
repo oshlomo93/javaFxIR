@@ -1,7 +1,9 @@
 package Parse;
 
-import java.util.*;
-
+/**
+ * This class returns on each document its existing terms,
+ * in addition to the number of terms, and the frequency of each term in the document
+ */
 public class Document {
 
     String Id;
@@ -27,10 +29,20 @@ public class Document {
         this.numOfWords = Integer.valueOf(word3);
     }
 
+    /**
+     * Return of ID Of the document
+     * @return  String
+     */
     public String getId() {
         return Id;
     }
 
+    /**
+     * The storm of a document by the string
+     * @param word
+     * @param position
+     * @return
+     */
     public boolean addTermByName(String word , int position){
         if(word != null && word.length()>0){
             listOfWord.addTerm(word , position);
@@ -40,41 +52,22 @@ public class Document {
         return false;
     }
 
-    public  void clean() {
-        numOfTerms = listOfWord.size();
-        listOfWord.clear();
-    }
-
+    /**
+     * Returns a string representing the document
+     * @return String
+     */
     @Override
     public String toString() {
         String str = "" + Id + ";" + maxTf + ";" + numOfTerms + ";" + numOfWords + ";";
         return str;
     }
 
-    //@Override
-    //public String toString() {
-    //    String toReturn= "Document:" + "\n"+
-    //            "Id: " + Id + "\n"+
-    //            "The words in this document:";
-    //    Object []allWord =  listOfWord.getTerms().toArray();
-    //    for(int i=0 ; i< listOfWord.size() ; i++){
-    //        toReturn = toReturn +"\n"+ "Word: "+ allWord[i].toString() + ", count: " + listOfWord.getTFofTerm((String) allWord[i])+", Position:";
-    //        ArrayList<Integer> allPositions =listOfWord.getAllPosition((String) allWord[i]);
-    //        for (int j =0; j<allPositions.size() ; j++){
-    //            toReturn+= " "+allPositions.get(j);
-    //        }
-    //    }
-    //    return toReturn;
-    //}
 
-    public int sizeOfDocument(){
-        return numOfWords;
-    }
-
-    public int numOfTerms(){
-        return listOfWord.size();
-    }
-
+    /**
+     * Is this document the same as the one received
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj != null && obj instanceof Document){
@@ -88,6 +81,11 @@ public class Document {
         return false;
     }
 
+    /**
+     * Does the same term exist in the document
+     * @param sameTerm
+     * @return boolean
+     */
     public boolean isSameTerms(DictionaryOfDocument sameTerm ){
         if(sameTerm != null) {
             if (sameTerm.equals(this.listOfWord)) {
@@ -98,6 +96,11 @@ public class Document {
     }
 
 
+    /**
+     * Add a term to a document
+     * @param term
+     * @param i- Position the term in the document
+     */
     public void addTerm(Term term , int i){
         if(term != null) {
             addTermByName(term.getTerm() , i);
@@ -107,7 +110,12 @@ public class Document {
         }
     }
 
-    // get string that looks like that: "DocId;tf;position(1),position(2),position(3)....position(n);
+    /**
+     * get string that looks like that: "DocId;tf;position(1),position(2),position(3)....position(n);
+     * @param term
+     * @return String
+     */
+
     public String getDetails(String term){
         String ans= "";
         if(listOfWord.containsTerm(term)){
