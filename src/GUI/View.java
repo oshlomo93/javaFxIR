@@ -1,17 +1,12 @@
 package GUI;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
@@ -58,9 +53,6 @@ public class View implements Observer, Initializable {
             corpusAndStopWordsStringPath = file.getAbsolutePath();
             dirOforCorTextField.setText(corpusAndStopWordsStringPath);
         }
-        else {
-            showAlert();
-        }
     }
 
     public void loadPastingPath(ActionEvent actionEvent) {
@@ -72,19 +64,27 @@ public class View implements Observer, Initializable {
             postingFilesStringPath = file.getAbsolutePath();
             dirOfPostingFiles.setText(postingFilesStringPath);
         }
-        else {
-            showAlert();
-        }
     }
 
-    public void startIr(ActionEvent actionEvent) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        if(postingFilesStringPath!= null && corpusAndStopWordsStringPath!= null ){
+    public void startIr(ActionEvent actionEvent) {
+
+        try {
+            long startTime = System.currentTimeMillis();
             viewModel.start(corpusAndStopWordsStringPath, postingFilesStringPath, stemmer.isSelected());
+            long endTime= System.currentTimeMillis();
             resetButton.setDisable(false);
             showDict.setDisable(false);
-        }
-        else {
-            showAlert();
+            long time = (endTime-startTime)/1000;
+            int numOfDoc= viewModel.getNumOfDoc();
+            int numOfTerms=viewModel.getSortedDict().size();
+            String toShow = "The number of unique terms in the database: " +numOfTerms+
+                    "\nNumber of documents: " +numOfDoc+
+                    "\nTotal time: "+ time +" s";
+            showAlert(toShow, "Process information:");
+
+        } catch (IOException e) {
+            showAlert("Please put a proper path to the posting files and a proper path to the document repository", "Error Alert");
+
         }
     }
 
@@ -99,25 +99,20 @@ public class View implements Observer, Initializable {
     }
 
 
-    public void showDictionaryOnScreen(ActionEvent actionEvent) throws IOException {
+    public void showDictionaryOnScreen(ActionEvent actionEvent){
         dictionay = new Stage();
         dictionay.setTitle("The Dictionary:");
         TableView tableView = new TableView();
-
         TableColumn<String, TermAndTf> column1 = new TableColumn<>("Term");
         column1.setCellValueFactory(new PropertyValueFactory<>("termName"));
-
-
         TableColumn<String, TermAndTf> column2 = new TableColumn<>("Frequency");
         column2.setCellValueFactory(new PropertyValueFactory<>("tf"));
-
-
         tableView.getColumns().add(column1);
         tableView.getColumns().add(column2);
-        Map<String, String> getSortedDict= viewModel.getSortedDict();
-        Object [] allTerms = getSortedDict.keySet().toArray();
-        Object [] allTf = getSortedDict.values().toArray();
-        for(int i = 0  ; i<getSortedDict.size() ; i++) {
+        Map<String, String> getSortedDict = viewModel.getSortedDict();
+        Object[] allTerms = getSortedDict.keySet().toArray();
+        Object[] allTf = getSortedDict.values().toArray();
+        for (int i = 0; i < getSortedDict.size(); i++) {
             String nameT = (String) allTerms[i];
             String tf = (String) allTf[i];
             TermAndTf termAndTf = new TermAndTf(nameT, tf);
@@ -133,24 +128,26 @@ public class View implements Observer, Initializable {
         dictionay.show();
     }
 
-
-    private void showAlert() {
+    private void showAlert(String  strAlert , String title) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
-        alert.setTitle("Error Alert");
-        alert.setContentText("Exception!");
+        alert.setTitle(title);
+        alert.setContentText(strAlert);
         alert.show();
     }
 
-    public void uploadDict(ActionEvent actionEvent) throws IOException {
-        if (postingFilesStringPath != null && postingFilesStringPath.length() > 0){
-            viewModel.uplodeDict(postingFilesStringPath);
-            resetButton.setDisable(false);
-            showDict.setDisable(false);
-        }
-
-        else {
-            showAlert();
+    public void uploadDict(ActionEvent actionEvent)  {
+        try {
+            if(postingFilesStringPath!=null) {
+                viewModel.uplodeDict(postingFilesStringPath,stemmer.isSelected() );
+                resetButton.setDisable(false);
+                showDict.setDisable(false);
+            }
+            else {
+                showAlert("Please put a proper path to the posting files" , "Error Alert");
+            }
+        } catch (IOException e) {
+            showAlert("Please put a proper path to the posting files", "Error Alert");
         }
     }
 

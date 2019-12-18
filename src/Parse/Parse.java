@@ -24,13 +24,12 @@ public class Parse  {
     private LinkedList<String[]> read;
     private List<String[]> termsAndDocs;
     public ReadFile reader;
-    private Hashtable<String, Term> entitiesTerms;
     private String postingPath;
     private boolean isStemmer;
     private Stemmer stemmer;
 
 
-    public Parse(String corpusPath , String postingPath, boolean isStemmer ) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public Parse(String corpusPath , String postingPath, boolean isStemmer ) throws IOException {
         if(corpusPath != null && postingPath !=null ) {
             String[] pathOfIr = getPath(corpusPath);
             if (pathOfIr != null && pathOfIr.length == 2) {
@@ -39,6 +38,9 @@ public class Parse  {
                 this.postingPath = postingPath ;
                 reader = new ReadFile(corpusPath1);
                 stopWords = new StopWords(stopWordsPath);
+                if(stopWords ==null){
+                    return;
+                }
                 allTerms = new HashMap<String, Term>();
                 allDocs = new LinkedList();
                 allDocuments = new LinkedList();
@@ -53,14 +55,13 @@ public class Parse  {
                 unknownType = new UnknownType();
                 termsAndDocs = new ArrayList<>();
                 indexer = new Indexer();
-                entitiesTerms = new Hashtable<String, Term>();
                 this.isStemmer = isStemmer;
                 stemmer = new Stemmer();
             }
         }
     }
 
-    public Parse(String postingPath) throws IOException {
+    public Parse(String postingPath, boolean selected) throws IOException {
         if (postingPath != null) {
             this.postingPath = postingPath;
             indexer = new Indexer();
@@ -68,7 +69,8 @@ public class Parse  {
             indexer.setDictionary(sortedDict);
             HashMap<String, List<String[]>> pointers = uploadPointers();
             indexer.setPointers(pointers);
-            allDocuments = uploadDocsDetails();
+            allDocuments = uploadDocsDetails(isStemmer);
+            isStemmer = selected;
             System.out.println("The upload finished successfully");
         }
     }
@@ -79,7 +81,7 @@ public class Parse  {
         String[] ans = new String[2];
         assert directories != null;
         ans[0] = path + "\\" + directories[0];
-        ans[1] =  path + "\\stopwords.txt";
+        ans[1] =  path + "\\stop_words 05.txt";
         return ans;
     }
 
@@ -126,7 +128,7 @@ public class Parse  {
 
 
     private void update() throws IOException {
-        indexer.updateAll(termsAndDocs, allDocs, postingPath);
+        indexer.updateAll(termsAndDocs, allDocs, postingPath, isStemmer);
         cleanDocs();
         allDocuments.addAll(allDocs);
         allDocs.clear();
@@ -166,7 +168,8 @@ public class Parse  {
         return pointers;
     }
 
-    public LinkedList<Document> uploadDocsDetails() throws IOException {
+    public LinkedList<Document> uploadDocsDetails(boolean isStemmer) throws IOException {
+        //todo isStemmer
         LinkedList<Document> docs = new LinkedList();
         File file = new File(postingPath + "\\documentsDetails.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -627,4 +630,7 @@ public class Parse  {
         return null;
     }
 
+    public int getNumofDoc() {
+        return allDocuments.size();
+    }
 }

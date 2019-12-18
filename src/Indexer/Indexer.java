@@ -33,9 +33,9 @@ public class Indexer {
         this.pointers = pointers;
     }
 
-    public void updateAll(List<String[]> allTerms, LinkedList<Document> allDocs, String path) throws IOException {
+    public void updateAll(List<String[]> allTerms, LinkedList<Document> allDocs, String path, boolean isStemmr) throws IOException {
         updateDict(allTerms);
-        updatePosting(allDocs, path);
+        updatePosting(allDocs, path, isStemmr);
         updateNumOfDocs();
     }
 
@@ -49,7 +49,7 @@ public class Indexer {
         }
     }
 
-    private void updatePosting(LinkedList<Document> allDocs, String path) throws IOException {
+    private void updatePosting(LinkedList<Document> allDocs, String path ,boolean isStemmr) throws IOException {
         for (Document doc : allDocs) {
             if (doc != null) {
                 Hashtable<String, ArrayList<Integer>> allTermInDoc = doc.listOfWord.getTermAndAllPos();
@@ -68,7 +68,7 @@ public class Indexer {
                 }
             }
         }
-        writePostingToDisk(path);
+        writePostingToDisk(path ,isStemmr);
     }
 
     public void deleteFromDict(Set<String> entityList ){
@@ -160,7 +160,12 @@ public class Indexer {
         }
     }
 
-    private void writePostingToDisk(String path) throws IOException {
+    /**
+     * @param path
+     * @param isStemmer
+     * @throws IOException
+     */
+    private void writePostingToDisk(String path, boolean isStemmer) throws IOException {
         fileCounter++;
         String shortPath = "\\" + fileCounter + ".txt";
         String newPath = path + shortPath;

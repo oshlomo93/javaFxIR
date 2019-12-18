@@ -1,18 +1,15 @@
 package Parse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class StopWords {
 
     ArrayList <String> allStopWords;
 
-    public StopWords(String path){
+    public StopWords(String path) throws IOException {
         if(path.length()> 0 &&  path != null){
             File newFile = new File(path);
-            try{
                 FileReader fileReader = new FileReader(newFile);
                 BufferedReader reader = new BufferedReader(fileReader);
                 allStopWords = new ArrayList<>();
@@ -21,10 +18,6 @@ public class StopWords {
                     allStopWords.add(stopWord);
                     stopWord =reader.readLine();
                 }
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
         }
     }
 

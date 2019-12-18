@@ -23,16 +23,14 @@ public class ViewModel extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof Model) {
-            if (arg.equals("EndIr") ) {
-                notifyObservers("EndIr");
-            }
-        }
+
     }
 
-    public void start(String  corpusAndStopWordsStringPath, String  postingFilesStringPath, boolean isStemmer) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public void start(String  corpusAndStopWordsStringPath, String  postingFilesStringPath, boolean isStemmer) throws IOException {
+
         myModel.start(corpusAndStopWordsStringPath, postingFilesStringPath, isStemmer);
     }
+
     public void resetIr() {
         myModel.resetIr();
     }
@@ -42,7 +40,11 @@ public class ViewModel extends Observable implements Observer {
         return myModel.getSortedDict();
     }
 
-    public void uplodeDict(String postingFilesStringPath) throws IOException {
-        myModel.uplodeDict(postingFilesStringPath);
+    public void uplodeDict(String postingFilesStringPath, boolean selected) throws IOException {
+        myModel.uplodeDict(postingFilesStringPath, selected);
+    }
+
+    public int getNumOfDoc() {
+        return myModel.getNumofDoc();
     }
 }

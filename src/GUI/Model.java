@@ -15,10 +15,11 @@ public class Model extends Observable {
     }
 
 
-    public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemer) throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        parse = new Parse(corpusAndStopWordsStringPath, postingFilesStringPath, isStemer);
-        parse.parseAllDocs();
-        notifyObservers("EndIr");
+    public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemer) throws IOException {
+            parse = new Parse(corpusAndStopWordsStringPath, postingFilesStringPath, isStemer);
+            if(parse!= null) {
+                parse.parseAllDocs();
+            }
     }
 
     public void resetIr() {
@@ -31,7 +32,11 @@ public class Model extends Observable {
         return parse.getSortedDict();
     }
 
-    public void uplodeDict(String postingFilesStringPath) throws IOException {
-        parse = new Parse(postingFilesStringPath);
+    public void uplodeDict(String postingFilesStringPath, boolean selected) throws IOException {
+        parse = new Parse(postingFilesStringPath, selected);
+    }
+
+    public int getNumofDoc() {
+        return parse.getNumofDoc();
     }
 }

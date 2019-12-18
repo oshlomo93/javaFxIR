@@ -2,12 +2,15 @@ package Parse;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class builds a term, it returns in the program the type of term and the documents it appeared in and the number of times it appeared.
+ * Its purpose is to save more information every term
+ */
 public class Term {
 
    private String term;
    HashMap<String, Integer> listOfDocument;
    private  String type;
-   private int count;
 
     public Term(String word , String termType){
         if(word != null && word.length() >0 && termType != null && termType.length()>0 ){
