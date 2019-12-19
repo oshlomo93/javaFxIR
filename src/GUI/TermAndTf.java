@@ -7,6 +7,30 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class TermAndTf {
 
+    public String getTermName() {
+        return termName.get();
+    }
+
+    public SimpleStringProperty termNameProperty() {
+        return termName;
+    }
+
+    public void setTermName(String termName) {
+        this.termName.set(termName);
+    }
+
+    public String getTf() {
+        return tf.get();
+    }
+
+    public SimpleStringProperty tfProperty() {
+        return tf;
+    }
+
+    public void setTf(String tf) {
+        this.tf.set(tf);
+    }
+
     private SimpleStringProperty termName ;
     private SimpleStringProperty tf;
 
