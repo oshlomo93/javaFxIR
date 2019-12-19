@@ -2,6 +2,11 @@ package Parse;
 
 public class UpLowLetter implements IRules {
 
+    /**
+     * Gets a word and checks if she match the term conditions
+     * @param word
+     * @return
+     */
     @Override
     public boolean amIThis(String word) {
         for (char c: word.toCharArray()) {
@@ -11,26 +16,52 @@ public class UpLowLetter implements IRules {
         return true;
     }
 
+    /**
+     * Gets two words and checks if they match the term conditions
+     * @param wordone
+     * @param wordtwo
+     * @return
+     */
     @Override
     public boolean amIThis(String wordone, String wordtwo) {
         return false;
     }
 
+    /**
+     * Gets four words and checks if they match the term conditions
+     * @param word1
+     * @param word2
+     * @param word3
+     * @param word4
+     * @return
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3, String word4) {
         return false;
     }
 
+    /**
+     * Gets three words and checks if they match the term conditions
+     * @param word1
+     * @param word2
+     * @param word3
+     * @return
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3) {
         return false;
     }
 
+    /**
+     Gets a word and creates the right term for her
+     * @param word
+     * @return
+     */
     @Override
     public Term makeTerm(String word) {
         Term term;
-        String lowWord = toLowerCase(word);
-        String upWord = toUpLetter(word);
+        String lowWord = word.toLowerCase();
+        String upWord = word.toUpperCase();
         if (isUpper(word)) {
             term = new Term(upWord, "UpLowLetter");
             return term;
@@ -42,59 +73,13 @@ public class UpLowLetter implements IRules {
         }
     }
 
-    private String toLowerCase(String str) {
-        String ans = "";
-        for (char c: str.toCharArray()) {
-            c = Character.toLowerCase(c);
-            ans += c;
-        }
-        return ans;
-    }
-
-    private String toUpLetter(String str) {
-        String ans = "";
-        for (char c: str.toCharArray()) {
-            c = Character.toUpperCase(c);
-            ans += c;
-        }
-        return ans;
-    }
-
+    /**
+     * checks if a String starts with upper case
+     * @param s
+     * @return
+     */
     private boolean isUpper(String s) {
         return Character.isUpperCase(s.charAt(0));
     }
-
-    //public HashMap<String,Term> makeTerm(HashMap<String,Term> allTerms, String word) {
-    //    Term term;
-    //    String lowWord = toLowerCase(word);
-    //    String allUpLetter = toUpLetter(word);
-    //    String firstLetterUp = firstLetterUp(word);
-    //    if (isUpper(word)) {
-    //        if (!allTerms.containsKey(lowWord)) {
-    //            term = new Term(word);
-    //            allTerms.put(term.getTerm(), term);
-    //            return allTerms;
-    //        }
-    //        else {
-    //            term = new Term(lowWord);
-    //            allTerms.put(term.getTerm(), term);
-    //            return allTerms;
-    //        }
-    //    }
-    //    else {
-    //        if (allTerms.containsKey(allUpLetter)) {
-    //
-    //        }
-    //    }
-    //    return allTerms;
-    //}
-
-    //private String firstLetterUp(String str) {
-    //    String ans = toLowerCase(str);
-    //    char upChar = Character.toUpperCase(ans.charAt(0));
-    //    ans = upChar + ans.substring(1);
-    //    return ans;
-    //}
-
 
 }

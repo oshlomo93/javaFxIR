@@ -22,11 +22,11 @@ public class Model extends Observable {
      * The function that runs the entire engine
      * @param corpusAndStopWordsStringPath
      * @param postingFilesStringPath
-     * @param isStemer
+     * @param isStemmer
      * @throws IOException
      */
-    public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemer) throws IOException {
-            parse = new Parse(corpusAndStopWordsStringPath, postingFilesStringPath, isStemer);
+    public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemmer) throws IOException {
+            parse = new Parse(corpusAndStopWordsStringPath, postingFilesStringPath, isStemmer);
             if(parse!= null) {
                 parse.parseAllDocs();
             }
@@ -42,14 +42,14 @@ public class Model extends Observable {
         return parse.getSortedDict();
     }
 
-    public void uplodeDict(String postingFilesStringPath, boolean selected) throws IOException {
+    public void uploadDict(String postingFilesStringPath, boolean selected) throws IOException {
         parse = new Parse(postingFilesStringPath, selected);
     }
 
     /**
      * @return Receive the number of documents in the repository
      */
-    public int getNumofDoc() {
+    public int getNumOfDoc() {
         return parse.getNumofDoc();
     }
 }

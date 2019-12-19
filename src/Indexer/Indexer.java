@@ -21,24 +21,49 @@ public class Indexer {
         fileCounter = 0;
     }
 
+    /**
+     * This method is a getter for the Dictionary
+     * @return
+     */
     public Map<String, String> getSortedDict() {
         return sortedDict;
     }
 
+    /**
+     * This method is a setter for the Dictionary
+     * @param sortedDict
+     */
     public void setDictionary(Map<String, String> sortedDict) {
         this.sortedDict = sortedDict;
     }
 
+    /**
+     * this methos is a setter for the pointers table
+     * @param pointers
+     */
     public void setPointers(HashMap<String, List<String[]>> pointers) {
         this.pointers = pointers;
     }
 
+    /**
+     * This method updates the current Dictionary, Posting files and Pointers table.
+     * By adding to them the data in the arguments.
+     * @param allTerms
+     * @param allDocs
+     * @param path
+     * @param isStemmr
+     * @throws IOException
+     */
     public void updateAll(List<String[]> allTerms, LinkedList<Document> allDocs, String path, boolean isStemmr) throws IOException {
         updateDict(allTerms);
         updatePosting(allDocs, path, isStemmr);
         updateNumOfDocs();
     }
 
+
+    /**
+     * This method update the document frequency of all the terms in the Dictionary
+     */
     private void updateNumOfDocs() {
         for (Map.Entry<String, String> term: sortedDict.entrySet()) {
             String name = term.getKey();
@@ -49,6 +74,13 @@ public class Indexer {
         }
     }
 
+    /**
+     * This method updates the posting files.
+     * @param allDocs
+     * @param path
+     * @param isStemmr
+     * @throws IOException
+     */
     private void updatePosting(LinkedList<Document> allDocs, String path ,boolean isStemmr) throws IOException {
         for (Document doc : allDocs) {
             if (doc != null) {
@@ -71,6 +103,10 @@ public class Indexer {
         writePostingToDisk(path ,isStemmr);
     }
 
+    /**
+     * This method remove all the entities that occurs only once in the corpus
+     * @param entityList
+     */
     public void deleteFromDict(Set<String> entityList ){
         if(entityList != null){
             for (String entityString : entityList) {
@@ -85,6 +121,12 @@ public class Indexer {
         }
     }
 
+    /**
+     * This method updates the pointers table
+     * @param termName
+     * @param path
+     * @param line
+     */
     private void updatePointers(String termName, String path, String line) {
         String[] newNode = new String[2];
         newNode[0] = path;
@@ -124,6 +166,10 @@ public class Indexer {
         }
     }
 
+    /**
+     * This method updates the Dictionary
+     * @param allTerms
+     */
     private void updateDict(List<String[]> allTerms) {
         Iterator<String[]> iter = allTerms.iterator();
         String[] currentTerm;
@@ -161,14 +207,15 @@ public class Indexer {
     }
 
     /**
+     * This method writes the posting files to the Disk
      * @param path
      * @param isStemmer
      * @throws IOException
      */
     private void writePostingToDisk(String path, boolean isStemmer) throws IOException {
         fileCounter++;
-        String shortPath = "\\" + fileCounter + ".txt";
-        String newPath = path + shortPath;
+        String shortPath =  fileCounter + ".txt";
+        String newPath = path + "\\" + shortPath;
         File file = new File(newPath);
         if (file.createNewFile()) {
             int line = 1;
@@ -188,6 +235,11 @@ public class Indexer {
         }
     }
 
+    /**
+     * This method writes the Dictionary and the pointers table to the Disk
+     * @param path
+     * @throws IOException
+     */
     public void writeDictToDisk(String path) throws IOException {
         File file = new File(path + "\\Dictionary.txt");
         if (file.createNewFile()) {
@@ -214,6 +266,9 @@ public class Indexer {
         }
     }
 
+    /**
+     * This method print all the terms in the Dictionary with their document frequency
+     */
     public void printDict() {
         int i = 1;
         for (Map.Entry<String, String> entry : sortedDict.entrySet()) {

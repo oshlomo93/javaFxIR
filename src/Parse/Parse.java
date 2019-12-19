@@ -10,7 +10,7 @@ public class Parse  {
     private Indexer indexer;
     private HashMap<String,Term> allTerms;
     private LinkedList<Document> allDocs;
-    int counter = 0;
+    private int counter = 0;
     private StopWords stopWords ;
     private NumNoUnits numNoUnits;
     private Date date;
@@ -27,8 +27,8 @@ public class Parse  {
     private String postingPath;
     private boolean isStemmer;
     private Stemmer stemmer;
-    ArrayList<Character> charToDeleteisNewLine;
-    ArrayList<Character> isEndOfLinecharToDelete;
+    private ArrayList<Character> isNewLineCharToDelete;
+    private ArrayList<Character> isEndOfLineCharToDelete;
 
 
     public Parse(String corpusPath , String postingPath, boolean isStemmer ) throws IOException {
@@ -37,7 +37,7 @@ public class Parse  {
             if (pathOfIr != null && pathOfIr.length == 2) {
                 String corpusPath1 = pathOfIr[0];
                 String stopWordsPath = pathOfIr[1];
-                this.postingPath = postingPath ;
+                this.postingPath = getPostingPath(postingPath, isStemmer) ;
                 reader = new ReadFile(corpusPath1);
                 stopWords = new StopWords(stopWordsPath);
                 if(stopWords ==null){
@@ -58,21 +58,22 @@ public class Parse  {
                 indexer = new Indexer();
                 this.isStemmer = isStemmer;
                 stemmer = new Stemmer();
-                charToDeleteisNewLine = new ArrayList<>();
+                isNewLineCharToDelete = new ArrayList<>();
                 char [] deleteChar= {',','.','"',':',';','!','?', '@','#', '&', '(' ,'-' , '{','|', '*' , '+'};
                 for (char c : deleteChar) {
-                    charToDeleteisNewLine.add(c);
+                    isNewLineCharToDelete.add(c);
                 }
                 deleteChar = null;
-                isEndOfLinecharToDelete = new ArrayList<>();
+                isEndOfLineCharToDelete = new ArrayList<>();
                 char [] deletChar= {',','.','"',':',';','!','?', '@','#', '&', ')', '}' ,'-' , '|'};
                 for (char c : deletChar) {
-                    isEndOfLinecharToDelete.add(c);
+                    isEndOfLineCharToDelete.add(c);
                 }
                 deletChar = null;
             }
         }
     }
+
 
     public Parse(String postingPath, boolean selected) throws IOException {
         if (postingPath != null) {
@@ -88,6 +89,31 @@ public class Parse  {
         }
     }
 
+    /**
+     * Gets the correct posting path from the user's input
+     * @param postingPath
+     * @param isStemmer
+     * @return
+     */
+    private String getPostingPath(String postingPath, boolean isStemmer) {
+        if (isStemmer) {
+            postingPath += "\\WithStemming";
+            File newFolder = new File(postingPath);
+            newFolder.mkdirs();
+        }
+        else {
+            postingPath += "\\WithoutStemming";
+            File newFolder = new File(postingPath);
+            newFolder.mkdirs();
+        }
+        return postingPath;
+    }
+
+    /**
+     * Gets the corpus and stop words path from the user's input
+     * @param path
+     * @return
+     */
     private String[] getPath(String path) {
         File file = new File(path);
         String[] directories = file.list();
@@ -98,10 +124,17 @@ public class Parse  {
         return ans;
     }
 
+    /**
+     * Setter for the files that need to be parsed
+     * @param allFiles
+     */
     public void setRead(LinkedList<String[]> allFiles) {
         read = allFiles;
     }
 
+    /**
+     * Delete all the files from the posting path
+     */
     public void exit() {
         System.gc();
         File file = new File(postingPath);
@@ -109,6 +142,11 @@ public class Parse  {
             f.delete();
         }
     }
+
+    /**
+     * Parse all the documents and send them to the indexer
+     * @throws IOException
+     */
     public void parseAllDocs() throws IOException {
         long start = System.currentTimeMillis();
         reader.readFolder();
@@ -137,7 +175,10 @@ public class Parse  {
         System.out.println(indexer.getSortedDict().size());
     }
 
-
+    /**
+     * Sends the indexer new data to update
+     * @throws IOException
+     */
     private void update() throws IOException {
         indexer.updateAll(termsAndDocs, allDocs, postingPath, isStemmer);
         termsAndDocs.clear();
@@ -147,10 +188,19 @@ public class Parse  {
         allDocs.clear();
     }
 
+    /**
+     * Getter for the indexer Dictionary
+     * @return
+     */
     public Map<String, String> getSortedDict() {
         return indexer.getSortedDict();
     }
 
+    /**
+     * Upload the pointers file
+     * @return
+     * @throws IOException
+     */
     public HashMap<String, List<String[]>> uploadPointers() throws IOException {
         HashMap<String, List<String[]>> pointers = new HashMap<>();
         File file = new File(postingPath + "\\Pointers.txt");
@@ -172,6 +222,12 @@ public class Parse  {
         return pointers;
     }
 
+    /**
+     * Upload the file with all the documents details
+     * @param isStemmer
+     * @return
+     * @throws IOException
+     */
     public LinkedList<Document> uploadDocsDetails(boolean isStemmer) throws IOException {
         //todo isStemmer
         LinkedList<Document> docs = new LinkedList();
@@ -189,6 +245,11 @@ public class Parse  {
         return docs;
     }
 
+    /**
+     * Upload the Dictionary file
+     * @return
+     * @throws IOException
+     */
     public Map<String, String> uploadDictionary() throws IOException {
         Map<String, String> dict = new TreeMap<>();
         File file = new File(postingPath + "\\Dictionary.txt");
@@ -203,6 +264,10 @@ public class Parse  {
         return dict;
     }
 
+    /**
+     * Writes all the documents details to the Disk
+     * @throws IOException
+     */
     private void writeAllDocuments() throws IOException {
         File documentsDetails = new File(postingPath + "\\documentsDetails.txt");
         FileWriter writer = new FileWriter(documentsDetails, true);
@@ -214,6 +279,11 @@ public class Parse  {
         writer.close();
     }
 
+    /**
+     * Gets a documents and parsing all the terms
+     * @param documentName
+     * @param documentText
+     */
     private void startParseDocument(String documentName , String documentText) {
         if (documentName != null && documentName.length() > 0 && documentText != null && documentText.length() > 0) {
             Document document = new Document(documentName);
@@ -277,7 +347,11 @@ public class Parse  {
         }
     }
 
-
+    /**
+     * Gets the text of a documents and split it to sentences
+     * @param text
+     * @return
+     */
     private ArrayList<String> splitDoc(String text){
         ArrayList<String> allSentences = null;
         if(text != null && text.length()>0){
@@ -340,6 +414,13 @@ public class Parse  {
 
     }
 
+    /**
+     * Update the data after a creation of new term
+     * @param document
+     * @param type
+     * @param termName
+     * @param position
+     */
     private void createTerm(Document document, String type, String termName , int position) {
         Term term = makeTerm(type, termName);
         if (term != null ) {
@@ -356,6 +437,12 @@ public class Parse  {
         }
     }
 
+    /**
+     * Creates new term
+     * @param role
+     * @param word
+     * @return
+     */
     private Term makeTerm(String role , String word ){
         Term term = null;
         if (role == null && word != null) {
@@ -406,6 +493,11 @@ public class Parse  {
         return term;
     }
 
+    /**
+     * Use the stemmer to stem a word
+     * @param word
+     * @return
+     */
     private String stem(String word) {
         stemmer.add(word.toCharArray(), word.length());
         stemmer.stem();
@@ -413,6 +505,11 @@ public class Parse  {
         return  stemmedWord;
     }
 
+    /**
+     * Search what is the right term type for a word
+     * @param word
+     * @return
+     */
     private String findWhoIAmOne(String word){
         String iAm = null;
         if(numNoUnits.amIThis(word)){
@@ -442,6 +539,12 @@ public class Parse  {
         return iAm;
     }
 
+    /**
+     * Search what is the right term type of two words
+     * @param wordOne
+     * @param wordTwo
+     * @return
+     */
     private String findWhoIAmTwo(String wordOne , String wordTwo ){
         String iAm = null;
         if(numNoUnits.amIThis(wordOne , wordTwo)){
@@ -471,6 +574,13 @@ public class Parse  {
         return iAm;
     }
 
+    /**
+     * Search what is the right term type of three words
+     * @param word1
+     * @param word2
+     * @param word3
+     * @return
+     */
     private String findWhoIAmThree(String word1, String word2, String word3) {
         String iAm = null;
         if(numNoUnits.amIThis(word1 , word2, word3)){
@@ -500,6 +610,14 @@ public class Parse  {
         return iAm;
     }
 
+    /**
+     * Search what is the right term type of four words
+     * @param word1
+     * @param word2
+     * @param word3
+     * @param word4
+     * @return
+     */
     private  String findWhoIAmFour(String word1, String word2, String word3, String word4){
         String iAm = null;
         if(numNoUnits.amIThis(word1 , word2, word3, word4)){
@@ -526,17 +644,18 @@ public class Parse  {
         return iAm;
     }
 
+
     private boolean isEndOfLine(String word){
         if(word.length()>0){
-            return isEndOfLinecharToDelete.contains(word.charAt(word.length() - 1));
+            return isEndOfLineCharToDelete.contains(word.charAt(word.length() - 1));
         }
         return false;
     }
 
-    private boolean isNewLine(String word){
 
+    private boolean isNewLine(String word){
         if(word.length()>0){
-            return charToDeleteisNewLine.contains(word.charAt(0));
+            return isNewLineCharToDelete.contains(word.charAt(0));
         }
         return false;
     }

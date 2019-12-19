@@ -58,7 +58,7 @@ public class ViewModel extends Observable implements Observer {
      * @throws IOException
      */
     public void uplodeDict(String postingFilesStringPath, boolean selected) throws IOException {
-        myModel.uplodeDict(postingFilesStringPath, selected);
+        myModel.uploadDict(postingFilesStringPath, selected);
     }
 
     /**
@@ -66,6 +66,6 @@ public class ViewModel extends Observable implements Observer {
      * @return int
      */
     public int getNumOfDoc() {
-        return myModel.getNumofDoc();
+        return myModel.getNumOfDoc();
     }
 }

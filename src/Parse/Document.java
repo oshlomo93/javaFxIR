@@ -30,7 +30,7 @@ public class Document {
     }
 
     /**
-     * Return of ID Of the document
+     * Return the ID Of the document
      * @return  String
      */
     public String getId() {

@@ -1,5 +1,10 @@
 package Parse;
 
+/**
+ * This class created to help us to deal with noise in the corpus.
+ * By catching all the terms that our parse methods could not
+ * identified their type.
+ */
 public class UnknownType implements IRules {
     @Override
     public boolean amIThis(String word) {

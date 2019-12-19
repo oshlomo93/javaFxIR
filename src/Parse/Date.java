@@ -14,6 +14,11 @@ public class Date implements IRules {
     }
 
 
+    /**
+     * Gets a word and create the right term for her.
+     * @param word
+     * @return
+     */
     @Override
     public Term makeTerm(String word) {
         Term term = null;
@@ -55,11 +60,22 @@ public class Date implements IRules {
         return term;
     }
 
+    /**
+     * Gets a word and checks if it a Date term.
+     * @param word
+     * @return
+     */
     @Override
     public boolean amIThis(String word){
         return false;
     }
 
+    /**
+     * Gets two words and checks if they are match the Date term conditions
+     * @param wordone
+     * @param wordtwo
+     * @return
+     */
     @Override
     public boolean amIThis(String wordone, String wordtwo) {
         if (wordone != null && wordtwo != null) {
@@ -77,20 +93,45 @@ public class Date implements IRules {
         return false;
     }
 
+    /**
+     * Gets three words and checks if they are match the Date term conditions
+     * @param word1
+     * @param word2
+     * @param word3
+     * @return
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3) {
         return false;
     }
 
+    /**
+     * Gets four words and checks if they are match the Date term conditions
+     * @param word1
+     * @param word2
+     * @param word3
+     * @param word4
+     * @return
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3, String word4) {
         return false;
     }
 
+    /**
+     * checks if a word is representing a month
+     * @param word
+     * @return
+     */
     private boolean isMonth(String word) {
         return ((Hashtable<String, String>)months).containsKey(word);
     }
 
+    /**
+     * checks if a word is representing a day
+     * @param word
+     * @return
+     */
     private boolean isDay(String word) {
         try {
             int day = Integer.parseInt(word);
@@ -102,10 +143,14 @@ public class Date implements IRules {
         return false;
     }
 
+    /**
+     * checks if a word is representing a year
+     * @param word
+     * @return
+     */
     private boolean isYear(String word) {
         try {
-            int year = Integer.parseInt(word);
-            int num = year;
+            int num = Integer.parseInt(word);
             int count = 0;
             while(num != 0)
             {
@@ -116,10 +161,15 @@ public class Date implements IRules {
                 return true;
         }
         catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
 
+    /**
+     * return all the months
+     * @param hash
+     */
     private void getMonths(Hashtable<String, String> hash) {
         hash.put("January" , "01");
         hash.put("February" , "02");

@@ -39,6 +39,11 @@ public class Countries implements IRules {
         }
     }
 
+    /**
+     *      * Gets a word and checks if they are match the term conditions
+     * @param word
+     * @return
+     */
     @Override
     public boolean amIThis(String word) {
         if(word!=null && word.length()>0){
@@ -47,6 +52,12 @@ public class Countries implements IRules {
         return false;
     }
 
+    /**
+     * Gets two words and checks if they are match the term conditions
+     * @param word1
+     * @param word2
+     * @return
+     */
     @Override
     public boolean amIThis(String word1, String word2) {
         String word = word1+" "+word2;
@@ -56,6 +67,13 @@ public class Countries implements IRules {
         return false;
     }
 
+    /**
+     * Gets three words and checks if they are match the term conditions
+     * @param word1
+     * @param word2
+     * @param word3
+     * @return
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3) {
         String word = word1+" "+word2+" "+word3;
@@ -65,11 +83,24 @@ public class Countries implements IRules {
         return false;
     }
 
+    /**
+     * Gets four words and checks if they are match the term conditions
+     * @param word1
+     * @param word2
+     * @param word3
+     * @param word4
+     * @return
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3, String word4) {
         return false;
     }
 
+    /**
+     * Gets a word and create the right term for her.
+     * @param word
+     * @return
+     */
     @Override
     public Term makeTerm(String word) {
         if(word != null & word.length()>0){

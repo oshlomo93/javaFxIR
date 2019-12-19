@@ -4,12 +4,15 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * This class is getting a path and read all the files within it
+ */
 public class ReadFile {
 
     private BufferedReader reader;
     private String line;
     private ArrayList<String> currentDoc;
-    private String folderPath; //from where to read the original files
+    private String folderPath;
     public LinkedList<String[]> allDocs;
     int docCount = 0;
 
@@ -20,6 +23,9 @@ public class ReadFile {
         allDocs = new LinkedList<>();
     }
 
+    /**
+     * Gets a folder and read all his sub-folders and sub-files
+     */
     public void readFolder() {
         File folder = new File(folderPath);
         File[] listOfFiles = folder.listFiles();
@@ -42,6 +48,10 @@ public class ReadFile {
         }
     }
 
+    /**
+     * Gets a file and reads all the documents inside it
+     * @param f
+     */
     private void readFile(File f) {
         try {
             if (reader != null) {
@@ -60,6 +70,10 @@ public class ReadFile {
         }
     }
 
+    /**
+     * Reads a document
+     * @throws IOException
+     */
     private void readDoc() throws IOException {
         currentDoc = new ArrayList<>();
         currentDoc.add(line);
@@ -75,6 +89,9 @@ public class ReadFile {
         }
     }
 
+    /**
+     * Adds a documents
+     */
     private void addCurrentDoc() {
         String docName = getDocName(currentDoc.get(1));
         StringBuilder docText = new StringBuilder();
@@ -94,6 +111,11 @@ public class ReadFile {
         allDocs.add(node);
     }
 
+    /**
+     * Getter for the document name
+     * @param line
+     * @return
+     */
     private String getDocName(String line) {
         docCount += 1;
         String name = "" + docCount;
