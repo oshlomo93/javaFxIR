@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="javaFxIR:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/javaFxIR_jar</output-path>
+    <root id="archive" name="javaFxIR.jar">
+      <element id="module-output" name="javaFxIR" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+    </root>
+  </artifact>
+</component>
