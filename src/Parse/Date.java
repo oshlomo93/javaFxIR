@@ -161,7 +161,6 @@ public class Date implements IRules {
                 return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
         }
         return false;
     }
