@@ -37,9 +37,10 @@ public class ViewModel extends Observable implements Observer {
 
     /**
      * This method deletes all information from the disk and from the ram
+     * @param selected
      */
-    public void resetIr() {
-        myModel.resetIr();
+    public void resetIr(boolean selected) {
+        myModel.resetIr(selected);
     }
 
 

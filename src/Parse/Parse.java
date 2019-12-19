@@ -5,6 +5,10 @@ import Stemmer.Stemmer;
 import java.io.*;
 import java.util.*;
 
+/**
+ * This class receives long text and generates terms it recognizes by the rules,
+ * thus generating all the indexer and all files that store the information in the ram
+ */
 public class Parse  {
 
     private Indexer indexer;
@@ -76,8 +80,16 @@ public class Parse  {
 
 
     public Parse(String postingPath, boolean selected) throws IOException {
+        isStemmer =selected;
         if (postingPath != null) {
-            this.postingPath = postingPath;
+            if(isStemmer) {
+                this.postingPath = postingPath+"\\WithStemming";
+            }
+            else {
+
+                this.postingPath = postingPath+"\\WithoutStemming";
+
+            }
             indexer = new Indexer();
             Map<String, String> sortedDict = uploadDictionary();
             indexer.setDictionary(sortedDict);
@@ -86,6 +98,8 @@ public class Parse  {
             allDocs = uploadDocsDetails(isStemmer);
             isStemmer = selected;
             System.out.println("The upload finished successfully");
+
+
         }
     }
 
@@ -134,13 +148,25 @@ public class Parse  {
 
     /**
      * Delete all the files from the posting path
+     * @param selected
      */
-    public void exit() {
+    public void exit(boolean selected) {
         System.gc();
+        String strExit;
+//        if(selected){
+//            strExit = postingPath + "\\WithStemming";
+//
+//        }
+//        else {
+//            strExit = postingPath + "\\WithoutStemming";
+//
+//        }
         File file = new File(postingPath);
         for (File f: file.listFiles()) {
             f.delete();
         }
+        file.delete();
+
     }
 
     /**
@@ -645,6 +671,10 @@ public class Parse  {
     }
 
 
+    /** Checks whether a new row can be split
+     * @param word
+     * @return boolean
+     */
     private boolean isEndOfLine(String word){
         if(word.length()>0){
             return isEndOfLineCharToDelete.contains(word.charAt(word.length() - 1));
@@ -653,6 +683,10 @@ public class Parse  {
     }
 
 
+    /** Checks whether a new row can be split
+     * @param word
+     * @return boolean
+     */
     private boolean isNewLine(String word){
         if(word.length()>0){
             return isNewLineCharToDelete.contains(word.charAt(0));
@@ -660,6 +694,11 @@ public class Parse  {
         return false;
     }
 
+    /**
+     * This function gets a string and removes all non-meaningful characters
+     * @param word
+     * @return String
+     */
     private String cleanString(String word){
         if(word.length() ==1 ){
             if(isEndOfLine(word) || isNewLine(word)){
@@ -679,6 +718,10 @@ public class Parse  {
         return word;
     }
 
+    /** This function clears the document from blank lines
+     * @param word
+     * @return boolean
+     */
     private boolean asBackSlashN(String word){
         if (word.length() > 2) {
             if (word.substring(0, 2).equals("\n")) {
@@ -689,6 +732,10 @@ public class Parse  {
         return false;
     }
 
+    /** This function clears the document from blank lines
+     * @param word
+     * @return String
+     */
     private String cleanBackSlashN(String word){
         String toReturn = word;
         while (toReturn.length() >1 && asBackSlashN(toReturn)){
@@ -702,7 +749,11 @@ public class Parse  {
         return toReturn;
     }
 
-    //Replace the double hyphen with a comma
+    /**
+     * Replace the double hyphen with a comma
+     * @param text
+     * @return String[]
+     */
     private String[] replaceDoubleHyphenToComma(String text){
         if(text!= null  && text.length()>0) {
             String[] deleteDoubleHyphen = text.split("--");
@@ -711,6 +762,10 @@ public class Parse  {
         return null;
     }
 
+    /**
+     * Accept the number of documents
+     * @return int
+     */
     public int getNumofDoc() {
         return counter;
     }

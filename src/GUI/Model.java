@@ -32,8 +32,8 @@ public class Model extends Observable {
             }
     }
 
-    public void resetIr() {
-        parse.exit();
+    public void resetIr(boolean selected) {
+        parse.exit(selected);
         parse =null;
     }
 

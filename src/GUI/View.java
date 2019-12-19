@@ -107,7 +107,7 @@ public class View implements Observer, Initializable {
      * @param actionEvent
      */
     public void resetIr(ActionEvent actionEvent) {
-        viewModel.resetIr();
+        viewModel.resetIr(stemmer.isSelected());
         dirOforCorTextField.setText("");
         dirOfPostingFiles.setText("");
         corpusAndStopWordsStringPath= "";

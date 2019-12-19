@@ -1,5 +1,8 @@
 package Parse;
 
+/**
+ * This class produces number-type terms without units and converts the numbers by the rules
+ */
 public class NumNoUnits implements IRules {
 
     String [] PrefixOfNumber = {"Thousand", "Million" , "Billion" , "K" , "M" , "B"};
@@ -17,6 +20,11 @@ public class NumNoUnits implements IRules {
         return '-';
     }
 
+    /**
+     * Get a word and check if it represents a number
+     * @param word
+     * @return
+     */
     @Override
     public boolean amIThis(String word){
         if(word!=null && word.length()>0){
@@ -39,6 +47,12 @@ public class NumNoUnits implements IRules {
         return false;
     }
 
+    /**
+     * Get 2 words and check if they represent a number
+     * @param wordone
+     * @param wordtwo
+     * @return boolean
+     */
     @Override
     public boolean amIThis(String wordone, String wordtwo) {
         if(amIThis(wordone)){
@@ -54,18 +68,37 @@ public class NumNoUnits implements IRules {
         return false;
     }
 
+    /**
+     * Get 3 words and check if they represent a number
+     * @param word1
+     * @param word2
+     * @param word3
+     * @return boolean
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3) {
         return false;
     }
 
+    /**
+     * Get 4 words and check if they represent a number
+     * @param word1
+     * @param word2
+     * @param word3
+     * @param word4
+     * @return boolean
+     */
     @Override
     public boolean amIThis(String word1, String word2, String word3, String word4) {
         return false;
     }
 
 
-
+    /**
+     * You get a string and check if it represents a fracture
+     * @param word -String
+     * @return boolean
+     */
     private boolean isFun(String word){
         if(word != null && word.length()>0) {
             String [] nums = word.split("/");
@@ -78,6 +111,11 @@ public class NumNoUnits implements IRules {
         return false;
     }
 
+    /**
+     * Check if the string is a number
+     * @param word
+     * @return
+     */
     private boolean isANum(String word){
         if(word != null && word.length()>0) {
             for (int i = 0; i < word.length(); i++) {
@@ -97,6 +135,11 @@ public class NumNoUnits implements IRules {
         return false;
     }
 
+    /**
+     * Accept a string and get a number type term without units
+     * @param word
+     * @return
+     */
     @Override
     public Term makeTerm(String word) {
         Term term = null;
@@ -152,6 +195,10 @@ public class NumNoUnits implements IRules {
         return term;
     }
 
+    /** Get a string and produce a number according to the rules
+     * @param wordNum
+     * @return String
+     */
     public String makeNum(String wordNum){
         String wordMakeNum = null;
         if(amIThis(wordNum)) {
@@ -183,6 +230,10 @@ public class NumNoUnits implements IRules {
         return wordMakeNum;
     }
 
+    /** Does the resulting string represent a number
+     * @param word -String
+     * @return double
+     */
     private double realNumber(String word){
             String numWord = makeNum(word);
             return Double.parseDouble(numWord);
