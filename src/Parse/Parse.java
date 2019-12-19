@@ -153,14 +153,6 @@ public class Parse  {
     public void exit(boolean selected) {
         System.gc();
         String strExit;
-//        if(selected){
-//            strExit = postingPath + "\\WithStemming";
-//
-//        }
-//        else {
-//            strExit = postingPath + "\\WithoutStemming";
-//
-//        }
         File file = new File(postingPath);
         for (File f: file.listFiles()) {
             f.delete();
