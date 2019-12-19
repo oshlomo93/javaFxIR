@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Observable;
 
+/**
+ *  * This class controls all engine activity
+ */
 public class Model extends Observable {
 
     Parse parse;
@@ -15,6 +18,13 @@ public class Model extends Observable {
     }
 
 
+    /**
+     * The function that runs the entire engine
+     * @param corpusAndStopWordsStringPath
+     * @param postingFilesStringPath
+     * @param isStemer
+     * @throws IOException
+     */
     public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemer) throws IOException {
             parse = new Parse(corpusAndStopWordsStringPath, postingFilesStringPath, isStemer);
             if(parse!= null) {
@@ -36,6 +46,9 @@ public class Model extends Observable {
         parse = new Parse(postingFilesStringPath, selected);
     }
 
+    /**
+     * @return Receive the number of documents in the repository
+     */
     public int getNumofDoc() {
         return parse.getNumofDoc();
     }

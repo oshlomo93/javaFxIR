@@ -16,7 +16,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
-//the controller
+/**
+ * This dish controls the entire view of our app - the retrieval engine
+ */
 public class View implements Observer, Initializable {
 
     public Button corpusAndStopWordsPath;
@@ -45,6 +47,10 @@ public class View implements Observer, Initializable {
 
     }
 
+    /**
+     * This function controls the opening of the folder to get the path to the document store and stop words
+     * @param actionEvent
+     */
     public void loadCorpusPath(ActionEvent actionEvent) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         Stage stage =  (Stage) winStage.getScene().getWindow() ;
@@ -55,6 +61,10 @@ public class View implements Observer, Initializable {
         }
     }
 
+    /**
+     * This function controls the opening of the folder to get the path where the files are saved pasting
+     * @param actionEvent
+     */
     public void loadPastingPath(ActionEvent actionEvent) {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -66,6 +76,10 @@ public class View implements Observer, Initializable {
         }
     }
 
+    /**
+     * This function will work when you click Start
+     * @param actionEvent
+     */
     public void startIr(ActionEvent actionEvent) {
 
         try {
@@ -88,6 +102,10 @@ public class View implements Observer, Initializable {
         }
     }
 
+    /**
+     * This function will work when you click reset
+     * @param actionEvent
+     */
     public void resetIr(ActionEvent actionEvent) {
         viewModel.resetIr();
         dirOforCorTextField.setText("");
@@ -99,6 +117,10 @@ public class View implements Observer, Initializable {
     }
 
 
+    /**
+     * This function will work when you click show dictionary
+     * @param actionEvent
+     */
     public void showDictionaryOnScreen(ActionEvent actionEvent){
         dictionay = new Stage();
         dictionay.setTitle("The Dictionary:");
@@ -128,6 +150,11 @@ public class View implements Observer, Initializable {
         dictionay.show();
     }
 
+    /**
+     * This function notifies the screen according to the strings they gave it
+     * @param strAlert -The message
+     * @param title- The title of the message
+     */
     private void showAlert(String  strAlert , String title) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
@@ -136,6 +163,10 @@ public class View implements Observer, Initializable {
         alert.show();
     }
 
+    /**
+     * Upload all the necessary information to ram
+     * @param actionEvent
+     */
     public void uploadDict(ActionEvent actionEvent)  {
         try {
             if(postingFilesStringPath!=null) {
@@ -152,12 +183,19 @@ public class View implements Observer, Initializable {
     }
 
 
+    /** Updating the viewModel
+     * @param viewModel
+     */
     public void setViewModel(ViewModel viewModel) {
         if(viewModel != null){
             this.viewModel = viewModel;
         }
     }
 
+    /**
+     * Exit the system properly when the X button is pressed
+     * @param stage
+     */
     public void exitCorrectly(Stage stage) {
         stage.close();
     }
