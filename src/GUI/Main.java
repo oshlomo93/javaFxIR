@@ -28,7 +28,7 @@ public class Main extends Application {
         ViewModel viewModel = new ViewModel(model);
         primaryStage.setTitle("IR");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("MyView.fxml").openStream());
+        Parent root = fxmlLoader.load(getClass().getClassLoader().getResource("myView.fxml").openStream());
         Scene scene = new Scene(root);
         View myViewController = fxmlLoader.getController();
         myViewController.setViewModel(viewModel);

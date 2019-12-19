@@ -6,7 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * The switch between the controller and the main functionality of the system
+ * The switch between the controller and the stemmerMain functionality of the system
  */
 public class ViewModel extends Observable implements Observer {
 
@@ -24,7 +24,7 @@ public class ViewModel extends Observable implements Observer {
     }
 
     /**
-     * The main function that starts the retrieval process
+     * The stemmerMain function that starts the retrieval process
      * @param corpusAndStopWordsStringPath
      * @param postingFilesStringPath
      * @param isStemmer
