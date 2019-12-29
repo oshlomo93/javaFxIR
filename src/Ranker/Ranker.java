@@ -19,16 +19,20 @@ public class Ranker {
 
 
     public Ranker(){
-
+        clickstreamData = new ClickstreamData();
+        bm25 = new BM25();
+        semantic = new Semantic();
     }
 
-    public ArrayList<String> rank(Document query , List<Document> documents){
+    public ArrayList<String> rank(Document query , List<Document> documents, int size, HashMap<String, Integer> tf){
         if(query!=null && documents!=null && documents.size()>0){
             ArrayList<String> strings = new ArrayList<>();
-            HashMap<String, Integer> docAndVal;
+            HashMap<String, Double> docAndVal =new HashMap<>();
             for (Document document: documents) {
-                double myRank= rankDoc(document);
+                double myRank= rankDoc(document, tf);
+                docAndVal.put(document.getId(),myRank);
             }
+
         }
 
 
@@ -38,12 +42,12 @@ public class Ranker {
         return null;
     }
 
-    private double rankDoc(Document document) {
+    private double rankDoc(Document document, HashMap<String, Integer> tf) {
         double toRet=0;
-        if(isTheDocumentValid(document) ) {
-            double valBm25 = bm25.rankDoc();
-            double valSem = semantic.rankDoc();
-            double valClickData = clickstreamData.rankDoc();
+        if(isTheDocumentValid(document)&& tf!=null && !tf.isEmpty() ) {
+            double valBm25 = bm25.rankDoc(document,tf);
+            double valSem = semantic.rankDoc(document,tf);
+            double valClickData = clickstreamData.rankDoc(document,tf);
 
             toRet = valBm25 * bm25Per + valSem * semanticPer + valClickData * clickDataPer;
         }
