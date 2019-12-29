@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class Parse  {
 
-    private Indexer indexer;
+    public Indexer indexer;
     private HashMap<String,Term> allTerms;
     private LinkedList<Document> allDocs;
     private int counter = 0;
@@ -80,6 +80,7 @@ public class Parse  {
     }
 
 
+
     public Parse(String postingPath, boolean selected) throws IOException {
         isStemmer =selected;
         if (postingPath != null) {
@@ -103,6 +104,10 @@ public class Parse  {
 
 
         }
+    }
+
+    public String getPostingPath() {
+        return postingPath;
     }
 
     /**

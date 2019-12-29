@@ -29,6 +29,10 @@ public class Indexer {
         return sortedDict;
     }
 
+    public HashMap<String, List<String[]>> getPointers() {
+        return pointers;
+    }
+
     /**
      * This method is a setter for the Dictionary
      * @param sortedDict

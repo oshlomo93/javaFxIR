@@ -58,6 +58,12 @@ public class Document {
         return false;
     }
 
+    public void addTermPositions(String term, String[] positions) {
+        for (String pos : positions) {
+            addTermByName(term, Integer.parseInt(pos));
+        }
+    }
+
     /**
      * Returns a string representing the document
      * @return String
