@@ -1,5 +1,7 @@
 package Parse;
 
+import java.util.ArrayList;
+
 /**
  * This class returns on each document its existing terms,
  * in addition to the number of terms, and the frequency of each term in the document
@@ -126,6 +128,10 @@ public class Document {
             ans =getId()+";"+listOfWord.getDetails(term);
         }
         return ans;
+    }
+
+    public ArrayList<String> getAllTerms(){
+        return  listOfWord.getAllTerms();
     }
 
 }

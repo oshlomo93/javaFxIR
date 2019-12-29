@@ -58,4 +58,8 @@ public class Model extends Observable {
     public int getNumOfDoc() {
         return parse.getNumofDoc();
     }
+
+
+
+
 }

@@ -2,6 +2,7 @@ package Parse;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * This class holds all the data in the software,
@@ -126,6 +127,18 @@ public class DictionaryOfDocument{
             }
         }
         return ans;
+    }
+
+    public boolean isEmpty(){
+        if(termAndTF.isEmpty() || termAndAllPos.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<String> getAllTerms(){
+        ArrayList<String> toRet = (ArrayList<String>) termAndTF.keySet();
+        return toRet;
     }
 
 }

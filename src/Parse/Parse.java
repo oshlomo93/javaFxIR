@@ -74,6 +74,7 @@ public class Parse  {
                     isEndOfLineCharToDelete.add(c);
                 }
                 deletChar = null;
+
             }
         }
     }
@@ -97,6 +98,7 @@ public class Parse  {
             indexer.setPointers(pointers);
             allDocs = uploadDocsDetails(isStemmer);
             isStemmer = selected;
+            counter = allDocs.size();
             System.out.println("The upload finished successfully");
 
 
@@ -169,19 +171,20 @@ public class Parse  {
         long start = System.currentTimeMillis();
         reader.readFolder();
         setRead(reader.allDocs);
+        counter = read.size();
         String[] currentDoc;
         int size = 3000;
-        int counter = 0;
+        int counterall = 0;
         while (read.size() != 0) {
             currentDoc = read.get(0);
             startParseDocument(currentDoc[0], currentDoc[1]);
-            counter++;
+            counterall++;
             read.remove();
-            if (counter%size == 0) {
+            if (counterall%size == 0) {
                 update();
             }
         }
-        if (counter%size != 0) {
+        if (counterall%size != 0) {
             update();
         }
         indexer.deleteFromDict(entity.listOfEntity);
