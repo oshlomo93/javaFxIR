@@ -29,7 +29,7 @@ public class Ranker {
             ArrayList<String> strings = new ArrayList<>();
             HashMap<String, Double> docAndVal =new HashMap<>();
             for (Document document: documents) {
-                double myRank= rankDoc(document, tf);
+                double myRank= rankDoc(query ,document, tf);
                 docAndVal.put(document.getId(),myRank);
             }
 
@@ -42,12 +42,12 @@ public class Ranker {
         return null;
     }
 
-    private double rankDoc(Document document, HashMap<String, Integer> tf) {
+    private double rankDoc(Document query ,Document document, HashMap<String, Integer> tf) {
         double toRet=0;
         if(isTheDocumentValid(document)&& tf!=null && !tf.isEmpty() ) {
-            double valBm25 = bm25.rankDoc(document,tf);
-            double valSem = semantic.rankDoc(document,tf);
-            double valClickData = clickstreamData.rankDoc(document,tf);
+            double valBm25 = bm25.rankDoc(query,document,tf);
+            double valSem = semantic.rankDoc(query,document,tf);
+            double valClickData = clickstreamData.rankDoc(query, document,tf);
 
             toRet = valBm25 * bm25Per + valSem * semanticPer + valClickData * clickDataPer;
         }

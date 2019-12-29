@@ -140,4 +140,7 @@ public class Document {
         return  listOfWord.getAllTerms();
     }
 
+    public int getDocumetSize() {
+        return numOfWords;
+    }
 }

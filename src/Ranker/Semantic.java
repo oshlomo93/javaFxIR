@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Semantic implements IRanker {
 
     @Override
-    public double rankDoc(Document document, HashMap<String, Integer> tf) {
+    public double rankDoc(Document query ,Document document, HashMap<String, Integer> tf) {
         return 0;
     }
 }
