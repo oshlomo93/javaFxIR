@@ -29,6 +29,10 @@ public class Document {
         this.numOfWords = Integer.valueOf(word3);
     }
 
+    public void setNumOfWords(int size) {
+        numOfWords += size;
+    }
+
     /**
      * Return the ID Of the document
      * @return  String
@@ -46,7 +50,7 @@ public class Document {
     public boolean addTermByName(String word , int position){
         if(word != null && word.length()>0){
             listOfWord.addTerm(word , position);
-            numOfWords++;
+            numOfTerms++;
             return true;
         }
         return false;

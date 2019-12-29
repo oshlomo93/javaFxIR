@@ -310,6 +310,7 @@ public class Parse  {
             int j = 0;
             for ( String s: allSentences) {
                 String [] allWords = s.split(" ");
+                document.setNumOfWords(allWords.length);
                 int i = 0;
                 while (i < allWords.length) {
                     if (i+3 < allWords.length) {

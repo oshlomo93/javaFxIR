@@ -1,6 +1,7 @@
 package GUI;
 
 import Parse.Parse;
+import Searcher.Searcher;
 
 import java.io.IOException;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Observable;
 public class Model extends Observable {
 
     Parse parse;
+    Searcher searcher;
 
     public Model() {
 
@@ -36,6 +38,10 @@ public class Model extends Observable {
         parse.exit(selected);
         parse =null;
     }
+
+    //public void setParse() {
+    //    searcher.setParse(parse);
+    //}
 
 
     public Map<String, String> getSortedDict() {
