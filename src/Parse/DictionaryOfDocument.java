@@ -139,7 +139,8 @@ public class DictionaryOfDocument{
     }
 
     public ArrayList<String> getAllTerms(){
-        ArrayList<String> toRet = (ArrayList<String>) termAndTF.keySet();
+        ArrayList<String> toRet = new ArrayList<>();
+        toRet.addAll(termAndTF.keySet());
         return toRet;
     }
 

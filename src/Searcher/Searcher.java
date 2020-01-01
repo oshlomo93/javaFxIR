@@ -4,7 +4,6 @@ import Parse.Document;
 import Parse.Parse;
 import Ranker.Ranker;
 
-import javax.print.Doc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -23,12 +22,14 @@ public class Searcher {
     HashMap<String, Integer> termTF;
     int size;
 
-    public Searcher(String query) {
+    public Searcher(String query, Parse parser) {
         ranker = new Ranker();
+        this.parser = parser;
         queries = new ArrayList<>();
         termTF = new HashMap<>();
         queries.add(query);
-        size = 50;
+        allRelevantDocs = new ArrayList<>();
+        size = 10;
 
     }
 
@@ -39,7 +40,22 @@ public class Searcher {
         size = 50;
     }
 
+    public void start() {
+        parseQueries();
+        parsedQuery = parser.allDocs.get(0);
+        getAllRelevantDocs();
+        ArrayList<String> relevantDocs = getRelevantDocs();
+        for (String doc : relevantDocs) {
+            System.out.println(doc);
+        }
+    }
 
+    private void parseQueries() {
+        for (String query : queries) {
+            parser.startParseDocument("query", query);
+        }
+
+    }
     private List<String> getAllQueries(String[] allQueries) {
         List<String> ans = new ArrayList<>();
         for (String query : allQueries) {
@@ -72,7 +88,7 @@ public class Searcher {
                 tfCounter += update(term, details, tfCounter);
             }
         }
-        termTF.put(term, tfCounter);
+        termTF.put(term, 1);
     }
 
     private int update(String term, String details, int tfCounter) {
@@ -80,6 +96,9 @@ public class Searcher {
         String[] allDetails = details.split(";");
         for (int i=0; i<allDetails.length; i=i+3) {
             String[] docDetails = new String[3];
+            docDetails[0] = allDetails[i];
+            docDetails[1] = allDetails[i+1];
+            docDetails[2] = allDetails[i+2];
             String docID = docDetails[0];
             int tf = Integer.parseInt(docDetails[1]);
             String[] positions = docDetails[2].split(",");

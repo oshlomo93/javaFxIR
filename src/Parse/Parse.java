@@ -13,7 +13,7 @@ public class Parse  {
 
     public Indexer indexer;
     private HashMap<String,Term> allTerms;
-    private LinkedList<Document> allDocs;
+    public LinkedList<Document> allDocs;
     private int counter = 0;
     private StopWords stopWords ;
     private NumNoUnits numNoUnits;
@@ -27,7 +27,7 @@ public class Parse  {
     private UnknownType unknownType;
     private LinkedList<String[]> read;
     private List<String[]> termsAndDocs;
-    public ReadFile reader;
+    private ReadFile reader;
     private String postingPath;
     private boolean isStemmer;
     private Stemmer stemmer;
@@ -310,7 +310,7 @@ public class Parse  {
      * @param documentName
      * @param documentText
      */
-    private void startParseDocument(String documentName , String documentText) {
+    public void startParseDocument(String documentName , String documentText) {
         if (documentName != null && documentName.length() > 0 && documentText != null && documentText.length() > 0) {
             Document document = new Document(documentName);
             ArrayList<String> allSentences = splitDoc(documentText);

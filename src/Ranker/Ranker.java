@@ -56,7 +56,7 @@ public class Ranker {
 
     private boolean isTheDocumentValid(Document document){
         if(document != null ){
-            if(document.listOfWord!= null && document.listOfWord.isEmpty() ){
+            if(document.listOfWord!= null && !document.listOfWord.isEmpty() ){
                 return true;
             }
         }
