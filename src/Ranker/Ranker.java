@@ -91,14 +91,20 @@ public class Ranker {
     private ArrayList<String> getStringsWithMaxVal(HashMap<String, Double> docAndValRank){
         ArrayList<String> toReturn =null;
         if(docAndValRank!=null && !docAndValRank.isEmpty()){
+
             toReturn = new ArrayList<>();
+            ArrayList<String>  toRemove = new ArrayList<>();
             double maxVal =findMaxVal(docAndValRank);
             for (String docId :docAndValRank.keySet()) {
                 if(maxVal == docAndValRank.get(docId)){
                     toReturn.add(docId);
-                    docAndValRank.remove(docId , maxVal);
+                    toRemove.add(docId);
                 }
             }
+            for(int i = 0; i<toRemove.size() ; i++){
+                docAndValRank.remove(toReturn.get(i));
+            }
+
         }
         return toReturn;
     }
