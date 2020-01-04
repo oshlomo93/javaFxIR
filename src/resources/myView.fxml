@@ -16,10 +16,10 @@
   <children>
     <AnchorPane fx:id="winStage" maxHeight="-1.0" maxWidth="-1.0" prefHeight="423.0" prefWidth="569.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="startButton" layoutX="25.0" layoutY="350.0" mnemonicParsing="false" onAction="#startIr" prefHeight="37.0" prefWidth="82.0" text="start " />
-            <Button fx:id="resetButton" disable="true" layoutX="146.0" layoutY="350.0" mnemonicParsing="false" onAction="#resetIr" prefHeight="37.0" prefWidth="82.0" text="Reset" />
-            <Button fx:id="showDict" disable="true" layoutX="253.0" layoutY="350.0" mnemonicParsing="false" onAction="#showDictionaryOnScreen" prefHeight="37.0" prefWidth="117.0" text="Show Dictionary" />
-            <Button fx:id="openLastDict" layoutX="387.0" layoutY="350.0" mnemonicParsing="false" onAction="#uploadDict" prefHeight="37.0" prefWidth="117.0" text="Upload Dictionary" />
+            <Button fx:id="startButton" layoutX="25.0" layoutY="350.0" mnemonicParsing="false" onAction="#startIr" prefHeight="37.0" prefWidth="57.0" text="start " />
+            <Button fx:id="resetButton" disable="true" layoutX="95.0" layoutY="350.0" mnemonicParsing="false" onAction="#resetIr" prefHeight="37.0" prefWidth="57.0" text="Reset" />
+            <Button fx:id="showDict" disable="true" layoutX="175.0" layoutY="350.0" mnemonicParsing="false" onAction="#showDictionaryOnScreen" prefHeight="37.0" prefWidth="117.0" text="Show Dictionary" />
+            <Button fx:id="openLastDict" layoutX="313.0" layoutY="350.0" mnemonicParsing="false" onAction="#uploadDict" prefHeight="37.0" prefWidth="117.0" text="Upload Dictionary" />
             <BorderPane prefHeight="313.0" prefWidth="525.0">
                <bottom>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -79,6 +79,7 @@
                   </AnchorPane>
                </center>
             </BorderPane>
+            <Button fx:id="query" disable="true" layoutX="441.0" layoutY="350.0" mnemonicParsing="false" onAction="#openQueryOnions" prefHeight="37.0" prefWidth="73.0" text="Query" />
          </children>
     </AnchorPane>
   </children>

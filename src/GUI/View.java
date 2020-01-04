@@ -1,12 +1,15 @@
 package GUI;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +34,13 @@ public class View implements Observer, Initializable {
     public TextField dirOforCorTextField;
     public TextField dirOfPostingFiles;
     public AnchorPane winStage;
+    public Button query;
     String corpusAndStopWordsStringPath;
     String postingFilesStringPath;
     private Stage dictionay;
+    private  Stage stagePartBController;
+
+    private PartBController partBController;
 
     ViewModel viewModel;
 
@@ -91,6 +98,7 @@ public class View implements Observer, Initializable {
             long time = (endTime-startTime)/1000;
             int numOfDoc= viewModel.getNumOfDoc();
             int numOfTerms=viewModel.getSortedDict().size();
+            query.setDisable(false);
             String toShow = "The number of unique terms in the database: " +numOfTerms+
                     "\nNumber of documents: " +numOfDoc+
                     "\nTotal time: "+ time +" s";
@@ -173,6 +181,7 @@ public class View implements Observer, Initializable {
                 viewModel.uplodeDict(postingFilesStringPath,stemmer.isSelected() );
                 resetButton.setDisable(false);
                 showDict.setDisable(false);
+                query.setDisable(false);
             }
             else {
                 showAlert("Please put a proper path to the posting files" , "Error Alert");
@@ -198,5 +207,30 @@ public class View implements Observer, Initializable {
      */
     public void exitCorrectly(Stage stage) {
         stage.close();
+    }
+
+    /**
+     * When you click on a query, you get an option to choose several ways to select the query, a new window opens
+     * @param
+     */
+    public void openQueryOnions() { //ActionEvent actionEvent
+        try {
+            if (stagePartBController == null) {
+                stagePartBController = new Stage();
+                stagePartBController.setTitle("Query");
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                Parent root = fxmlLoader.load(getClass().getResource("/partB.fxml").openStream());
+                Scene scene = new Scene(root, 650, 500);
+                stagePartBController.setScene(scene);
+                stagePartBController.setResizable(false);
+                partBController = fxmlLoader.getController();
+                partBController.setViewModel(this.viewModel);
+                stagePartBController.initModality(Modality.APPLICATION_MODAL);
+            }
+            partBController.enableButtons();
+            stagePartBController.show();
+        } catch(Exception ignored) {
+        }
+
     }
 }
