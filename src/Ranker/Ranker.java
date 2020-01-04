@@ -6,8 +6,8 @@ import java.util.*;
 
 public class Ranker {
 
-    double bm25Per = (7/10);
-    double semanticPer = (3/10);
+    double bm25Per;
+    double semanticPer;
 
     HashMap<String, Integer> documentIdAndSize;
 
@@ -15,10 +15,18 @@ public class Ranker {
     Semantic semantic;
 
 
-    public Ranker(){
+    public Ranker(boolean isSemantic ){
         bm25 = new BM25();
         semantic = new Semantic();
         documentIdAndSize = new HashMap<>();
+        if(isSemantic){
+            this.bm25Per = 0.7;
+            this.semanticPer = 0.3;
+        }
+        else {
+            this.bm25Per = 1;
+            this.semanticPer = 0;
+        }
     }
 
     public ArrayList<String> rank(Document query , List<Document> documents, int size, HashMap<String, Integer> tf){
@@ -45,10 +53,12 @@ public class Ranker {
 
     private double rankDoc(Document query ,Document document, HashMap<String, Integer> tf) {
         double toRet=0;
-        if(isTheDocumentValid(document)&& tf!=null && !tf.isEmpty() ) {
+        if(isTheDocumentValid(document)&& tf!=null && !tf.isEmpty()) {
             double valBm25 = bm25.rankDoc(query,document,tf, documentIdAndSize);
-            double valSem = semantic.rankDoc(query,document,tf, documentIdAndSize);
-
+            double valSem =0;
+            if(semanticPer != 0) {
+                valSem= semantic.rankDoc(query, document, tf, documentIdAndSize);
+            }
             toRet = valBm25 * bm25Per + valSem * semanticPer;
         }
         return toRet;
