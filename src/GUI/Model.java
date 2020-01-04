@@ -4,6 +4,7 @@ import Parse.Parse;
 import Searcher.Searcher;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Observable;
 
@@ -59,7 +60,16 @@ public class Model extends Observable {
         return parse.getNumofDoc();
     }
 
+    public ArrayList<String> startFindDoc( String query ){
+        searcher = new Searcher(query, parse);
+        return searcher.getRelevantDocs();
+    }
 
 
+    public void setSearcherByPath(String queryFilePath) { //todo
+        //searcher = new Searcher();
+    }
 
+    public void setSearcher(String query) {
+    }
 }

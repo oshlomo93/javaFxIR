@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PartBController">
+<AnchorPane fx:id="queryStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.PartBController">
    <children>
       <BorderPane layoutX="9.0" layoutY="10.0" prefHeight="392.0" prefWidth="618.0">
          <left>
@@ -21,14 +21,14 @@
                         <Font name="Bell MT" size="24.0" />
                      </font>
                   </Text>
-                  <TextField layoutX="165.0" layoutY="46.0" prefHeight="26.0" prefWidth="300.0" />
+                  <TextField fx:id="queryVal" layoutX="165.0" layoutY="46.0" onAction="#setQuery" prefHeight="26.0" prefWidth="300.0" />
                   <Label layoutX="30.0" layoutY="114.0" prefHeight="47.0" prefWidth="270.0" text="Select a query file:">
                      <font>
                         <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="30.0" layoutY="174.0" prefHeight="26.0" prefWidth="445.0" />
-                  <Button layoutX="507.0" layoutY="159.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="71.0" text="browes" textFill="#120714">
+                  <TextField fx:id="selectQueryFilePath" layoutX="30.0" layoutY="174.0" prefHeight="26.0" prefWidth="445.0" />
+                  <Button layoutX="507.0" layoutY="159.0" mnemonicParsing="false" onAction="#selectQueryFile" prefHeight="37.0" prefWidth="71.0" text="browes" textFill="#120714">
                      <font>
                         <Font name="Bell MT Bold" size="14.0" />
                      </font>
@@ -41,8 +41,8 @@
                         <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <CheckBox layoutX="199.0" layoutY="231.0" mnemonicParsing="false" />
-                  <Button layoutX="274.0" layoutY="312.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="89.0" text="Ran" textAlignment="CENTER" />
+                  <CheckBox fx:id="semantic" layoutX="199.0" layoutY="231.0" mnemonicParsing="false" />
+                  <Button fx:id="findDoc" layoutX="274.0" layoutY="312.0" mnemonicParsing="false" onAction="#startFindDoc" prefHeight="30.0" prefWidth="89.0" text="Ran" textAlignment="CENTER" />
                </children>
             </AnchorPane>
          </left>

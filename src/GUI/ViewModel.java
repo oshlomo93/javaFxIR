@@ -69,4 +69,12 @@ public class ViewModel extends Observable implements Observer {
     public int getNumOfDoc() {
         return myModel.getNumOfDoc();
     }
+
+    public void setSercherByPath(String queryFilePath) {
+        myModel.setSearcherByPath(queryFilePath);
+    }
+
+    public void setSercher(String query) {
+        myModel.setSearcher(query);
+    }
 }
