@@ -12,13 +12,13 @@ public class Main {
 
       Parse parser = new Parse("C:\\Users\\omer\\Desktop\\Testing\\testCorpus" , "C:\\Users\\omer\\Desktop\\Testing\\posting", true);
       parser.parseAllDocs();
-//      Searcher searcher = new Searcher("politician", parser, false);
-//      searcher.start();
+      Searcher searcher = new Searcher("Falkland petroleum exploration", parser, false);
+      searcher.start();
 
-       IdentifyEntityInDocument id = new IdentifyEntityInDocument(parser.getPostingPath());
-       id.getAllEntities( "FBIS3-13");
-       id.getTopEntities();
-      System.out.println("Done");
+       //IdentifyEntityInDocument id = new IdentifyEntityInDocument(parser.getPostingPath());
+       //id.getAllEntities( "FBIS3-13");
+       //id.getTopEntities();
+       System.out.println("Done");
 
 //        ReadQueries reader = new ReadQueries("C:\\Users\\omer\\Desktop\\queries.txt");
 //        reader.readQueries();

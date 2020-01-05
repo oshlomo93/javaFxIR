@@ -88,7 +88,7 @@ public class Indexer {
     private void updatePosting(LinkedList<Document> allDocs, String path ,boolean isStemmr) throws IOException {
         for (Document doc : allDocs) {
             if (doc != null) {
-                Hashtable<String, ArrayList<Integer>> allTermInDoc = doc.listOfWord.getTermAndAllPos();
+                HashMap<String, ArrayList<Integer>> allTermInDoc = doc.listOfWord.getTermAndAllPos();
                 for(String term : allTermInDoc.keySet()){
                     List<String> termDetails;
                     if(posting.containsKey(term)){

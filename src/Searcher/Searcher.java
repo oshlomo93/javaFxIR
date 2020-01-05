@@ -54,11 +54,8 @@ public class Searcher {
             for (Document doc : parser.allDocs) {
                 parsedQuery = doc;
                 getAllRelevantDocs();
-                ArrayList<String> relevantDocs = getRelevantDocs();
-                results.put(parsedQuery.getId(), relevantDocs);
-                for (String d : relevantDocs) {
-                    System.out.println(d);
-                }
+                ArrayList<String> topRelevantDocs = getRelevantDocs();
+                results.put(parsedQuery.getId(), topRelevantDocs);
             }
         }
         catch (Exception e) {
@@ -83,7 +80,6 @@ public class Searcher {
                 parser.startParseDocument(query.getKey(), query.getValue());
             }
         }
-
     }
 
     public ArrayList<String> getRelevantDocs() {
@@ -91,12 +87,13 @@ public class Searcher {
         return topRankDocs;
     }
 
-    private void getAllRelevantDocs() {
+    private void getAllRelevantDocs() throws IOException {
         ArrayList<String> allQueryTerms = parsedQuery.getAllTerms();
         for (String term : allQueryTerms) {
             if (!termTF.containsKey(term))
                 getDocsWithTerm(term);
         }
+        getDocsTerms();
     }
 
     private void getDocsWithTerm(String term) {
@@ -175,5 +172,35 @@ public class Searcher {
             e.printStackTrace();
             return e.toString();
         }
+    }
+
+    private void getDocsTerms() throws IOException {
+        for (Document doc : allRelevantDocs) {
+            ArrayList<String> allDocTerms = readTerms(doc.getId());
+            doc.listOfWord.setTerms(allDocTerms);
+        }
+    }
+
+    private ArrayList<String> readTerms(String docName) throws IOException {
+        ArrayList<String> allTerms = new ArrayList<>();
+        File terms = new File(parser.getPostingPath() + "\\documentsTerms.txt");
+        try {
+            FileReader fileReader = new FileReader(terms);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String line;
+            while((line = reader.readLine()) != null) {
+                String[] words = line.split(";");
+                if (words[0].equals(docName)) {
+                    for (int i=1; i<words.length; i++) {
+                        allTerms.add(words[0]);
+                    }
+                    return  allTerms;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println("problem with reading the terms");
+        }
+        return allTerms;
     }
 }

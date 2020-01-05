@@ -1,6 +1,7 @@
 package Parse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -10,13 +11,15 @@ import java.util.Set;
  */
 public class DictionaryOfDocument{
 
-    Hashtable<String , Integer> termAndTF;
-    Hashtable<String , ArrayList<Integer>> termAndAllPos;
+    HashMap<String , Integer> termAndTF;
+    HashMap<String , ArrayList<Integer>> termAndAllPos;
+    ArrayList<String> allTerms;
 
 
     public DictionaryOfDocument() {
-        termAndTF = new Hashtable<>();
-        termAndAllPos =new Hashtable<>();
+        termAndTF = new HashMap();
+        termAndAllPos =new HashMap();
+        allTerms = new ArrayList<>();
     }
 
 
@@ -82,7 +85,7 @@ public class DictionaryOfDocument{
     /**  get term and Frequency of all terms in the document
      * @return Hashtable
      */
-    public Hashtable<String, Integer> getTermAndTF() {
+    public HashMap<String, Integer> getTermAndTF() {
         return termAndTF;
     }
 
@@ -90,7 +93,7 @@ public class DictionaryOfDocument{
      * Accept all terms and all their locations in the document
      * @return Hashtable
      */
-    public Hashtable<String, ArrayList<Integer>> getTermAndAllPos() {
+    public HashMap<String, ArrayList<Integer>> getTermAndAllPos() {
         return termAndAllPos;
     }
 
@@ -100,7 +103,7 @@ public class DictionaryOfDocument{
      * @return boolean
      */
     public boolean containsTerm(String term){
-        if(termAndTF.containsKey(term)){
+        if(termAndTF.containsKey(term)) {
             return true;
         }
         return false;
@@ -144,4 +147,9 @@ public class DictionaryOfDocument{
         return toRet;
     }
 
+    public void setTerms(ArrayList<String> terms) {
+        for (String term : terms) {
+            allTerms.add(term);
+        }
+    }
 }

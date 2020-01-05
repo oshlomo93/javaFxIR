@@ -210,6 +210,7 @@ public class Parse  {
         termsAndDocs.clear();
         allTerms.clear();
         writeAllDocuments();
+        writeAllDocsTerms();
         writeAllDocumentsEntities();
         counter = counter+ allDocs.size();
         allDocs.clear();
@@ -301,6 +302,19 @@ public class Parse  {
         for (Document doc: allDocs) {
             String docDetails = doc.toString();
             writer.write(docDetails);
+            writer.write("\n");
+        }
+        writer.close();
+    }
+
+    private void writeAllDocsTerms() throws IOException {
+        File documentsTerms = new File(postingPath + "\\documentsTerms.txt");
+        FileWriter writer = new FileWriter(documentsTerms, true);
+        for (Document doc: allDocs) {
+            writer.write(doc.getId() + ";");
+            for (String term : doc.listOfWord.termAndTF.keySet()) {
+                writer.write(term + ";");
+            }
             writer.write("\n");
         }
         writer.close();
