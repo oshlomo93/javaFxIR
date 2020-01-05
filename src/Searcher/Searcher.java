@@ -56,6 +56,7 @@ public class Searcher {
                 getAllQueries();
             }
             parseQueries();
+
             for (Document doc : parser.allDocs) {
                 parsedQuery = doc;
                 getAllRelevantDocs();

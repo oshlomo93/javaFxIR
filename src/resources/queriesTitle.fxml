@@ -13,9 +13,9 @@
             <Font name="Bell MT Bold" size="24.0" />
          </font>
       </Text>
-      <TableView layoutX="27.0" layoutY="70.0" prefHeight="345.0" prefWidth="574.0">
+      <TableView fx:id="tableTitleView" layoutX="27.0" layoutY="70.0" prefHeight="345.0" prefWidth="574.0">
         <columns>
-          <TableColumn fx:id="tableTitleView" prefWidth="573.0" text="title:" />
+          <TableColumn prefWidth="573.0" text="title:" />
         </columns>
       </TableView>
    </children>

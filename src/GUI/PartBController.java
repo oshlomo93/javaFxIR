@@ -86,6 +86,7 @@ public class PartBController implements Initializable {
                     allQueriesController = fxmlLoader.getController();
                     allQueriesController.setViewModel(this.viewModel);
                     stageAllQueries.initModality(Modality.APPLICATION_MODAL);
+                    allQueriesController.addAllTitlesToTable(allDocForEachQ);
                 }
 
                 stageAllQueries.show();
