@@ -133,7 +133,7 @@ public class ReadFile {
     private String getDocName(String line) {
         String[] words = line.split(" ");
         String name = "";
-        if (words.length > 0) {
+        if (words.length > 1) {
             name = words[1];
         }
         return name;
