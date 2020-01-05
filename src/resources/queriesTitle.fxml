@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="627.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="240.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All queries:" wrappingWidth="209.13671875">
+         <font>
+            <Font name="Bell MT Bold" size="24.0" />
+         </font>
+      </Text>
+      <TableView layoutX="27.0" layoutY="70.0" prefHeight="345.0" prefWidth="574.0">
+        <columns>
+          <TableColumn prefWidth="573.0" text="title:" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
