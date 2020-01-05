@@ -12,6 +12,11 @@ public class ReadFile {
     private BufferedReader reader;
     private String line;
     private ArrayList<String> currentDoc;
+
+    public String getFolderPath() {
+        return folderPath;
+    }
+
     private String folderPath;
     public LinkedList<String[]> allDocs;
     int docCount = 0;
@@ -61,7 +66,9 @@ public class ReadFile {
             reader = new BufferedReader(fileReader);
             while((line = reader.readLine()) != null) {
                 if(line.equals("<DOC>")) {
-                    readDoc();
+                    line = reader.readLine();
+                    String name = getDocName(line);
+                    readDoc(name);
                 }
             }
         }
@@ -74,7 +81,7 @@ public class ReadFile {
      * Reads a document
      * @throws IOException
      */
-    private void readDoc() throws IOException {
+    private void readDoc(String name) throws IOException {
         currentDoc = new ArrayList<>();
         currentDoc.add(line);
         line = reader.readLine();
@@ -83,7 +90,7 @@ public class ReadFile {
             currentDoc.add(line);
             if (line.equals("</DOC>")) {
                 //currentDoc.add(line);
-                addCurrentDoc();
+                addCurrentDoc(name);
                 break;
             }
         }
@@ -92,8 +99,8 @@ public class ReadFile {
     /**
      * Adds a documents
      */
-    private void addCurrentDoc() {
-        String docName = getDocName(currentDoc.get(1));
+    private void addCurrentDoc(String name) {
+        //String docName = getDocName(currentDoc.get(1));
         StringBuilder docText = new StringBuilder();
         int start = 10000;
         for (int i=0; i<currentDoc.size(); i++) {
@@ -106,7 +113,8 @@ public class ReadFile {
             }
         }
         String[] node = new String[2];
-        node[0] = docName;
+        //node[0] = docName;
+        node[0] = name;
         node[1] = docText.toString();
         allDocs.add(node);
     }
@@ -116,9 +124,20 @@ public class ReadFile {
      * @param line
      * @return
      */
+    //private String getDocName(String line) {
+    //    docCount += 1;
+    //    String name = "" + docCount;
+    //    return name;
+    //}
+
     private String getDocName(String line) {
-        docCount += 1;
-        String name = "" + docCount;
+        String[] words = line.split(" ");
+        String name = "";
+        if (words.length > 0) {
+            name = words[1];
+        }
         return name;
     }
+
+
 }

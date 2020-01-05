@@ -61,7 +61,7 @@ public class Model extends Observable {
     }
 
     public ArrayList<String> startFindDoc( String query ){
-        searcher = new Searcher(query, parse);
+        //searcher = new Searcher(query, parse);
         return searcher.getRelevantDocs();
     }
 

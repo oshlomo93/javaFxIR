@@ -1,6 +1,7 @@
 package Parse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class returns on each document its existing terms,
@@ -13,6 +14,7 @@ public class Document {
     int numOfTerms;
     int numOfWords;
     public DictionaryOfDocument listOfWord;
+    public HashMap<String, Integer> allEntities;
 
     public Document(String id){
         if(id != null && id.length() >0){
@@ -21,6 +23,7 @@ public class Document {
             int numOfTerms = 0;
             int numOfWords = 0;
             listOfWord = new DictionaryOfDocument();
+            allEntities = new HashMap<>();
         }
     }
 
@@ -56,6 +59,16 @@ public class Document {
             return true;
         }
         return false;
+    }
+
+    public void addEntity(String entity) {
+        if (allEntities.keySet().contains(entity)) {
+            int count = allEntities.get(entity);
+            allEntities.replace(entity, count+1);
+        }
+        else {
+            allEntities.put(entity, 1);
+        }
     }
 
     public void addTermPositions(String term, String[] positions) {
@@ -143,4 +156,5 @@ public class Document {
     public int getDocumetSize() {
         return numOfWords;
     }
+
 }

@@ -11,57 +11,74 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Searcher {
 
-    List<String> queries;
+    String query;
+    HashMap<String, String> queries;
     Ranker  ranker;
     Document parsedQuery;
     Parse parser;
     List<Document> allRelevantDocs;
     HashMap<String, Integer> termTF;
+    ReadQueries reader;
     int size;
+    IdentifyEntityInDocument allEntities;
 
-    public Searcher(String query, Parse parser) {
-        ranker = new Ranker();
+    public Searcher(String query, Parse parser, boolean isSemantic) {
+        ranker = new Ranker(isSemantic);
         this.parser = parser;
-        queries = new ArrayList<>();
+        this.query = query;
+        //this.allEntities = new IdentifyEntityInDocument(parser.getPostingPath());
         termTF = new HashMap<>();
-        queries.add(query);
         allRelevantDocs = new ArrayList<>();
         size = 10;
-
     }
 
-    public Searcher(String[] allQueries) {
-        ranker = new Ranker();
+    public Searcher(String path, boolean isSemantic) {
+        ranker = new Ranker(isSemantic);
         termTF = new HashMap<>();
-        queries = getAllQueries(allQueries);
+        reader = new ReadQueries(path);
         size = 50;
     }
 
-    public void start() {
-        parseQueries();
-        parsedQuery = parser.allDocs.get(0);
-        getAllRelevantDocs();
-        ArrayList<String> relevantDocs = getRelevantDocs();
-        for (String doc : relevantDocs) {
-            System.out.println(doc);
+    public void start() throws IOException {
+        try {
+            if (reader != null) {
+                getAllQueries();
+            }
+            parseQueries();
+            parsedQuery = parser.allDocs.get(0);
+            getAllRelevantDocs();
+            ArrayList<String> relevantDocs = getRelevantDocs();
+            for (String doc : relevantDocs) {
+                System.out.println(doc);
+            }
+        }
+        catch (Exception e) {
+        }
+    }
+
+    private void getAllQueries() throws IOException {
+        try {
+            reader.readQueries();
+            queries = reader.getQueries();
+        }
+        catch (Exception e) {
         }
     }
 
     private void parseQueries() {
-        for (String query : queries) {
+        if (query != null){
             parser.startParseDocument("query", query);
         }
-
-    }
-    private List<String> getAllQueries(String[] allQueries) {
-        List<String> ans = new ArrayList<>();
-        for (String query : allQueries) {
-            ans.add(query);
+        else if (queries != null) {
+            for (Map.Entry<String,String> query : queries.entrySet()) {
+                parser.startParseDocument(query.getKey(), query.getValue());
+            }
         }
-        return ans;
+
     }
 
     public ArrayList<String> getRelevantDocs() {
@@ -135,6 +152,7 @@ public class Searcher {
         }
         return false;
     }
+
     private String read(String fileName, int lineNumber) {
         try {
             String ans = "";

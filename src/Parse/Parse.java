@@ -210,6 +210,7 @@ public class Parse  {
         termsAndDocs.clear();
         allTerms.clear();
         writeAllDocuments();
+        writeAllDocumentsEntities();
         counter = counter+ allDocs.size();
         allDocs.clear();
     }
@@ -300,6 +301,24 @@ public class Parse  {
         for (Document doc: allDocs) {
             String docDetails = doc.toString();
             writer.write(docDetails);
+            writer.write("\n");
+        }
+        writer.close();
+    }
+
+    private void writeAllDocumentsEntities() throws IOException {
+        File documentsDetails = new File(postingPath + "\\documentsEntities.txt");
+        FileWriter writer = new FileWriter(documentsDetails, true);
+        for (Document doc: allDocs) {
+            if (doc.allEntities != null && doc.allEntities.size() > 0) {
+                writer.write(doc.getId() + ";");
+                for (Map.Entry<String, Integer> entity: doc.allEntities.entrySet()) {
+                    if (entity.getValue() > 1) {
+                        String currentEntity = entity.getKey() + "," + entity.getValue() + ";";
+                        writer.write(currentEntity);
+                    }
+                }
+            }
             writer.write("\n");
         }
         writer.close();
@@ -461,6 +480,11 @@ public class Parse  {
             newTerm[1] = document.getId();
             allTerms.put(termName, term);
             termsAndDocs.add(newTerm);
+            if (type.equals("Entity")|| type.equals("UpLowLetter")) {
+                char c = termName.charAt(0);
+                if (c >= 'A' && c <= 'Z')
+                    document.addEntity(termName);
+            }
         }
     }
 
