@@ -25,6 +25,7 @@ public class Searcher {
     ReadQueries reader;
     int size;
     IdentifyEntityInDocument allEntities;
+    HashMap<String, ArrayList<String>> results;
 
     public Searcher(String query, Parse parser, boolean isSemantic) {
         ranker = new Ranker(isSemantic);
@@ -41,6 +42,7 @@ public class Searcher {
         termTF = new HashMap<>();
         reader = new ReadQueries(path);
         size = 50;
+        results = new HashMap<>();
     }
 
     public void start() throws IOException {
@@ -49,11 +51,14 @@ public class Searcher {
                 getAllQueries();
             }
             parseQueries();
-            parsedQuery = parser.allDocs.get(0);
-            getAllRelevantDocs();
-            ArrayList<String> relevantDocs = getRelevantDocs();
-            for (String doc : relevantDocs) {
-                System.out.println(doc);
+            for (Document doc : parser.allDocs) {
+                parsedQuery = doc;
+                getAllRelevantDocs();
+                ArrayList<String> relevantDocs = getRelevantDocs();
+                results.put(parsedQuery.getId(), relevantDocs);
+                for (String d : relevantDocs) {
+                    System.out.println(d);
+                }
             }
         }
         catch (Exception e) {

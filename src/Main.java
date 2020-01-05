@@ -17,7 +17,7 @@ public class Main {
 
        IdentifyEntityInDocument id = new IdentifyEntityInDocument(parser.getPostingPath());
        id.getAllEntities( "FBIS3-13");
-       id.print();
+       id.getTopEntities();
       System.out.println("Done");
 
 //        ReadQueries reader = new ReadQueries("C:\\Users\\omer\\Desktop\\queries.txt");

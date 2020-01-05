@@ -69,14 +69,19 @@ public class IdentifyEntityInDocument {
         return count;
     }
 
-    public void print() {
+    public ArrayList<String[]> getTopEntities() {
+        ArrayList<String[]> ans = new ArrayList<>();
         int count = 0;
         for (String entity : allDocEntities.keySet()) {
-            System.out.println(entity + ", " + getScore(allDocEntities.get(entity)));
+            String[] str = new String[2];
+            str[0] = entity;
+            str[1] = String.valueOf(getScore(allDocEntities.get(entity)));
+            ans.add(str);
+            //System.out.println(str[0] + ", " + str[1]);
             count++;
             if (count == 5)
                 break;
         }
+        return ans;
     }
-
 }
