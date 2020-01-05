@@ -58,7 +58,7 @@ public class Searcher {
             parseQueries();
             for (Document doc : parser.allDocs) {
                 parsedQuery = doc;
-                getAllRelevantDocs();
+               // getAllRelevantDocs();
                 ArrayList<String> relevantDocs = getRelevantDocs();
                 results.put(parsedQuery.getId(), relevantDocs);
                 for (String d : relevantDocs) {
