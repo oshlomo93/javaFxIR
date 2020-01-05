@@ -24,7 +24,8 @@ public class BM25 implements IRanker {
     private int termFrequencyInDoc(String term , Document document){
         int val= 0;
         if(term!= null && term.length()>0 && document!= null) {
-            val = document.listOfWord.getTermAndTF().get(term);
+            if (document.listOfWord.getTermAndTF().containsKey(term))
+                val = document.listOfWord.getTermAndTF().get(term);
         }
         return val;
     }

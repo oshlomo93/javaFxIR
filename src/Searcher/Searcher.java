@@ -39,6 +39,7 @@ public class Searcher {
         termTF = new HashMap<>();
         allRelevantDocs = new ArrayList<>();
         size = 10;
+        results = new HashMap<>();
     }
 
     public Searcher(String path, boolean isSemantic, Parse parse, boolean isFile) {
