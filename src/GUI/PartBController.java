@@ -2,15 +2,22 @@ package GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class PartBController implements Initializable {
@@ -20,6 +27,9 @@ public class PartBController implements Initializable {
     String queryFilePath;
     String query;
     boolean isSemantic;
+    allQueriesController allQueriesController;
+    private  Stage stageAllQueries;
+
     @FXML
     AnchorPane queryStage;
     public CheckBox semantic;
@@ -38,20 +48,54 @@ public class PartBController implements Initializable {
     public void enableButtons() {
     }
 
-    public void startFindDoc(ActionEvent actionEvent) {
+    public void startFindDoc(ActionEvent actionEvent) throws IOException {
         setQuery();
         if(queryFilePath != null && queryFilePath.length()>0 ) {
-            viewModel.setSercherByPath(queryFilePath);
             isSemantic = semantic.isSelected();
+            viewModel.setSercherByPath(queryFilePath, isSemantic);
+            showAllQuery();
+
+
             //todo
         }
         else if(query!= null && query.length()>0){
-            viewModel.setSercher(query);
             isSemantic = semantic.isSelected();
+            viewModel.setSercher(query, isSemantic);
+            showAllQuery();
+
             //todo
         }
         else {
             showAlert("Please select a path to a query file or write a query" ,"Query is invalid");
+        }
+
+    }
+
+    private void showAllQuery() throws IOException {
+        HashMap<String, ArrayList<String>> allDocForEachQ= viewModel.startFindDoc();
+        if(allDocForEachQ!=null && allDocForEachQ.size()>0){
+            try {
+                if (stageAllQueries == null) {
+                    stageAllQueries = new Stage();
+                    stageAllQueries.setTitle("All Queries");
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    Parent root = fxmlLoader.load(getClass().getResource("/queriesTitle.fxml").openStream());
+                    Scene scene = new Scene(root, 650, 500);
+                    stageAllQueries.setScene(scene);
+                    stageAllQueries.setResizable(false);
+                    allQueriesController = fxmlLoader.getController();
+                    allQueriesController.setViewModel(this.viewModel);
+                    stageAllQueries.initModality(Modality.APPLICATION_MODAL);
+                }
+
+                stageAllQueries.show();
+            } catch(Exception ignored) {
+                showAlert("Something went wrong please try again", "Error");
+            }
+
+        }
+        else{
+            showAlert("Something went wrong please try again", "Error:");
         }
 
     }

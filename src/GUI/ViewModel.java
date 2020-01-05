@@ -1,9 +1,7 @@
 package GUI;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * The switch between the controller and the stemmerMain functionality of the system
@@ -70,11 +68,16 @@ public class ViewModel extends Observable implements Observer {
         return myModel.getNumOfDoc();
     }
 
-    public void setSercherByPath(String queryFilePath) {
-        myModel.setSearcherByPath(queryFilePath);
+    public void setSercherByPath(String queryFilePath,boolean isSemantic) {
+        myModel.setSearcherByPath(queryFilePath, isSemantic);
     }
 
-    public void setSercher(String query) {
-        myModel.setSearcher(query);
+    public void setSercher(String query, boolean isSemantic) {
+        myModel.setSearcher(query, isSemantic);
+    }
+
+    public HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
+        HashMap<String, ArrayList<String>> allDocForEachQ=myModel.startFindDoc();
+        return allDocForEachQ;
     }
 }

@@ -230,6 +230,7 @@ public class View implements Observer, Initializable {
             partBController.enableButtons();
             stagePartBController.show();
         } catch(Exception ignored) {
+            showAlert("Something went wrong please try again", "Error");
         }
 
     }

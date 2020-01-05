@@ -27,6 +27,10 @@ public class Searcher {
     IdentifyEntityInDocument allEntities;
     HashMap<String, ArrayList<String>> results;
 
+    public HashMap<String, ArrayList<String>> getResults() {
+        return results;
+    }
+
     public Searcher(String query, Parse parser, boolean isSemantic) {
         ranker = new Ranker(isSemantic);
         this.parser = parser;
@@ -37,7 +41,8 @@ public class Searcher {
         size = 10;
     }
 
-    public Searcher(String path, boolean isSemantic) {
+    public Searcher(String path, boolean isSemantic, Parse parse, boolean isFile) {
+        parser = parse;
         ranker = new Ranker(isSemantic);
         termTF = new HashMap<>();
         reader = new ReadQueries(path);
@@ -54,11 +59,15 @@ public class Searcher {
             for (Document doc : parser.allDocs) {
                 parsedQuery = doc;
                 getAllRelevantDocs();
-                ArrayList<String> topRelevantDocs = getRelevantDocs();
-                results.put(parsedQuery.getId(), topRelevantDocs);
+                ArrayList<String> relevantDocs = getRelevantDocs();
+                results.put(parsedQuery.getId(), relevantDocs);
+                for (String d : relevantDocs) {
+                    System.out.println(d);
+                }
             }
         }
         catch (Exception e) {
+            System.out.println("somthing got wrong");
         }
     }
 
@@ -80,6 +89,7 @@ public class Searcher {
                 parser.startParseDocument(query.getKey(), query.getValue());
             }
         }
+
     }
 
     public ArrayList<String> getRelevantDocs() {
@@ -87,13 +97,12 @@ public class Searcher {
         return topRankDocs;
     }
 
-    private void getAllRelevantDocs() throws IOException {
+    private void getAllRelevantDocs() {
         ArrayList<String> allQueryTerms = parsedQuery.getAllTerms();
         for (String term : allQueryTerms) {
             if (!termTF.containsKey(term))
                 getDocsWithTerm(term);
         }
-        getDocsTerms();
     }
 
     private void getDocsWithTerm(String term) {
@@ -172,35 +181,5 @@ public class Searcher {
             e.printStackTrace();
             return e.toString();
         }
-    }
-
-    private void getDocsTerms() throws IOException {
-        for (Document doc : allRelevantDocs) {
-            ArrayList<String> allDocTerms = readTerms(doc.getId());
-            doc.listOfWord.setTerms(allDocTerms);
-        }
-    }
-
-    private ArrayList<String> readTerms(String docName) throws IOException {
-        ArrayList<String> allTerms = new ArrayList<>();
-        File terms = new File(parser.getPostingPath() + "\\documentsTerms.txt");
-        try {
-            FileReader fileReader = new FileReader(terms);
-            BufferedReader reader = new BufferedReader(fileReader);
-            String line;
-            while((line = reader.readLine()) != null) {
-                String[] words = line.split(";");
-                if (words[0].equals(docName)) {
-                    for (int i=1; i<words.length; i++) {
-                        allTerms.add(words[0]);
-                    }
-                    return  allTerms;
-                }
-            }
-        }
-        catch (Exception e) {
-            System.out.println("problem with reading the terms");
-        }
-        return allTerms;
     }
 }

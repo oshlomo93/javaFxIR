@@ -5,6 +5,7 @@ import Searcher.Searcher;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
@@ -60,16 +61,19 @@ public class Model extends Observable {
         return parse.getNumofDoc();
     }
 
-    public ArrayList<String> startFindDoc( String query ){
-        //searcher = new Searcher(query, parse);
-        return searcher.getRelevantDocs();
+    public HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
+
+        searcher.start();
+        HashMap<String, ArrayList<String>> allDocForEachQ= searcher.getResults();
+        return allDocForEachQ;
     }
 
 
-    public void setSearcherByPath(String queryFilePath) { //todo
-        //searcher = new Searcher();
+    public void setSearcherByPath(String queryFilePath, boolean isSemantic) { //todo
+        searcher = new Searcher(queryFilePath,isSemantic, parse, true);
     }
 
-    public void setSearcher(String query) {
+    public void setSearcher(String query, boolean isSemantic) {
+        searcher = new Searcher(query,parse, isSemantic);
     }
 }

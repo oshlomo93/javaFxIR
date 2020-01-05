@@ -12,12 +12,12 @@ public class Ranker {
     HashMap<String, Integer> documentIdAndSize;
 
     BM25 bm25;
-    //Semantic semantic;
+    Semantic semantic;
 
 
     public Ranker(boolean isSemantic ){
         bm25 = new BM25();
-        //semantic = new Semantic();
+        semantic = new Semantic();
         documentIdAndSize = new HashMap<>();
         if(isSemantic){
             this.bm25Per = 0.7;
