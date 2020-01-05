@@ -35,7 +35,6 @@ public class Searcher {
         ranker = new Ranker(isSemantic);
         this.parser = parser;
         this.query = query;
-        //this.allEntities = new IdentifyEntityInDocument(parser.getPostingPath());
         termTF = new HashMap<>();
         allRelevantDocs = new ArrayList<>();
         size = 10;
@@ -59,7 +58,7 @@ public class Searcher {
             parseQueries();
             for (Document doc : parser.allDocs) {
                 parsedQuery = doc;
-               // getAllRelevantDocs();
+                getAllRelevantDocs();
                 ArrayList<String> relevantDocs = getRelevantDocs();
                 results.put(parsedQuery.getId(), relevantDocs);
                 for (String d : relevantDocs) {
