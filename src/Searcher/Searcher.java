@@ -56,7 +56,7 @@ public class Searcher {
                 getAllQueries();
             }
             parseQueries();
-            for (Document doc : parser.allDocs) {
+            for (Document doc : parser.allQueries) {
                 parsedQuery = doc;
                 getAllRelevantDocs();
                 ArrayList<String> relevantDocs = getRelevantDocs();
@@ -67,7 +67,7 @@ public class Searcher {
             }
         }
         catch (Exception e) {
-            System.out.println("somthing got wrong");
+            System.out.println("something went wrong, happy debugging! :)");
         }
     }
 
@@ -82,14 +82,13 @@ public class Searcher {
 
     private void parseQueries() {
         if (query != null){
-            parser.startParseDocument("query", query);
+            parser.startParseDocument("query", query, true);
         }
         else if (queries != null) {
             for (Map.Entry<String,String> query : queries.entrySet()) {
-                parser.startParseDocument(query.getKey(), query.getValue());
+                parser.startParseDocument(query.getKey(), query.getValue(), true);
             }
         }
-
     }
 
     public ArrayList<String> getRelevantDocs() {

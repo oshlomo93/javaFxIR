@@ -14,6 +14,7 @@ public class Parse  {
     public Indexer indexer;
     private HashMap<String,Term> allTerms;
     public LinkedList<Document> allDocs;
+    public LinkedList<Document> allQueries;
     private int counter = 0;
     private StopWords stopWords ;
     private NumNoUnits numNoUnits;
@@ -49,6 +50,7 @@ public class Parse  {
                 }
                 allTerms = new HashMap<String, Term>();
                 allDocs = new LinkedList();
+                allQueries = new LinkedList<>();
                 numNoUnits = new NumNoUnits();
                 date = new Date();
                 entity = new Entity();
@@ -62,19 +64,8 @@ public class Parse  {
                 indexer = new Indexer();
                 this.isStemmer = isStemmer;
                 stemmer = new Stemmer();
-                isNewLineCharToDelete = new ArrayList<>();
-                char [] deleteChar= {',','.','"',':',';','!','?', '@','#', '&', '(' ,'-' , '{','|', '*' , '+'};
-                for (char c : deleteChar) {
-                    isNewLineCharToDelete.add(c);
-                }
-                deleteChar = null;
-                isEndOfLineCharToDelete = new ArrayList<>();
-                char [] deletChar= {',','.','"',':',';','!','?', '@','#', '&', ')', '}' ,'-' , '|'};
-                for (char c : deletChar) {
-                    isEndOfLineCharToDelete.add(c);
-                }
-                deletChar = null;
-
+                isNewLineCharToDelete = getIsNewLineCharToDelete();
+                isEndOfLineCharToDelete = getIsEndOfLineCharToDelete();
             }
         }
     }
@@ -82,28 +73,59 @@ public class Parse  {
 
 
     public Parse(String postingPath, boolean selected) throws IOException {
-        isStemmer =selected;
+        isStemmer = selected;
         if (postingPath != null) {
-            if(isStemmer) {
+            if(isStemmer)
                 this.postingPath = postingPath+"\\WithStemming";
-            }
-            else {
-
+            else
                 this.postingPath = postingPath+"\\WithoutStemming";
-
-            }
-            indexer = new Indexer();
-            Map<String, String> sortedDict = uploadDictionary();
-            indexer.setDictionary(sortedDict);
-            HashMap<String, List<String[]>> pointers = uploadPointers();
-            indexer.setPointers(pointers);
-            allDocs = uploadDocsDetails(isStemmer);
+            allTerms = new HashMap<String, Term>();
+            termsAndDocs = new ArrayList<>();
+            numNoUnits = new NumNoUnits();
+            date = new Date();
+            entity = new Entity();
+            expression = new Expression();
+            percent = new Percent();
+            price = new Price();
+            upLowLetter = new UpLowLetter();
+            countries = new Countries();
+            unknownType = new UnknownType();
             isStemmer = selected;
-            counter = allDocs.size();
+            indexer = new Indexer();
+            allQueries = new LinkedList<>();
+            isNewLineCharToDelete = getIsNewLineCharToDelete();
+            isEndOfLineCharToDelete = getIsNewLineCharToDelete();
+            upload();
             System.out.println("The upload finished successfully");
-
-
         }
+    }
+
+    private ArrayList<Character> getIsNewLineCharToDelete() {
+        ArrayList<Character> ans = new ArrayList<>();
+        char [] deleteChar= {',','.','"',':',';','!','?', '@','#', '&', ')', '}' ,'-' , '|'};
+        for (char c : deleteChar) {
+            ans.add(c);
+        }
+        return ans;
+    }
+
+    private ArrayList<Character> getIsEndOfLineCharToDelete() {
+        ArrayList<Character> ans = new ArrayList<>();
+        char [] deleteChar= {',','.','"',':',';','!','?', '@','#', '&', '(' ,'-' , '{','|', '*' , '+'};
+        for (char c : deleteChar) {
+            ans.add(c);
+        }
+        return ans;
+    }
+
+    public void upload() throws IOException {
+        Map<String, String> sortedDict = uploadDictionary();
+        indexer.setDictionary(sortedDict);
+        HashMap<String, List<String[]>> pointers = uploadPointers();
+        indexer.setPointers(pointers);
+        allDocs = uploadDocsDetails(isStemmer);
+        uploadStopwords();
+        counter = allDocs.size();
     }
 
     public String getPostingPath() {
@@ -182,7 +204,7 @@ public class Parse  {
         int counterall = 0;
         while (read.size() != 0) {
             currentDoc = read.get(0);
-            startParseDocument(currentDoc[0], currentDoc[1]);
+            startParseDocument(currentDoc[0], currentDoc[1], false);
             counterall++;
             read.remove();
             if (counterall%size == 0) {
@@ -192,6 +214,7 @@ public class Parse  {
         if (counterall%size != 0) {
             update();
         }
+        writeStopwords();
         indexer.deleteFromDict(entity.listOfEntity);
         System.out.println("Done parse all the docs");
         long end = System.currentTimeMillis();
@@ -273,6 +296,11 @@ public class Parse  {
         return docs;
     }
 
+    private void uploadStopwords() throws IOException {
+        stopWords = new StopWords(postingPath + "\\stopwords.txt");
+        System.out.println("The stop words uploaded successfully");
+    }
+
     /**
      * Upload the Dictionary file
      * @return
@@ -303,6 +331,15 @@ public class Parse  {
             String docDetails = doc.toString();
             writer.write(docDetails);
             writer.write("\n");
+        }
+        writer.close();
+    }
+
+    private void writeStopwords() throws IOException {
+        File stopwords = new File(postingPath + "\\stopwords.txt");
+        FileWriter writer = new FileWriter(stopwords, true);
+        for (String word: stopWords.allStopWords) {
+            writer.write(word + "\n");
         }
         writer.close();
     }
@@ -343,7 +380,7 @@ public class Parse  {
      * @param documentName
      * @param documentText
      */
-    public void startParseDocument(String documentName , String documentText) {
+    public void startParseDocument(String documentName , String documentText, boolean isQuery) {
         if (documentName != null && documentName.length() > 0 && documentText != null && documentText.length() > 0) {
             Document document = new Document(documentName);
             ArrayList<String> allSentences = splitDoc(documentText);
@@ -403,7 +440,10 @@ public class Parse  {
                     j++;
                 }
             }
-            allDocs.add(document);
+            if (isQuery)
+                allQueries.add(document);
+            else
+                allDocs.add(document);
         }
     }
 
@@ -471,7 +511,6 @@ public class Parse  {
             }
         }
         return allSentences;
-
     }
 
     /**
