@@ -12,11 +12,12 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-      Parse parser = new Parse("C:\\Users\\omer\\Desktop\\Testing\\testCorpus" , "C:\\Users\\omer\\Desktop\\Testing\\posting", true);
+      Parse parser = new Parse("C:\\Users\\user\\Desktop\\IrAll\\corpusAndStopWprds" , "C:\\Users\\user\\Desktop\\IrAll\\postingFiels", true);
       parser.parseAllDocs();
       Searcher searcher = new Searcher("Falkland petroleum exploration", parser, false);
       searcher.start();
-      //HashMap<String, ArrayList<String>> allDoc =searcher.getResults();
+      HashMap<String, ArrayList<String>> allDoc =searcher.getResults();
+
       //System.out.println(allDoc.size());
 
        //IdentifyEntityInDocument id = new IdentifyEntityInDocument(parser.getPostingPath());

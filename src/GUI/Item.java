@@ -1,5 +1,6 @@
 package GUI;
 
+import Searcher.IdentifyEntityInDocument;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -20,19 +21,21 @@ public class Item {
     private Button button;
     private ArrayList<String> allDocForEachQ;
 
-    public Item(String title,ArrayList<String> allDocForEachQ ){
+    public Item(String title,ArrayList<String> allDocForEachQ, String path ){
         queryTitle = new SimpleStringProperty(title);
         button = new Button("Show relevant documents");
         button.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                System.out.println("is Here");
                 buttonAct();
             }
         });
         if(allDocForEachQ!=null && !allDocForEachQ.isEmpty()){
             this.allDocForEachQ = allDocForEachQ;
         }
+        String entityPath = path+"\\documentsEntities.txt";
+        IdentifyEntityInDocument identifyEntityInDocument = new IdentifyEntityInDocument(entityPath);
+       // identifyEntityInDocument.getAllEntities();
     }
 
     public String getQueryTitle() {

@@ -1,5 +1,6 @@
 package GUI;
 
+import Searcher.IdentifyEntityInDocument;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,13 +14,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.omg.CORBA.IdentifierHelper;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class PartBController implements Initializable {
     public TextField selectQueryFilePath;
@@ -29,6 +29,8 @@ public class PartBController implements Initializable {
     String query;
     boolean isSemantic;
     private Stage stageAllQueries;
+    String path;
+
 
     @FXML
     AnchorPane queryStage;
@@ -37,7 +39,6 @@ public class PartBController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     public void setViewModel(ViewModel viewModel) {
@@ -45,6 +46,10 @@ public class PartBController implements Initializable {
     }
 
     public void enableButtons() {
+    }
+    public void setPath(String posingPath){
+        path = posingPath;
+
     }
 
     public void startFindDoc(ActionEvent actionEvent) throws IOException {
@@ -54,14 +59,10 @@ public class PartBController implements Initializable {
             viewModel.setSercherByPath(queryFilePath, isSemantic);
             showAllQuery();
 
-
-            //todo
         } else if (query != null && query.length() > 0) {
             isSemantic = semantic.isSelected();
             viewModel.setSercher(query, isSemantic);
             showAllQuery();
-
-            //todo
         } else {
             showAlert("Please select a path to a query file or write a query", "Query is invalid");
         }
@@ -83,7 +84,8 @@ public class PartBController implements Initializable {
             Object[] allQueries =  allDocForEachQ.keySet().toArray();
             for (int i = 0; i < allQueries.length; i++) {
                 String nameT = (String) allQueries[i];
-                Item item= new Item(nameT, allDocForEachQ.get(nameT));
+                Item item= new Item(nameT, allDocForEachQ.get(nameT), path);
+
                 tableView.getItems().add(item);
             }
 
