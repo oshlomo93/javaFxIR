@@ -6,10 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,6 +18,7 @@ import java.util.ResourceBundle;
 public class allQueriesController implements Initializable {
 
     public TableView tableTitleView;
+    public TableColumn colTitle;
     ViewModel viewModel;
     
     ShowResultForQueryController showResultForQueryController;
@@ -29,14 +27,14 @@ public class allQueriesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        tableTitleView = new TableView<Item>();
     }
 
 
     public void addAllTitlesToTable(HashMap<String, ArrayList<String>> allDocForEachQ){
         if(allDocForEachQ!=null && !allDocForEachQ.isEmpty()){
             for (String title:allDocForEachQ.keySet()) {
-                Hyperlink hyperlink = new Hyperlink(title);
+                Hyperlink hyperlink = new Hyperlink();
                 hyperlink.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
@@ -45,7 +43,6 @@ public class allQueriesController implements Initializable {
                 });
 
                 tableTitleView.getColumns().add(hyperlink);
-
             }
         }
     }

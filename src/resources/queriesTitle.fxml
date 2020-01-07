@@ -15,7 +15,7 @@
       </Text>
       <TableView fx:id="tableTitleView" layoutX="27.0" layoutY="70.0" prefHeight="345.0" prefWidth="574.0">
         <columns>
-          <TableColumn prefWidth="573.0" text="title:" />
+          <TableColumn fx:id="colTitle" prefWidth="573.0" text="Title:" />
         </columns>
       </TableView>
    </children>

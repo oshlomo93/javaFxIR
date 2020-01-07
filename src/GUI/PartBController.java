@@ -6,10 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PartBController implements Initializable {
@@ -27,13 +28,11 @@ public class PartBController implements Initializable {
     String queryFilePath;
     String query;
     boolean isSemantic;
-    allQueriesController allQueriesController;
-    private  Stage stageAllQueries;
+    private Stage stageAllQueries;
 
     @FXML
     AnchorPane queryStage;
     public CheckBox semantic;
-
 
 
     @Override
@@ -50,56 +49,60 @@ public class PartBController implements Initializable {
 
     public void startFindDoc(ActionEvent actionEvent) throws IOException {
         setQuery();
-        if(queryFilePath != null && queryFilePath.length()>0 ) {
+        if (queryFilePath != null && queryFilePath.length() > 0) {
             isSemantic = semantic.isSelected();
             viewModel.setSercherByPath(queryFilePath, isSemantic);
             showAllQuery();
 
 
             //todo
-        }
-        else if(query!= null && query.length()>0){
+        } else if (query != null && query.length() > 0) {
             isSemantic = semantic.isSelected();
             viewModel.setSercher(query, isSemantic);
             showAllQuery();
 
             //todo
-        }
-        else {
-            showAlert("Please select a path to a query file or write a query" ,"Query is invalid");
+        } else {
+            showAlert("Please select a path to a query file or write a query", "Query is invalid");
         }
 
     }
 
     private void showAllQuery() throws IOException {
-        HashMap<String, ArrayList<String>> allDocForEachQ= viewModel.startFindDoc();
-        if(allDocForEachQ!=null && allDocForEachQ.size()>0){
-            try {
-                if (stageAllQueries == null) {
-                    stageAllQueries = new Stage();
-                    stageAllQueries.setTitle("All Queries");
-                    FXMLLoader fxmlLoader = new FXMLLoader();
-                    Parent root = fxmlLoader.load(getClass().getResource("/queriesTitle.fxml").openStream());
-                    Scene scene = new Scene(root, 650, 500);
-                    stageAllQueries.setScene(scene);
-                    stageAllQueries.setResizable(false);
-                    allQueriesController = fxmlLoader.getController();
-                    allQueriesController.setViewModel(this.viewModel);
-                    stageAllQueries.initModality(Modality.APPLICATION_MODAL);
-                    allQueriesController.addAllTitlesToTable(allDocForEachQ);
-                }
-
-                stageAllQueries.show();
-            } catch(Exception ignored) {
-                showAlert("Something went wrong please try again", "Error");
+        HashMap<String, ArrayList<String>> allDocForEachQ = viewModel.startFindDoc();
+        if(allDocForEachQ != null && !allDocForEachQ.isEmpty()) {
+            stageAllQueries = new Stage();
+            stageAllQueries.setTitle("All queries::");
+            TableView tableView = new TableView();
+            TableColumn<String, Item> column1 = new TableColumn<>("Query Title");
+            column1.setCellValueFactory(new PropertyValueFactory<>("queryTitle"));
+            TableColumn<String, Item> column2 = new TableColumn<>("Show relevant documents");
+            column2.setCellValueFactory(new PropertyValueFactory<>("button"));
+            tableView.getColumns().add(column1);
+            tableView.getColumns().add(column2);
+            Object[] allQueries =  allDocForEachQ.keySet().toArray();
+            for (int i = 0; i < allQueries.length; i++) {
+                String nameT = (String) allQueries[i];
+                Item item= new Item(nameT, allDocForEachQ.get(nameT));
+                tableView.getItems().add(item);
             }
 
+            VBox vbox = new VBox(tableView);
+
+            Scene scene = new Scene(vbox);
+
+            stageAllQueries.setScene(scene);
+
+            stageAllQueries.show();
         }
-        else{
+        else {
             showAlert("Something went wrong please try again", "Error:");
         }
-
     }
+
+
+
+
 
     private void showAlert(String  strAlert , String title) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
