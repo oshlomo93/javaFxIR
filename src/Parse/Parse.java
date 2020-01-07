@@ -534,9 +534,12 @@ public class Parse  {
             newTerm[1] = document.getId();
             allTerms.put(termName, term);
             termsAndDocs.add(newTerm);
-            if (type.equals("Entity")|| type.equals("UpLowLetter")) {
-                char c = termName.charAt(0);
-                if (c >= 'A' && c <= 'Z')
+            //if (type.equals("Entity")|| type.equals("UpLowLetter")) {
+            //    char c = termName.charAt(0);
+            //    if (c >= 'A' && c <= 'Z')
+            //        document.addEntity(termName);
+            //}
+            if (type.equals("Entity")) {
                     document.addEntity(termName);
             }
         }

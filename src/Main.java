@@ -5,7 +5,7 @@ import javafx.event.ActionEvent;
 import Searcher.ReadQueries;
 import Searcher.IdentifyEntityInDocument;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,10 +25,12 @@ public class Main {
        //id.getTopEntities();
        System.out.println("Done");
 
+
 //        ReadQueries reader = new ReadQueries("C:\\Users\\omer\\Desktop\\queries.txt");
 //        reader.readQueries();
 //        System.out.println("done");
 
 
     }
+
 }
