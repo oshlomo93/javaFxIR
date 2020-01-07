@@ -20,12 +20,12 @@ public class Ranker {
         semantic = new Semantic();
         documentIdAndSize = new HashMap<>();
         if(isSemantic){
-            this.bm25Per = 0.7;
-            this.semanticPer = 0.3;
+            this.bm25Per = 0.3;
+            this.semanticPer = 0.7;
         }
         else {
-            this.bm25Per = 1;
-            this.semanticPer = 0;
+            this.bm25Per = 0.7;
+            this.semanticPer = 0.3;
         }
     }
 
