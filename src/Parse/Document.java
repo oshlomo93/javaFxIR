@@ -34,8 +34,19 @@ public class Document {
         this.numOfWords = Integer.valueOf(word3);
     }
 
+    public void setMaxTf(int maxTf) {
+        this.maxTf = maxTf;
+    }
+
+    public void setNumOfTerms(int numOfTerms) {
+        this.numOfTerms = numOfTerms;
+    }
+
     public void setNumOfWords(int size) {
-        numOfWords += size;
+        if (numOfWords == 0)
+            numOfWords = size;
+        else
+            numOfWords += size;
     }
 
     /**
