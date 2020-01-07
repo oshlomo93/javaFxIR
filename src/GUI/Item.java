@@ -20,6 +20,7 @@ public class Item {
     private SimpleStringProperty queryTitle ;
     private Button button;
     private ArrayList<String> allDocForEachQ;
+    private String path;
 
     public Item(String title,ArrayList<String> allDocForEachQ, String path ){
         queryTitle = new SimpleStringProperty(title);
@@ -33,8 +34,7 @@ public class Item {
         if(allDocForEachQ!=null && !allDocForEachQ.isEmpty()){
             this.allDocForEachQ = allDocForEachQ;
         }
-        String entityPath = path+"\\documentsEntities.txt";
-        IdentifyEntityInDocument identifyEntityInDocument = new IdentifyEntityInDocument(entityPath);
+        this.path = path;
        // identifyEntityInDocument.getAllEntities();
     }
 
@@ -65,7 +65,7 @@ public class Item {
         tableView.getColumns().add(column1);
         tableView.getColumns().add(column2);
         for (String docId: allDocForEachQ) {
-            ItemDoc itemDoc= new ItemDoc(docId);
+            ItemDoc itemDoc= new ItemDoc(docId, this.path);
             tableView.getItems().add(itemDoc);
         }
         VBox vbox = new VBox(tableView);

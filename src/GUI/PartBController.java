@@ -47,6 +47,7 @@ public class PartBController implements Initializable {
 
     public void enableButtons() {
     }
+
     public void setPath(String posingPath){
         path = posingPath;
 
