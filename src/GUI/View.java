@@ -225,6 +225,16 @@ public class View implements Observer, Initializable {
                 stagePartBController.setResizable(false);
                 partBController = fxmlLoader.getController();
                 partBController.setViewModel(this.viewModel);
+
+                if(stemmer.isSelected()) {
+                    String parhToEntity=postingFilesStringPath+ "\\WithStemming";
+                    partBController.setPath(parhToEntity);
+                }
+                else {
+                    String parhToEntity=postingFilesStringPath+ "\\WithoutStemming";
+                    partBController.setPath(parhToEntity);
+
+                }
                 stagePartBController.initModality(Modality.APPLICATION_MODAL);
             }
             partBController.enableButtons();
