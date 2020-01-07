@@ -73,7 +73,6 @@ public class Parse  {
 
 
     public Parse(String postingPath, boolean selected) throws IOException {
-        isStemmer = selected;
         if (postingPath != null) {
             if(isStemmer)
                 this.postingPath = postingPath+"\\WithStemming";
@@ -93,6 +92,8 @@ public class Parse  {
             isStemmer = selected;
             indexer = new Indexer();
             allQueries = new LinkedList<>();
+            isStemmer = selected;
+            stemmer = new Stemmer();
             isNewLineCharToDelete = getIsNewLineCharToDelete();
             isEndOfLineCharToDelete = getIsNewLineCharToDelete();
             upload();
@@ -163,7 +164,7 @@ public class Parse  {
         String[] ans = new String[2];
         assert directories != null;
         ans[0] = path + "\\" + directories[0];
-        ans[1] =  path + "\\stop_words 05.txt";
+        ans[1] =  path + "\\" + directories[1];
         return ans;
     }
 

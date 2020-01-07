@@ -17,7 +17,7 @@ public class IdentifyEntityInDocument {
         allDocEntities = new HashMap<>();
     }
 
-    public void getAllEntities(String docName) {
+    public ArrayList<String[]> getAllEntities(String docName) {
         this.docName = docName;
         File entities = new File(path + "\\documentsEntities.txt");
         try {
@@ -34,6 +34,7 @@ public class IdentifyEntityInDocument {
         catch (Exception e) {
             System.out.println("problem with reading the queries in ReadQueries class");
         }
+        return getTopEntities();
     }
 
     private void createAllDocEntities(String[] words) {
@@ -69,7 +70,7 @@ public class IdentifyEntityInDocument {
         return count;
     }
 
-    public ArrayList<String[]> getTopEntities() {
+    private ArrayList<String[]> getTopEntities() {
         ArrayList<String[]> ans = new ArrayList<>();
         int count = 0;
         for (String entity : allDocEntities.keySet()) {

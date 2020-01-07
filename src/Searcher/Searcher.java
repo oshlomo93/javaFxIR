@@ -4,6 +4,7 @@ import Parse.Document;
 import Parse.Parse;
 import Ranker.Ranker;
 
+import javax.print.Doc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -37,7 +38,7 @@ public class Searcher {
         this.query = query;
         termTF = new HashMap<>();
         allRelevantDocs = new ArrayList<>();
-        size = 10;
+        size = 50;
         results = new HashMap<>();
     }
 
@@ -136,13 +137,38 @@ public class Searcher {
                 }
             }
             else {
-                Document newDoc = new Document(docID);
+                Document newDoc = getDocDetails(docID);
                 newDoc.addTermPositions(term, positions);
                 allRelevantDocs.add(newDoc);
             }
             counter += tf;
         }
         return counter;
+    }
+
+    private Document getDocDetails(String docID) {
+        try {
+            Document newDoc = new Document(docID);
+            String ans = "";
+            File file = new File(parser.getPostingPath() + "\\documentsDetails.txt");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] words = line.split(";");
+                if (words[0].equals(docID)) {
+                    newDoc.setMaxTf(Integer.valueOf(words[1]));
+                    newDoc.setNumOfTerms(Integer.valueOf(words[2]));
+                    newDoc.setNumOfWords(Integer.valueOf(words[3]));
+                    return newDoc;
+                }
+            }
+            return newDoc;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Document getDoc(String docID) {
