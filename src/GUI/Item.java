@@ -1,8 +1,6 @@
 package GUI;
 
-import Searcher.IdentifyEntityInDocument;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -25,6 +23,7 @@ public class Item {
     public Item(String title,ArrayList<String> allDocForEachQ, String path ){
         queryTitle = new SimpleStringProperty(title);
         button = new Button("Show relevant documents");
+
         button.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
