@@ -10,6 +10,7 @@ public class Ranker {
     double semanticPer;
 
     HashMap<String, Integer> documentIdAndSize;
+    Map<String, Integer> docIdAndNuberOfUniqeTermInDoc;
 
     BM25 bm25;
     Semantic semantic;
@@ -19,6 +20,7 @@ public class Ranker {
         bm25 = new BM25();
         semantic = new Semantic();
         documentIdAndSize = new HashMap<>();
+        docIdAndNuberOfUniqeTermInDoc= new HashMap<>();
         if(isSemantic){
             this.bm25Per = 0.3;
             this.semanticPer = 0.7;
@@ -37,11 +39,12 @@ public class Ranker {
             for (Document document: documents) {
                 if(isTheDocumentValid(document)){
                     documentIdAndSize.put(document.getId(), document.getDocumetSize());
+                    docIdAndNuberOfUniqeTermInDoc.put(document.getId(), document.getAllTerms().size());
                 }
             }
             for (Document document: documents) {
                 if(isTheDocumentValid(document)) {
-                    double myRank = rankDoc(query, document, tf);
+                    double myRank = rankDoc(query, document, tf,docIdAndNuberOfUniqeTermInDoc);
                     docAndValRank.put(document.getId(), myRank);
                 }
             }
@@ -51,13 +54,13 @@ public class Ranker {
         return toReturn;
     }
 
-    private double rankDoc(Document query ,Document document, HashMap<String, Integer> tf) {
+    private double rankDoc(Document query ,Document document, HashMap<String, Integer> tf,Map<String, Integer> docIdAndNuberOfUniqeTermInDoc) {
         double toRet=0;
         if(isTheDocumentValid(document)&& tf!=null && !tf.isEmpty()) {
-            double valBm25 = bm25.rankDoc(query,document,tf, documentIdAndSize);
+            double valBm25 = bm25.rankDoc(query,document,tf, documentIdAndSize,docIdAndNuberOfUniqeTermInDoc);
             double valSem =0;
             if(semanticPer != 0) {
-                valSem= semantic.rankDoc(query, document, tf, documentIdAndSize);
+                valSem= semantic.rankDoc(query, document, tf, documentIdAndSize,docIdAndNuberOfUniqeTermInDoc);
             }
             toRet = valBm25 * bm25Per + valSem * semanticPer;
         }

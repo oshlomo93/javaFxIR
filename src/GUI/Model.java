@@ -12,68 +12,78 @@ import java.util.Observable;
 /**
  *  * This class controls all engine activity
  */
-public class Model extends Observable {
+class Model extends Observable {
 
-    Parse parse;
-    Searcher searcher;
+    private Parse parse;
+    private Searcher searcher;
 
-    public Model() {
+    Model() {
 
     }
-
-
     /**
      * The function that runs the entire engine
-     * @param corpusAndStopWordsStringPath
+     * @param corpusAndStopWordsStringPath the path to corpus and stop words
      * @param postingFilesStringPath
      * @param isStemmer
-     * @throws IOException
+     * @throws IOException - if something got wrong
      */
-    public void start(String corpusAndStopWordsStringPath , String  postingFilesStringPath, boolean isStemmer) throws IOException {
+    void start(String corpusAndStopWordsStringPath, String postingFilesStringPath, boolean isStemmer) throws IOException {
             parse = new Parse(corpusAndStopWordsStringPath, postingFilesStringPath, isStemmer);
             if(parse!= null) {
                 parse.parseAllDocs();
             }
     }
 
-    public void resetIr(boolean selected) {
+    /**
+     * @param selected
+     */
+    void resetIr(boolean selected) {
         parse.exit(selected);
         parse =null;
     }
 
-    //public void setParse() {
-    //    searcher.setParse(parse);
-    //}
-
-
-    public Map<String, String> getSortedDict() {
+    /**
+     * @return map of term and frequency
+     */
+    Map<String, String> getSortedDict() {
         return parse.getSortedDict();
     }
 
-    public void uploadDict(String postingFilesStringPath, boolean selected) throws IOException {
+    /**
+     * @param postingFilesStringPath
+     * @param selected
+     * @throws IOException
+     */
+    void uploadDict(String postingFilesStringPath, boolean selected) throws IOException {
         parse = new Parse(postingFilesStringPath, selected);
     }
 
     /**
      * @return Receive the number of documents in the repository
      */
-    public int getNumOfDoc() {
+    int getNumOfDoc() {
         return parse.getNumofDoc();
     }
 
-    public HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
-
+    HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
         searcher.start();
-        HashMap<String, ArrayList<String>> allDocForEachQ= searcher.getResults();
-        return allDocForEachQ;
+        return searcher.getResults();
     }
 
 
-    public void setSearcherByPath(String queryFilePath, boolean isSemantic) { //todo
+    /**
+     * @param queryFilePath String
+     * @param isSemantic boolean
+     */
+    void setSearcherByPath(String queryFilePath, boolean isSemantic) { //todo
         searcher = new Searcher(queryFilePath,isSemantic, parse, true);
     }
 
-    public void setSearcher(String query, boolean isSemantic) {
+    /**
+     * @param query String
+     * @param isSemantic boolean
+     */
+    void setSearcher(String query, boolean isSemantic) {
         searcher = new Searcher(query,parse, isSemantic);
     }
 }

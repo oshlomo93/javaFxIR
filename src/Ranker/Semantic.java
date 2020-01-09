@@ -8,12 +8,13 @@ import edu.cmu.lti.ws4j.util.WS4JConfiguration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Semantic implements IRanker {
     private static ILexicalDatabase db = new NictWordNet();
 
     @Override
-    public double rankDoc(Document query ,Document document, HashMap<String, Integer> tf, HashMap<String, Integer> documentIdAndSize) {
+    public double rankDoc(Document query , Document document, HashMap<String, Integer> tf, HashMap<String, Integer> documentIdAndSize, Map<String, Integer> docIdAndNuberOfUniqeTermInDoc) {
         double toReturn=0;
         if(query != null && document!= null){
             ArrayList<String> allQueryTerms = query.getAllTerms();
