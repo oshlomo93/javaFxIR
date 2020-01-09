@@ -49,10 +49,11 @@ public class Searcher {
 
     public void start() {
         try {
-            results = new HashMap<>();
             if (reader != null) {
+                this.reader.resetReader();
                 getAllQueries();
             }
+            parser.allQueries.clear();
             parseQueries();
             for (Document doc : parser.allQueries) {
                 parsedQuery = doc;
@@ -92,6 +93,10 @@ public class Searcher {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void resetResults() {
+        this.results.clear();
     }
 
     private void parseQueries() {

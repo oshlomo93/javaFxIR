@@ -21,6 +21,10 @@ public class ReadQueries {
         return allQueries;
     }
 
+    public void resetReader() {
+        allQueries.clear();
+    }
+
     //read all the queries
     public void readQueries() throws IOException {
         File queries = new File(path);

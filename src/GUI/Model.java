@@ -67,6 +67,7 @@ class Model extends Observable {
     }
 
     HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
+        searcher.resetResults();
         searcher.start();
         return searcher.getResults();
     }
