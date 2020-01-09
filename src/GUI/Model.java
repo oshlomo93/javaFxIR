@@ -62,7 +62,7 @@ class Model extends Observable {
      * @return Receive the number of documents in the repository
      */
     int getNumOfDoc() {
-        return parse.getNumofDoc();
+        return parse.getNumOfDoc();
     }
 
     HashMap<String, ArrayList<String>> startFindDoc() throws IOException {

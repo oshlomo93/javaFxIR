@@ -5,10 +5,7 @@ import Parse.Parse;
 import Ranker.Ranker;
 
 import javax.print.Doc;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,16 +60,29 @@ public class Searcher {
                 getAllRelevantDocs();
                 ArrayList<String> relevantDocs = getRelevantDocs();
                 results.put(parsedQuery.getId(), relevantDocs);
-                System.out.println("All relevant docs for query " + doc.getId() + ":");
-                for (String d : relevantDocs) {
-                    System.out.println(d);
-                }
+                //System.out.println("All relevant docs for query " + doc.getId() + ":");
+                //for (String d : relevantDocs) {
+                //    System.out.println(d);
+                //}
             }
+            writeResults();
         }
         catch (Exception e) {
             e.printStackTrace();
             System.out.println("something went wrong, happy debugging! :)");
         }
+    }
+
+    private void writeResults() throws IOException {
+        File resultsFile = new File(parser.getPostingPath() + "\\results.txt");
+        FileWriter writer = new FileWriter(resultsFile);
+        for (String query : results.keySet()) {
+            for (String docName : results.get(query)) {
+                String line = query + " 0 " + docName + " 1 0 0";
+                writer.write(line + "\n");
+            }
+        }
+        writer.close();
     }
 
     private void getAllQueries() throws IOException {

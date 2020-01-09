@@ -847,7 +847,7 @@ public class Parse  {
      * Accept the number of documents
      * @return int
      */
-    public int getNumofDoc() {
+    public int getNumOfDoc() {
         return counter;
     }
 }
