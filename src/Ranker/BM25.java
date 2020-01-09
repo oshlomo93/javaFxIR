@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BM25 implements IRanker {
-    double b = 0.75;
-    double k = 1.2;
+    private double b = 0.75;
+    private double k = 1.2;
 
     @Override
     public double rankDoc(Document query , Document document, HashMap<String, Integer> tf, HashMap<String, Integer> documentIdAndSize, Map<String, Integer> docIdAndNuberOfUniqeTermInDoc) {
@@ -40,15 +40,7 @@ public class BM25 implements IRanker {
     }
 
     private double avgDocumentsSize(HashMap<String, Integer> documentIdAndSize){
-        int avgD = 0;
-        if( documentIdAndSize!=null &&!documentIdAndSize.isEmpty()){
-            int sum=0;
-            for (String docId: documentIdAndSize.keySet()) {
-                sum = sum +documentIdAndSize.get(docId);
-            }
-            avgD = sum/(documentIdAndSize.size());
-        }
-        return avgD;
+        return avgDocbySomthing(documentIdAndSize);
     }
 
     private double rankBM25perTerm(String term , HashMap<String, Integer> documentIdAndSize, Document document,HashMap<String, Integer> tf, Map<String, Integer> docIdAndNuberOfUniqeTermInDoc){
@@ -71,8 +63,10 @@ public class BM25 implements IRanker {
             double partB = k_plus_1_Dual_tfi(tfi);
             double partC = calculationWithBAndWithKAndWithTfi_d_fra_avgD(dSize , avgD , tfi);
 
+            double partD= newHelpFormula(tfi, dSize);
             if(partC!=0){
-                toReturn = partA*(partB/partC);
+                //toReturn = partA*(partB/partC); //todo
+                toReturn = partD*(partB/partC);
             }
         }
 
@@ -85,6 +79,17 @@ public class BM25 implements IRanker {
         if(dfi>0){
             double nFDfi= N/dfi;
             toReturn = Math.log(nFDfi);
+        }
+        return toReturn;
+    }
+
+    private double newHelpFormula(double Fij, double Aij){
+        double toReturn =0;
+        if(Fij>0 && Aij>0) {
+            double part_1 = 1 + Math.log(Fij);
+            double part_2= 1+Math.log(Aij);
+            toReturn = part_1/part_2;
+            toReturn = toReturn*Fij;
         }
         return toReturn;
     }
@@ -116,6 +121,8 @@ public class BM25 implements IRanker {
         return b_d_fra_avgD*k;
     }
 
+
+
     //calculation -> k*((1-b)+b*(|d|/avg(d)))+tfi
     private double calculationWithBAndWithKAndWithTfi_d_fra_avgD(int dSize, double avgD, double tfi){
         double b_d_fra_avgD_k = calculationWithBAndWithK_d_fra_avgD(dSize,avgD);
@@ -133,6 +140,10 @@ public class BM25 implements IRanker {
 
 
     private double avgDocumentsUniqSize(Map<String, Integer> docIdAndNuderOfUniqTermInDoc){
+        return avgDocbySomthing(docIdAndNuderOfUniqTermInDoc);
+    }
+
+    private double avgDocbySomthing(Map<String, Integer> docIdAndNuderOfUniqTermInDoc) {
         int avgD = 0;
         if( docIdAndNuderOfUniqTermInDoc!=null &&!docIdAndNuderOfUniqTermInDoc.isEmpty()){
             int sum=0;

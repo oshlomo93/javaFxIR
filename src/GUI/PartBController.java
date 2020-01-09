@@ -1,21 +1,15 @@
 package GUI;
 
-import Searcher.IdentifyEntityInDocument;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.omg.CORBA.IdentifierHelper;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
