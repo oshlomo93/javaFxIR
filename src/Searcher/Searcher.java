@@ -47,6 +47,7 @@ public class Searcher {
         ranker = new Ranker(isSemantic);
         termTF = new HashMap<>();
         reader = new ReadQueries(path);
+        allRelevantDocs = new ArrayList<>();
         size = 50;
         results = new HashMap<>();
     }
@@ -68,6 +69,7 @@ public class Searcher {
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.out.println("something went wrong, happy debugging! :)");
         }
     }
@@ -99,9 +101,11 @@ public class Searcher {
 
     private void getAllRelevantDocs() {
         ArrayList<String> allQueryTerms = parsedQuery.getAllTerms();
-        for (String term : allQueryTerms) {
-            if (!termTF.containsKey(term))
-                getDocsWithTerm(term);
+        if (allQueryTerms.size() > 0) {
+            for (String term : allQueryTerms) {
+                if (!termTF.containsKey(term))
+                    getDocsWithTerm(term);
+            }
         }
     }
 
@@ -182,9 +186,17 @@ public class Searcher {
     }
 
     private boolean isExists(String docID) {
-        for (Document doc : allRelevantDocs) {
-            if (doc.getId().equals(docID))
-                return true;
+        try {
+            if (allRelevantDocs != null) {
+                for (Document doc : allRelevantDocs) {
+                    if (doc.getId().equals(docID))
+                        return true;
+                }
+                return false;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }

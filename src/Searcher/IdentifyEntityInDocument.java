@@ -63,12 +63,6 @@ public class IdentifyEntityInDocument {
         allDocEntities = sorted;
     }
 
-    private float getScore(int count) {
-        if ( max > 0) {
-            return (float)count/max;
-        }
-        return count;
-    }
 
     private ArrayList<String[]> getTopEntities() {
         ArrayList<String[]> ans = new ArrayList<>();
@@ -84,5 +78,12 @@ public class IdentifyEntityInDocument {
                 break;
         }
         return ans;
+    }
+
+    private float getScore(int count) {
+        if ( max > 0) {
+            return (float)count/max;
+        }
+        return count;
     }
 }
