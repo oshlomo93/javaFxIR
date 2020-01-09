@@ -19,12 +19,13 @@ public class Searcher {
     private int size;
     private IdentifyEntityInDocument allEntities;
     private TreeMap<String, ArrayList<String>> results;
+    String saveQueryPath;
 
     public TreeMap<String, ArrayList<String>> getResults() {
         return results;
     }
 
-    public Searcher(String query, Parse parser, boolean isSemantic) {
+    public Searcher(String query, Parse parser, boolean isSemantic,String saveQueryPath) {
         ranker = new Ranker(isSemantic);
         this.parser = parser;
         this.query = query;
@@ -32,9 +33,10 @@ public class Searcher {
         allRelevantDocs = new ArrayList<>();
         size = 50;
         results = new TreeMap<>();
+        this.saveQueryPath = saveQueryPath;
     }
 
-    public Searcher(String path, boolean isSemantic, Parse parse, boolean isFile) {
+    public Searcher(String path, boolean isSemantic, Parse parse, boolean isFile,String saveQueryPath) {
         parser = parse;
         ranker = new Ranker(isSemantic);
         termTF = new HashMap<>();
@@ -42,6 +44,7 @@ public class Searcher {
         allRelevantDocs = new ArrayList<>();
         size = 50;
         results = new TreeMap<>();
+        this.saveQueryPath = saveQueryPath;
     }
 
     public void start() {
@@ -62,7 +65,7 @@ public class Searcher {
                 //    System.out.println(d);
                 //}
             }
-            writeResults();
+            writeResults(saveQueryPath);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -70,8 +73,8 @@ public class Searcher {
         }
     }
 
-    private void writeResults() throws IOException {
-        File resultsFile = new File(parser.getPostingPath() + "\\results.txt");
+    private void writeResults(String saveQueryPath) throws IOException {
+        File resultsFile = new File(saveQueryPath + "\\results.txt");
         FileWriter writer = new FileWriter(resultsFile);
         for (String query : results.keySet()) {
             for (String docName : results.get(query)) {

@@ -74,15 +74,15 @@ class Model extends Observable {
      * @param queryFilePath String
      * @param isSemantic boolean
      */
-    void setSearcherByPath(String queryFilePath, boolean isSemantic) { //todo
-        searcher = new Searcher(queryFilePath,isSemantic, parse, true);
+    void setSearcherByPath(String queryFilePath, boolean isSemantic,String saveQueryPath) { //todo
+        searcher = new Searcher(queryFilePath,isSemantic, parse, true, saveQueryPath);
     }
 
     /**
      * @param query String
      * @param isSemantic boolean
      */
-    void setSearcher(String query, boolean isSemantic) {
-        searcher = new Searcher(query,parse, isSemantic);
+    void setSearcher(String query, boolean isSemantic,String saveQueryPath) {
+        searcher = new Searcher(query,parse, isSemantic, saveQueryPath);
     }
 }

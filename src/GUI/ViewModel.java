@@ -68,12 +68,12 @@ public class ViewModel extends Observable implements Observer {
         return myModel.getNumOfDoc();
     }
 
-    public void setSercherByPath(String queryFilePath,boolean isSemantic) {
-        myModel.setSearcherByPath(queryFilePath, isSemantic);
+    public void setSercherByPath(String queryFilePath,boolean isSemantic,String saveQueryPath) {
+        myModel.setSearcherByPath(queryFilePath, isSemantic,saveQueryPath);
     }
 
-    public void setSercher(String query, boolean isSemantic) {
-        myModel.setSearcher(query, isSemantic);
+    public void setSercher(String query, boolean isSemantic,String saveQueryPath) {
+        myModel.setSearcher(query, isSemantic, saveQueryPath);
     }
 
     public TreeMap<String, ArrayList<String>> startFindDoc() throws IOException {

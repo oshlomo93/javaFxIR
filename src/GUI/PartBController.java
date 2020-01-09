@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -18,12 +19,15 @@ import java.util.*;
 public class PartBController implements Initializable {
     public TextField selectQueryFilePath;
     public TextField queryVal;
+    public Button saveQuery;
+    public TextField saveQuerypath;
     ViewModel viewModel;
     String queryFilePath;
     String query;
     boolean isSemantic;
     private Stage stageAllQueries;
     String path;
+    String saveQueryPath;
 
 
     @FXML
@@ -50,18 +54,27 @@ public class PartBController implements Initializable {
     public void startFindDoc(ActionEvent actionEvent){
 
             setQuery();
-            if (queryFilePath != null && queryFilePath.length() > 0) {
-                isSemantic = semantic.isSelected();
-                viewModel.setSercherByPath(queryFilePath, isSemantic);
-                showAllQuery();
+            try {
+                if (saveQueryPath != null && saveQueryPath.length() > 0) {
+                    if (queryFilePath != null && queryFilePath.length() > 0) {
+                        isSemantic = semantic.isSelected();
+                        viewModel.setSercherByPath(queryFilePath, isSemantic,saveQueryPath);
+                        showAllQuery();
 
-            } else if (query != null && query.length() > 0) {
-                isSemantic = semantic.isSelected();
-                viewModel.setSercher(query, isSemantic);
-                showAllQuery();
+                    } else if (query != null && query.length() > 0) {
+                        isSemantic = semantic.isSelected();
+                        viewModel.setSercher(query, isSemantic,saveQueryPath);
+                        showAllQuery();
 
-            } else {
-                showAlert("Please select a path to a query file or write a query", "Query is invalid");
+                    } else {
+                        showAlert("Please select a path to a query file or write a query", "Query is invalid");
+                    }
+                } else {
+                    showAlert("Please select a path to save the results of the query", "Please Save");
+                }
+            }
+            catch (Exception e){
+                showAlert("Please select a path to save the results of the query", "Please Save");
             }
         cleanPath();
     }
@@ -71,6 +84,8 @@ public class PartBController implements Initializable {
         queryVal.setText("");
         queryFilePath= "";
         query= "";
+        saveQueryPath="";
+        selectQueryFilePath.setText("");
         stageAllQueries = new Stage();
 
     }
@@ -134,5 +149,15 @@ public class PartBController implements Initializable {
 
     public void setQuery(){
         query = queryVal.getText();
+    }
+
+    public void saveQueryRes(ActionEvent actionEvent) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        Stage stage =  (Stage) queryStage.getScene().getWindow() ;
+        File file = directoryChooser.showDialog(stage);
+        if(file != null){
+            saveQueryPath = file.getAbsolutePath();
+            saveQuerypath.setText(saveQueryPath);
+        }
     }
 }
