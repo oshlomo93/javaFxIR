@@ -65,10 +65,19 @@ public class PartBController implements Initializable {
                 isSemantic = semantic.isSelected();
                 viewModel.setSercher(query, isSemantic);
                 showAllQuery();
+
             } else {
                 showAlert("Please select a path to a query file or write a query", "Query is invalid");
             }
+        cleanPath();
+    }
 
+    private void cleanPath() {
+        selectQueryFilePath.setText("");
+        queryVal.setText("");
+        queryFilePath= "";
+        query= "";
+        stageAllQueries = new Stage();
 
     }
 
@@ -109,10 +118,6 @@ public class PartBController implements Initializable {
 
         }
     }
-
-
-
-
 
     private void showAlert(String  strAlert , String title) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
