@@ -49,6 +49,7 @@ public class Searcher {
 
     public void start() {
         try {
+            results = new HashMap<>();
             if (reader != null) {
                 getAllQueries();
             }

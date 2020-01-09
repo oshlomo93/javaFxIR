@@ -77,7 +77,7 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
-        HashMap<String, ArrayList<String>> allDocForEachQ=myModel.startFindDoc();
+        HashMap<String, ArrayList<String>> allDocForEachQ = myModel.startFindDoc();
         return allDocForEachQ;
     }
 }
