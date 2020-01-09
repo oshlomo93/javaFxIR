@@ -53,53 +53,60 @@ public class PartBController implements Initializable {
 
     }
 
-    public void startFindDoc(ActionEvent actionEvent) throws IOException {
-        setQuery();
-        if (queryFilePath != null && queryFilePath.length() > 0) {
-            isSemantic = semantic.isSelected();
-            viewModel.setSercherByPath(queryFilePath, isSemantic);
-            showAllQuery();
+    public void startFindDoc(ActionEvent actionEvent){
 
-        } else if (query != null && query.length() > 0) {
-            isSemantic = semantic.isSelected();
-            viewModel.setSercher(query, isSemantic);
-            showAllQuery();
-        } else {
-            showAlert("Please select a path to a query file or write a query", "Query is invalid");
-        }
+            setQuery();
+            if (queryFilePath != null && queryFilePath.length() > 0) {
+                isSemantic = semantic.isSelected();
+                viewModel.setSercherByPath(queryFilePath, isSemantic);
+                showAllQuery();
+
+            } else if (query != null && query.length() > 0) {
+                isSemantic = semantic.isSelected();
+                viewModel.setSercher(query, isSemantic);
+                showAllQuery();
+            } else {
+                showAlert("Please select a path to a query file or write a query", "Query is invalid");
+            }
+
 
     }
 
-    private void showAllQuery() throws IOException {
-        HashMap<String, ArrayList<String>> allDocForEachQ = viewModel.startFindDoc();
-        if(allDocForEachQ != null && !allDocForEachQ.isEmpty()) {
-            stageAllQueries = new Stage();
-            stageAllQueries.setTitle("All queries::");
-            TableView tableView = new TableView();
-            TableColumn<String, Item> column1 = new TableColumn<>("Query Title");
-            column1.setCellValueFactory(new PropertyValueFactory<>("queryTitle"));
-            TableColumn<String, Item> column2 = new TableColumn<>("Show relevant documents");
-            column2.setCellValueFactory(new PropertyValueFactory<>("button"));
-            tableView.getColumns().add(column1);
-            tableView.getColumns().add(column2);
-            Object[] allQueries =  allDocForEachQ.keySet().toArray();
-            for (int i = 0; i < allQueries.length; i++) {
-                String nameT = (String) allQueries[i];
-                Item item= new Item(nameT, allDocForEachQ.get(nameT), path);
+    private void showAllQuery()  {
+        try {
+            HashMap<String, ArrayList<String>> allDocForEachQ = viewModel.startFindDoc();
+            if (allDocForEachQ != null && !allDocForEachQ.isEmpty()) {
+                stageAllQueries = new Stage();
+                stageAllQueries.setTitle("All queries::");
+                TableView tableView = new TableView();
+                TableColumn<String, Item> column1 = new TableColumn<>("Query Title");
+                column1.setCellValueFactory(new PropertyValueFactory<>("queryTitle"));
+                TableColumn<String, Item> column2 = new TableColumn<>("Show relevant documents");
+                column2.setCellValueFactory(new PropertyValueFactory<>("button"));
+                tableView.getColumns().add(column1);
+                tableView.getColumns().add(column2);
+                Object[] allQueries = allDocForEachQ.keySet().toArray();
+                for (int i = 0; i < allQueries.length; i++) {
+                    String nameT = (String) allQueries[i];
+                    Item item = new Item(nameT, allDocForEachQ.get(nameT), path);
 
-                tableView.getItems().add(item);
+                    tableView.getItems().add(item);
+                }
+
+                VBox vbox = new VBox(tableView);
+
+                Scene scene = new Scene(vbox);
+
+                stageAllQueries.setScene(scene);
+
+                stageAllQueries.show();
+            } else {
+                showAlert("Something went wrong please try again", "Error:");
             }
-
-            VBox vbox = new VBox(tableView);
-
-            Scene scene = new Scene(vbox);
-
-            stageAllQueries.setScene(scene);
-
-            stageAllQueries.show();
         }
-        else {
+        catch (IOException e){
             showAlert("Something went wrong please try again", "Error:");
+
         }
     }
 

@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -54,27 +55,41 @@ public class Item {
     }
 
     public void buttonAct(){
-        Stage stageAllQueries = new Stage();
-        stageAllQueries.setTitle("All Document:");
-        TableView tableView = new TableView();
-        TableColumn<String, Item> column1 = new TableColumn<>("Document ID");
-        column1.setCellValueFactory(new PropertyValueFactory<>("docTitle"));
-        TableColumn<String, Item> column2 = new TableColumn<>("5 common entities");
-        column2.setCellValueFactory(new PropertyValueFactory<>("button"));
-        tableView.getColumns().add(column1);
-        tableView.getColumns().add(column2);
-        for (String docId: allDocForEachQ) {
-            ItemDoc itemDoc= new ItemDoc(docId, this.path);
-            tableView.getItems().add(itemDoc);
+        if(allDocForEachQ!=null &&allDocForEachQ.size()>0) {
+            Stage stageAllQueries = new Stage();
+            stageAllQueries.setTitle("All Document:");
+            TableView tableView = new TableView();
+            TableColumn<String, Item> column1 = new TableColumn<>("Document ID");
+            column1.setCellValueFactory(new PropertyValueFactory<>("docTitle"));
+            TableColumn<String, Item> column2 = new TableColumn<>("5 common entities");
+            column2.setCellValueFactory(new PropertyValueFactory<>("button"));
+            tableView.getColumns().add(column1);
+            tableView.getColumns().add(column2);
+            for (String docId : allDocForEachQ) {
+                ItemDoc itemDoc = new ItemDoc(docId, this.path);
+                tableView.getItems().add(itemDoc);
+            }
+            VBox vbox = new VBox(tableView);
+
+            Scene scene = new Scene(vbox);
+
+            stageAllQueries.setScene(scene);
+
+            stageAllQueries.show();
         }
-        VBox vbox = new VBox(tableView);
+        else{
+            showAlert("Sorry, no documents found", "No documents found");
 
-        Scene scene = new Scene(vbox);
+        }
+    }
 
-        stageAllQueries.setScene(scene);
 
-        stageAllQueries.show();
-
+    private void showAlert(String  strAlert , String title) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setTitle(title);
+        alert.setContentText(strAlert);
+        alert.show();
     }
 
 
