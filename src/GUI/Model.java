@@ -4,10 +4,7 @@ import Parse.Parse;
 import Searcher.Searcher;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
+import java.util.*;
 
 /**
  *  * This class controls all engine activity
@@ -66,7 +63,7 @@ class Model extends Observable {
         return parse.getNumOfDoc();
     }
 
-    HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
+    TreeMap<String, ArrayList<String>> startFindDoc() throws IOException {
         searcher.resetResults();
         searcher.start();
         return searcher.getResults();

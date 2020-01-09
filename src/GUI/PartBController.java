@@ -83,7 +83,7 @@ public class PartBController implements Initializable {
 
     private void showAllQuery()  {
         try {
-            HashMap<String, ArrayList<String>> allDocForEachQ = viewModel.startFindDoc();
+            TreeMap<String, ArrayList<String>> allDocForEachQ = viewModel.startFindDoc();
             if (allDocForEachQ != null && !allDocForEachQ.isEmpty()) {
                 stageAllQueries = new Stage();
                 stageAllQueries.setTitle("All queries::");

@@ -8,6 +8,7 @@ import Searcher.IdentifyEntityInDocument;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -16,7 +17,7 @@ public class Main {
       parser.parseAllDocs();
       Searcher searcher = new Searcher("Falkland petroleum exploration", parser, false);
       searcher.start();
-      HashMap<String, ArrayList<String>> allDoc =searcher.getResults();
+      TreeMap<String, ArrayList<String>> allDoc =searcher.getResults();
 
       //System.out.println(allDoc.size());
 

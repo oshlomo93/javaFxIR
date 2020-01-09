@@ -4,10 +4,7 @@ import Parse.Document;
 import Parse.Parse;
 import Ranker.Ranker;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Searcher {
 
@@ -21,9 +18,9 @@ public class Searcher {
     private ReadQueries reader;
     private int size;
     private IdentifyEntityInDocument allEntities;
-    private HashMap<String, ArrayList<String>> results;
+    private TreeMap<String, ArrayList<String>> results;
 
-    public HashMap<String, ArrayList<String>> getResults() {
+    public TreeMap<String, ArrayList<String>> getResults() {
         return results;
     }
 
@@ -34,7 +31,7 @@ public class Searcher {
         termTF = new HashMap<>();
         allRelevantDocs = new ArrayList<>();
         size = 50;
-        results = new HashMap<>();
+        results = new TreeMap<>();
     }
 
     public Searcher(String path, boolean isSemantic, Parse parse, boolean isFile) {
@@ -44,7 +41,7 @@ public class Searcher {
         reader = new ReadQueries(path);
         allRelevantDocs = new ArrayList<>();
         size = 50;
-        results = new HashMap<>();
+        results = new TreeMap<>();
     }
 
     public void start() {
@@ -78,7 +75,7 @@ public class Searcher {
         FileWriter writer = new FileWriter(resultsFile);
         for (String query : results.keySet()) {
             for (String docName : results.get(query)) {
-                String line = query + " 0 " + docName + " 1 0 0";
+                String line = query + " 0 " + docName + " 1 " + 0 + " void";
                 writer.write(line + "\n");
             }
         }

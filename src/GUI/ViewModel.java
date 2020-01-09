@@ -76,8 +76,8 @@ public class ViewModel extends Observable implements Observer {
         myModel.setSearcher(query, isSemantic);
     }
 
-    public HashMap<String, ArrayList<String>> startFindDoc() throws IOException {
-        HashMap<String, ArrayList<String>> allDocForEachQ = myModel.startFindDoc();
+    public TreeMap<String, ArrayList<String>> startFindDoc() throws IOException {
+        TreeMap<String, ArrayList<String>> allDocForEachQ = myModel.startFindDoc();
         return allDocForEachQ;
     }
 }
