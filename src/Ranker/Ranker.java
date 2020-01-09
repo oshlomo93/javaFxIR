@@ -32,7 +32,7 @@ public class Ranker {
     }
 
     public ArrayList<String> rank(Document query , List<Document> documents, int size, HashMap<String, Integer> tf){
-        ArrayList<String> toReturn =null;
+        ArrayList<String> toReturn = new ArrayList<>();
         if(query!=null && documents!=null && documents.size()>0){
             HashMap<String, Double> docAndValRank =new HashMap<>();
 
@@ -77,9 +77,8 @@ public class Ranker {
     }
 
     private ArrayList<String> merge(HashMap<String, Double> docAndValRank , int size ){
-        ArrayList<String> toReturn =null;
+        ArrayList<String> toReturn = new ArrayList<>();
         if(docAndValRank!= null){
-            toReturn = new ArrayList<>();
             int addStr= 0;
             while (!docAndValRank.isEmpty()){
                 ArrayList <String> getDocId = getStringsWithMaxVal(docAndValRank);
@@ -102,7 +101,7 @@ public class Ranker {
     }
 
     private ArrayList<String> getStringsWithMaxVal(HashMap<String, Double> docAndValRank){
-        ArrayList<String> toReturn =null;
+        ArrayList<String> toReturn = new ArrayList<>();
         if(docAndValRank!=null && !docAndValRank.isEmpty()){
 
             toReturn = new ArrayList<>();
