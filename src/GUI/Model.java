@@ -20,6 +20,7 @@ class Model extends Observable {
     Model() {
 
     }
+
     /**
      * The function that runs the entire engine
      * @param corpusAndStopWordsStringPath the path to corpus and stop words
