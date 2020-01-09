@@ -63,6 +63,7 @@ public class Searcher {
                 getAllRelevantDocs();
                 ArrayList<String> relevantDocs = getRelevantDocs();
                 results.put(parsedQuery.getId(), relevantDocs);
+                System.out.println("All relevant docs for query " + doc.getId() + ":");
                 for (String d : relevantDocs) {
                     System.out.println(d);
                 }

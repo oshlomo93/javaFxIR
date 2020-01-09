@@ -188,7 +188,6 @@ public class Parse  {
             f.delete();
         }
         file.delete();
-
     }
 
     /**
@@ -626,9 +625,9 @@ public class Parse  {
         else if(date.amIThis(word)){
             iAm = "Date";
         }
-        else if(entity.amIThis(word)){
-            iAm = "Entity";
-        }
+        //else if(entity.amIThis(word)){
+        //    iAm = "Entity";
+        //}
         else if(countries.amIThis(word)){
             iAm = "Countries";
         }

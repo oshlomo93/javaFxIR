@@ -21,6 +21,8 @@ public class Entity implements IRules {
      */
     @Override
     public boolean amIThis(String word) {
+        if (word.charAt(0) >= 'A' && word.charAt(0) <= 'Z')
+            return true;
         return false;
     }
 
