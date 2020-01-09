@@ -235,7 +235,6 @@ public class Parse  {
         writeAllDocuments();
         writeAllDocsTerms();
         writeAllDocumentsEntities();
-        counter = counter+ allDocs.size();
         allDocs.clear();
     }
 
@@ -280,7 +279,6 @@ public class Parse  {
      * @throws IOException
      */
     public LinkedList<Document> uploadDocsDetails(boolean isStemmer) throws IOException {
-        //todo isStemmer
         LinkedList<Document> docs = new LinkedList();
         File file = new File(postingPath + "\\documentsDetails.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
