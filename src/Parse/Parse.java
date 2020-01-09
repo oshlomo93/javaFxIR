@@ -625,9 +625,6 @@ public class Parse  {
         else if(date.amIThis(word)){
             iAm = "Date";
         }
-        //else if(entity.amIThis(word)){
-        //    iAm = "Entity";
-        //}
         else if(countries.amIThis(word)){
             iAm = "Countries";
         }
@@ -837,8 +834,7 @@ public class Parse  {
      */
     private String[] replaceDoubleHyphenToComma(String text){
         if(text!= null  && text.length()>0) {
-            String[] deleteDoubleHyphen = text.split("--");
-            return deleteDoubleHyphen;
+            return text.split("--");
         }
         return null;
     }

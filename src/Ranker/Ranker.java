@@ -6,14 +6,14 @@ import java.util.*;
 
 public class Ranker {
 
-    double bm25Per;
-    double semanticPer;
+    private double bm25Per;
+    private double semanticPer;
 
-    HashMap<String, Integer> documentIdAndSize;
-    Map<String, Integer> docIdAndNuberOfUniqeTermInDoc;
+    private HashMap<String, Integer> documentIdAndSize;
+    private Map<String, Integer> docIdAndNuberOfUniqeTermInDoc;
 
-    BM25 bm25;
-    Semantic semantic;
+    private BM25 bm25;
+    private Semantic semantic;
 
 
     public Ranker(boolean isSemantic ){
@@ -69,9 +69,7 @@ public class Ranker {
 
     private boolean isTheDocumentValid(Document document){
         if(document != null ){
-            if(document.listOfWord!= null && !document.listOfWord.isEmpty() ){
-                return true;
-            }
+            return document.listOfWord != null && !document.listOfWord.isEmpty();
         }
         return false;
     }

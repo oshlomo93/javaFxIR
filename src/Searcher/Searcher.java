@@ -3,8 +3,6 @@ package Searcher;
 import Parse.Document;
 import Parse.Parse;
 import Ranker.Ranker;
-
-import javax.print.Doc;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,17 +11,17 @@ import java.util.Map;
 
 public class Searcher {
 
-    String query;
-    HashMap<String, String> queries;
-    Ranker  ranker;
-    Document parsedQuery;
-    Parse parser;
-    List<Document> allRelevantDocs;
-    HashMap<String, Integer> termTF;
-    ReadQueries reader;
-    int size;
-    IdentifyEntityInDocument allEntities;
-    HashMap<String, ArrayList<String>> results;
+    private String query;
+    private HashMap<String, String> queries;
+    private Ranker  ranker;
+    private Document parsedQuery;
+    private Parse parser;
+    private List<Document> allRelevantDocs;
+    private HashMap<String, Integer> termTF;
+    private ReadQueries reader;
+    private int size;
+    private IdentifyEntityInDocument allEntities;
+    private HashMap<String, ArrayList<String>> results;
 
     public HashMap<String, ArrayList<String>> getResults() {
         return results;
@@ -49,7 +47,7 @@ public class Searcher {
         results = new HashMap<>();
     }
 
-    public void start() throws IOException {
+    public void start() {
         try {
             if (reader != null) {
                 getAllQueries();
@@ -85,12 +83,13 @@ public class Searcher {
         writer.close();
     }
 
-    private void getAllQueries() throws IOException {
+    private void getAllQueries() {
         try {
             reader.readQueries();
             queries = reader.getQueries();
         }
         catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -105,9 +104,8 @@ public class Searcher {
         }
     }
 
-    public ArrayList<String> getRelevantDocs() {
-        ArrayList<String> topRankDocs = ranker.rank(parsedQuery, allRelevantDocs, size, termTF);
-        return topRankDocs;
+    private ArrayList<String> getRelevantDocs() {
+        return ranker.rank(parsedQuery, allRelevantDocs, size, termTF);
     }
 
     private void getAllRelevantDocs() {
@@ -153,6 +151,7 @@ public class Searcher {
             }
             else {
                 Document newDoc = getDocDetails(docID);
+                assert newDoc != null;
                 newDoc.addTermPositions(term, positions);
                 allRelevantDocs.add(newDoc);
             }
@@ -164,7 +163,6 @@ public class Searcher {
     private Document getDocDetails(String docID) {
         try {
             Document newDoc = new Document(docID);
-            String ans = "";
             File file = new File(parser.getPostingPath() + "\\documentsDetails.txt");
             FileReader fileReader = new FileReader(file);
             BufferedReader reader = new BufferedReader(fileReader);
