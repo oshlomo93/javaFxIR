@@ -60,11 +60,12 @@ public class Document {
     /**
      * The storm of a document by the string
      * @param word
+     * @param position
      * @return
      */
-    public boolean addTermByName(String word ){
+    public boolean addTermByName(String word , int position){
         if(word != null && word.length()>0){
-            listOfWord.addTerm(word);
+            listOfWord.addTerm(word , position);
             numOfTerms++;
             return true;
         }
@@ -81,6 +82,11 @@ public class Document {
         }
     }
 
+    public void addTermPositions(String term, String[] positions) {
+        for (String pos : positions) {
+            addTermByName(term, Integer.parseInt(pos));
+        }
+    }
 
     /**
      * Returns a string representing the document
@@ -129,10 +135,11 @@ public class Document {
     /**
      * Add a term to a document
      * @param term
+     * @param i- Position the term in the document
      */
-    public void addTerm(Term term ){
+    public void addTerm(Term term , int i){
         if(term != null) {
-            addTermByName(term.getTerm());
+            addTermByName(term.getTerm() , i);
             int count = listOfWord.getTFofTerm(term.getTerm());
             if (count > maxTf)
                 maxTf = count;

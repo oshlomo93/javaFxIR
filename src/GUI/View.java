@@ -237,7 +237,6 @@ public class View implements Observer, Initializable {
                 }
                 stagePartBController.initModality(Modality.APPLICATION_MODAL);
             }
-            partBController.enableButtons();
             stagePartBController.show();
         } catch(Exception ignored) {
             showAlert("Something went wrong please try again", "Error");

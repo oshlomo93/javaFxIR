@@ -43,9 +43,6 @@ public class PartBController implements Initializable {
         this.viewModel = viewModel;
     }
 
-    public void enableButtons() {
-    }
-
     public void setPath(String posingPath){
         path = posingPath;
 

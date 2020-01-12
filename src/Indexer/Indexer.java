@@ -88,7 +88,7 @@ public class Indexer {
     private void updatePosting(LinkedList<Document> allDocs, String path ,boolean isStemmr) throws IOException {
         for (Document doc : allDocs) {
             if (doc != null) {
-                HashMap<String , Integer> allTermInDoc = doc.listOfWord.getTermAndTF();
+                HashMap<String, ArrayList<Integer>> allTermInDoc = doc.listOfWord.getTermAndAllPos();
                 for(String term : allTermInDoc.keySet()){
                     List<String> termDetails;
                     if(posting.containsKey(term)){
@@ -225,7 +225,6 @@ public class Indexer {
             int line = 1;
             FileWriter writer = new FileWriter(file);
             for (String termName: posting.keySet()) {
-                writer.write(termName + ";");
                 for (String termList: posting.get(termName))
                 {
                     writer.write(termList);

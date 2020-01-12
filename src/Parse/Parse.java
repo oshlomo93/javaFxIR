@@ -524,7 +524,7 @@ public class Parse  {
             if (allTerms.containsKey(termName)) {
                 term = allTerms.get(termName);
             }
-            document.addTerm(term);
+            document.addTerm(term , position);
             term.add(document.Id);
             String[] newTerm = new String[2];
             newTerm[0] = term.getTerm();

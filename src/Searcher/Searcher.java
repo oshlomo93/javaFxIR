@@ -3,10 +3,7 @@ package Searcher;
 import Parse.Document;
 import Parse.Parse;
 import Ranker.Ranker;
-
-import javax.print.Doc;
 import java.io.*;
-import java.net.InetAddress;
 import java.util.*;
 
 public class Searcher {
@@ -16,18 +13,20 @@ public class Searcher {
     private Ranker  ranker;
     private Document parsedQuery;
     private Parse parser;
-    private ArrayList<Document> allRelevantDocs;
+    private List<Document> allRelevantDocs;
     private HashMap<String, Integer> termTF;
     private ReadQueries reader;
     private int size;
+    private IdentifyEntityInDocument allEntities;
     private TreeMap<String, ArrayList<String>> results;
-    String saveQueryPath;
+    String resultPath;
 
     public TreeMap<String, ArrayList<String>> getResults() {
         return results;
     }
 
-    public Searcher(String query, Parse parser, boolean isSemantic,String saveQueryPath) {
+    public Searcher(String query, Parse parser, boolean isSemantic, String saveResoltQuery) {
+
         ranker = new Ranker(isSemantic);
         this.parser = parser;
         this.query = query;
@@ -35,10 +34,10 @@ public class Searcher {
         allRelevantDocs = new ArrayList<>();
         size = 50;
         results = new TreeMap<>();
-        this.saveQueryPath = saveQueryPath;
+        resultPath = saveResoltQuery;
     }
 
-    public Searcher(String path, boolean isSemantic, Parse parse, boolean isFile,String saveQueryPath) {
+    public Searcher(String path, boolean isSemantic, Parse parse, boolean isFile,String saveResoltQuery) {
         parser = parse;
         ranker = new Ranker(isSemantic);
         termTF = new HashMap<>();
@@ -46,7 +45,8 @@ public class Searcher {
         allRelevantDocs = new ArrayList<>();
         size = 50;
         results = new TreeMap<>();
-        this.saveQueryPath = saveQueryPath;
+        resultPath = saveResoltQuery;
+
     }
 
     public void start() {
@@ -59,18 +59,15 @@ public class Searcher {
             parseQueries();
             for (Document doc : parser.allQueries) {
                 parsedQuery = doc;
-                HashMap<String, ArrayList<String>> allPath = getAllPath();
-                ArrayList<String> allDocsAsString = getAllRelevantDocsAndTermTF(allPath);
-                allRelevantDocs = getAllRelevantDocs(allDocsAsString);
-                updateReleventDocs();
-                ArrayList<String> relevantDocs = ranker.rank(parsedQuery, allRelevantDocs, size, termTF);
+                getAllRelevantDocs();
+                ArrayList<String> relevantDocs = getRelevantDocs();
                 results.put(parsedQuery.getId(), relevantDocs);
                 //System.out.println("All relevant docs for query " + doc.getId() + ":");
                 //for (String d : relevantDocs) {
                 //    System.out.println(d);
                 //}
             }
-            writeResults(saveQueryPath);
+            writeResults(resultPath);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -78,42 +75,8 @@ public class Searcher {
         }
     }
 
-    private void updateReleventDocs() {
-        ArrayList<String> docsAndTerms= read(parser.getPostingPath()+ "\\documentsTerms.txt");
-        for (String line : docsAndTerms) {
-            String[] lineSplite = line.split(";");
-            Document document = getDocumentById(lineSplite[0]);
-            for (int i=1 ; i< lineSplite.length ; i++){
-                document.addTermByName(lineSplite[i]);
-            }
-        }
-    }
-
-    Document getDocumentById(String docId){
-        for ( Document document : allRelevantDocs ) {
-            if(document.getId().equals(docId)){
-                return document;
-            }
-        }
-        return null;
-    }
-
-
-
-    private ArrayList<Document> getAllRelevantDocs(ArrayList<String> allDocsAsString) {
-        ArrayList<Document> allRelevantDocs = new ArrayList<>();
-        HashMap<String, int[]> allDocsDetails = readFile(parser.getPostingPath()+ "\\documentsDetails.txt");
-        for (String docName : allDocsAsString) {
-            int [] allData = allDocsDetails.get(docName);
-            Document newDoc = new Document(docName, ""+allData[0],""+allData[1],""+allData[2]);
-            allRelevantDocs.add(newDoc);
-        }
-        return allRelevantDocs;
-    }
-
-
-    private void writeResults(String saveQueryPath) throws IOException {
-        File resultsFile = new File(saveQueryPath + "\\results.txt");
+    private void writeResults(String resultPath) throws IOException {
+        File resultsFile = new File(resultPath + "\\results.txt");
         FileWriter writer = new FileWriter(resultsFile);
         for (String query : results.keySet()) {
             for (String docName : results.get(query)) {
@@ -149,6 +112,9 @@ public class Searcher {
         }
     }
 
+    private ArrayList<String> getRelevantDocs() {
+        return ranker.rank(parsedQuery, allRelevantDocs, size, termTF);
+    }
 
     private void getAllRelevantDocs() {
         ArrayList<String> allQueryTerms = parsedQuery.getAllTerms();
@@ -188,13 +154,13 @@ public class Searcher {
             if (isExists(docID)) {
                 Document doc = getDoc(docID);
                 if (doc != null) {
-                    doc.addTermByName(term);
+                    doc.addTermPositions(term, positions);
                 }
             }
             else {
                 Document newDoc = getDocDetails(docID);
                 assert newDoc != null;
-                newDoc.addTermByName(term);
+                newDoc.addTermPositions(term, positions);
                 allRelevantDocs.add(newDoc);
             }
             counter += tf;
@@ -270,109 +236,4 @@ public class Searcher {
             return e.toString();
         }
     }
-
-
-
-
-
-    public  HashMap<String, ArrayList<String>> getAllPath() {
-        HashMap<String, ArrayList<String>> allPostingFilesAndLines = new HashMap<>();
-        ArrayList<String> allQueryTerms = parsedQuery.getAllTerms();
-        if (allQueryTerms.size() > 0) {
-            HashMap<String, List<String[]>> pointers = parser.indexer.getPointers();
-            for (String term : allQueryTerms) {
-                if (pointers.containsKey(term)) {
-                    for (String[] posting : pointers.get(term)) {
-                        String file = posting[0];
-                        String line = posting[1];
-                        if (allPostingFilesAndLines.containsKey(file)) {
-
-                            allPostingFilesAndLines.get(file).add(line);
-                        }
-                        else {
-                            ArrayList<String> lines = new ArrayList<>();
-                            lines.add(line);
-                            allPostingFilesAndLines.put(file, lines);
-                        }
-                    }
-                }
-            }
-        }
-        return allPostingFilesAndLines;
-    }
-
-    private ArrayList<String> getAllRelevantDocsAndTermTF(HashMap<String, ArrayList<String>> allPath) {
-        ArrayList<String> allDocs = new ArrayList<>();
-        for (String file : allPath.keySet()) {
-            ArrayList<String> allFileLines = read(file);
-            for (String line : allFileLines) {
-                String[] words = line.split(";");
-                String docName;
-                String termName = words[0];
-                for (int i=1; i<words.length; i++) {
-                    if (i%2 == 1) {
-                        docName = words[i];
-                        if (!allDocs.contains(docName))
-                            allDocs.add(docName);
-                    }
-                    else {
-                        int size = Integer.valueOf(words[i]);
-                        if (termTF.containsKey(termName)) {
-                            int newVal = termTF.get(termName) + size;
-                            termTF.replace(termName, newVal);
-                        }
-                        else {
-                            termTF.put(termName, size);
-                        }
-                    }
-                }
-            }
-        }
-        return allDocs;
-    }
-
-    private ArrayList<String> read(String file) {
-        ArrayList<String> allLines = new ArrayList<>();
-        try {
-            File postingFile = new File(parser.getPostingPath() + "\\" + file + ".txt");
-            FileReader reader = new FileReader(postingFile);
-            BufferedReader br = new BufferedReader(reader);
-            String line;
-            while ((line = br.readLine()) != null) {
-                allLines.add(line);
-            }
-            br.close();
-            reader.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return allLines;
-    }
-
-    private HashMap<String, int[]> readFile(String file) {
-        HashMap<String, int[]> allDocsDetails = new HashMap<>();
-        try {
-            File detailsFile = new File(file);
-            FileReader reader = new FileReader(detailsFile);
-            BufferedReader br = new BufferedReader(reader);
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] words = line.split(";");
-                int[] details = new int[3];
-                details[0] = Integer.valueOf(words[1]);
-                details[1] = Integer.valueOf(words[2]);
-                details[2] = Integer.valueOf(words[3]);
-                allDocsDetails.put(words[0], details);
-            }
-            br.close();
-            reader.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return allDocsDetails;
-    }
-
-
 }

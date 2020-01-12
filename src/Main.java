@@ -15,9 +15,9 @@ public class Main {
 
       Parse parser = new Parse("C:\\Users\\user\\Desktop\\IrAll\\corpusAndStopWprds" , "C:\\Users\\user\\Desktop\\IrAll\\postingFiels", true);
       parser.parseAllDocs();
-      Searcher searcher = new Searcher("Falkland petroleum exploration", parser, false,"");
-      searcher.start();
-      TreeMap<String, ArrayList<String>> allDoc =searcher.getResults();
+//      Searcher searcher = new Searcher("Falkland petroleum exploration",false, parser, false,"");
+//      searcher.start();
+//      TreeMap<String, ArrayList<String>> allDoc =searcher.getResults();
 
       //System.out.println(allDoc.size());
 

@@ -12,13 +12,13 @@ import java.util.Set;
 public class DictionaryOfDocument{
 
     HashMap<String , Integer> termAndTF;
-    //HashMap<String , ArrayList<Integer>> termAndAllPos;
+    HashMap<String , ArrayList<Integer>> termAndAllPos;
     ArrayList<String> allTerms;
 
 
     public DictionaryOfDocument() {
         termAndTF = new HashMap();
-        //termAndAllPos =new HashMap();
+        termAndAllPos =new HashMap();
         allTerms = new ArrayList<>();
     }
 
@@ -29,24 +29,31 @@ public class DictionaryOfDocument{
      * @return ArrayList<Integer>
      */
 
-    //public ArrayList<Integer> getAllPosition(String term) {
-    //    return termAndAllPos.get(term);
-    //}
+    public ArrayList<Integer> getAllPosition(String term) {
+        return termAndAllPos.get(term);
+    }
 
 
 
     /** Add term to Dictionary
      * @param term
+     * @param position
      */
 
-    public void addTerm(String term){
+    public void addTerm(String term , int position){
         if(termAndTF.containsKey(term)){
-            int newVal = termAndTF.get(term) + 1;
-            termAndTF.replace(term , newVal);
+            ArrayList<Integer> allOldPosition = termAndAllPos.get(term);
+            allOldPosition.add(position);
+            termAndAllPos.replace(term , allOldPosition);
+            termAndTF.replace(term , allOldPosition.size());
         }
         else{
+            ArrayList<Integer> newArrOfPosition = new ArrayList<>();
+            newArrOfPosition.add(position);
             termAndTF.put(term , 1);
+            termAndAllPos.put(term , newArrOfPosition);
         }
+
     }
 
 
@@ -68,10 +75,7 @@ public class DictionaryOfDocument{
     public boolean equals(Object obj) {
         if(obj instanceof DictionaryOfDocument){
             DictionaryOfDocument dictionaryOfDocumentObj = (DictionaryOfDocument) obj;
-            //if(dictionaryOfDocumentObj.getTermAndAllPos().equals(this.termAndAllPos) && dictionaryOfDocumentObj.getTermAndTF().equals(this.termAndTF)){
-            //    return true;
-            //}
-            if(dictionaryOfDocumentObj.getTermAndTF().equals(this.termAndTF)){
+            if(dictionaryOfDocumentObj.getTermAndAllPos().equals(this.termAndAllPos) && dictionaryOfDocumentObj.getTermAndTF().equals(this.termAndTF)){
                 return true;
             }
         }
@@ -89,9 +93,9 @@ public class DictionaryOfDocument{
      * Accept all terms and all their locations in the document
      * @return Hashtable
      */
-    //public HashMap<String, ArrayList<Integer>> getTermAndAllPos() {
-    //    return termAndAllPos;
-    //}
+    public HashMap<String, ArrayList<Integer>> getTermAndAllPos() {
+        return termAndAllPos;
+    }
 
     /**
      * Checks whether the term is present
@@ -114,25 +118,24 @@ public class DictionaryOfDocument{
         String ans ="";
         if(termAndTF.containsKey(termName)){
             ans = getTFofTerm(termName) +";";
-            //ArrayList<Integer> allPositionOfTerm= getAllPosition(termName);
-            //for (int i=0; i<allPositionOfTerm.size(); i++ ) {
-            //    if(i==0){
-            //        ans = ans + allPositionOfTerm.get(i);
-            //    }
-            //    else{
-            //        ans = ans+ "," + allPositionOfTerm.get(i);
-            //    }
-            //    if(i == allPositionOfTerm.size()-1){
-            //        ans = ans +";";
-            //    }
-            //}
+            ArrayList<Integer> allPositionOfTerm= getAllPosition(termName);
+            for (int i=0; i<allPositionOfTerm.size(); i++ ) {
+                if(i==0){
+                    ans = ans + allPositionOfTerm.get(i);
+                }
+                else{
+                    ans = ans+ "," + allPositionOfTerm.get(i);
+                }
+                if(i == allPositionOfTerm.size()-1){
+                    ans = ans +";";
+                }
+            }
         }
         return ans;
     }
 
     public boolean isEmpty(){
-        //if(termAndTF.isEmpty() || termAndAllPos.isEmpty()){
-        if(termAndTF.isEmpty()) {
+        if(termAndTF.isEmpty() || termAndAllPos.isEmpty()){
             return true;
         }
         return false;
